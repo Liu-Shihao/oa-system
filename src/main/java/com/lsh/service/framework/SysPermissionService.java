@@ -1,7 +1,9 @@
-package com.lsh.service;
+package com.lsh.service.framework;
 
 import com.lsh.domain.entity.SysRole;
 import com.lsh.domain.entity.SysUser;
+import com.lsh.service.system.ISysMenuService;
+import com.lsh.service.system.ISysRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,11 +13,10 @@ import java.util.Set;
 
 /**
  * 用户权限处理
- *
- * @author ruoyi
  */
 @Component
 public class SysPermissionService {
+
     @Autowired
     private ISysRoleService roleService;
 

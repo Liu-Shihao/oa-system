@@ -1,4 +1,4 @@
-package com.lsh.service;
+package com.lsh.service.system;
 
 
 import com.lsh.domain.entity.SysRole;

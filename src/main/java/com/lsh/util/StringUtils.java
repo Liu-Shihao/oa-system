@@ -1,6 +1,7 @@
 package com.lsh.util;
 
 import com.lsh.constant.Constants;
+import com.lsh.util.text.StrFormatter;
 import org.springframework.util.AntPathMatcher;
 
 import java.util.*;
@@ -225,12 +226,12 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
      * @param params   参数值
      * @return 格式化后的文本
      */
-//    public static String format(String template, Object... params) {
-//        if (isEmpty(params) || isEmpty(template)) {
-//            return template;
-//        }
-//        return StrFormatter.format(template, params);
-//    }
+    public static String format(String template, Object... params) {
+        if (isEmpty(params) || isEmpty(template)) {
+            return template;
+        }
+        return StrFormatter.format(template, params);
+    }
 
     /**
      * 是否为http(s)://开头

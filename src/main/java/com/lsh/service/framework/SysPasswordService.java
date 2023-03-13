@@ -1,14 +1,16 @@
-package com.lsh.service;
+package com.lsh.service.framework;
 
 import com.lsh.constant.CacheConstants;
-import com.lsh.constant.Constants;
 import com.lsh.domain.entity.SysUser;
-import com.lsh.util.HazelcastUtil;
+import com.lsh.exception.user.UserPasswordNotMatchException;
+import com.lsh.exception.user.UserPasswordRetryLimitExceedException;
+import com.lsh.security.context.AuthenticationContextHolder;
+import com.lsh.util.cache.HazelcastUtil;
+import com.lsh.util.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-import sun.misc.MessageUtils;
 
 import java.util.concurrent.TimeUnit;
 
@@ -17,9 +19,6 @@ import java.util.concurrent.TimeUnit;
  */
 @Component
 public class SysPasswordService {
-
-//    @Autowired
-//    private RedisCache redisCache;
 
     @Autowired
     private HazelcastUtil hazelcastUtil;
@@ -40,6 +39,10 @@ public class SysPasswordService {
         return CacheConstants.PWD_ERR_CNT_KEY + username;
     }
 
+    /**
+     * 登录验证
+     * @param user
+     */
     public void validate(SysUser user) {
         Authentication usernamePasswordAuthenticationToken = AuthenticationContextHolder.getContext();
         String username = usernamePasswordAuthenticationToken.getName();
@@ -52,15 +55,11 @@ public class SysPasswordService {
         }
 
         if (retryCount >= Integer.valueOf(maxRetryCount).intValue()) {
-            AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL,
-                    MessageUtils.message("user.password.retry.limit.exceed", maxRetryCount, lockTime)));
             throw new UserPasswordRetryLimitExceedException(maxRetryCount, lockTime);
         }
 
         if (!matches(user, password)) {
             retryCount = retryCount + 1;
-            AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.LOGIN_FAIL,
-                    MessageUtils.message("user.password.retry.limit.count", retryCount)));
             hazelcastUtil.setCacheObject(getCacheKey(username), retryCount, lockTime, TimeUnit.MINUTES);
             throw new UserPasswordNotMatchException();
         } else {
@@ -68,10 +67,20 @@ public class SysPasswordService {
         }
     }
 
+    /**
+     * 对比密码是否正确
+     * @param user
+     * @param rawPassword
+     * @return
+     */
     public boolean matches(SysUser user, String rawPassword) {
         return SecurityUtils.matchesPassword(rawPassword, user.getPassword());
     }
 
+    /**
+     * 清空用户登录记录缓存
+     * @param loginName
+     */
     public void clearLoginRecordCache(String loginName) {
         if (hazelcastUtil.hasKey(getCacheKey(loginName))) {
             hazelcastUtil.deleteObject(getCacheKey(loginName));

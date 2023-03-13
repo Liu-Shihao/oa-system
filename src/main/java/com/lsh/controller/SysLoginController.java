@@ -1,18 +1,15 @@
 package com.lsh.controller;
 
 import com.lsh.constant.Constants;
-import com.lsh.domain.model.LoginBody;
-import com.lsh.domain.model.RegisterBody;
-import com.lsh.service.LoginService;
 import com.lsh.domain.AjaxResult;
-import com.lsh.util.StringUtils;
+import com.lsh.domain.model.LoginBody;
+import com.lsh.service.framework.SysLoginService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.lsh.domain.AjaxResult.error;
 import static com.lsh.domain.AjaxResult.success;
 
 /**
@@ -22,10 +19,10 @@ import static com.lsh.domain.AjaxResult.success;
  */
 @Slf4j
 @RestController
-public class LoginController {
+public class SysLoginController {
 
     @Autowired
-    LoginService loginService;
+    SysLoginService loginService;
 
     /**
      * 登录方法
@@ -41,19 +38,5 @@ public class LoginController {
         ajax.put(Constants.TOKEN, token);
         return ajax;
     }
-
-    /**
-     *
-     * 用户注册
-     *
-     * @param user
-     * @return
-     */
-    @PostMapping("/register")
-    public AjaxResult register(@RequestBody RegisterBody user) {
-        String msg = loginService.register(user);
-        return StringUtils.isEmpty(msg) ? success() : error(msg);
-    }
-
 
 }

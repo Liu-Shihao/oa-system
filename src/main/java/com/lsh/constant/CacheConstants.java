@@ -10,9 +10,14 @@ public class CacheConstants {
     public static final String LOGIN_TOKEN_KEY = "login_tokens:";
 
     /**
-     * 验证码 redis key
+     * 图片验证码 redis key
      */
     public static final String CAPTCHA_CODE_KEY = "captcha_codes:";
+
+    /**
+     * 短信验证码
+     */
+    public static final String SMS_CODE_KEY = "sms_codes:";
 
     /**
      * 参数管理 cache key

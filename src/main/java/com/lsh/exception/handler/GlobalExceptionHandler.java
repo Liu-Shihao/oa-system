@@ -1,7 +1,8 @@
-package com.lsh.exception;
+package com.lsh.exception.handler;
 
 import com.lsh.constant.HttpStatus;
 import com.lsh.domain.AjaxResult;
+import com.lsh.exception.ServiceException;
 import com.lsh.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +30,17 @@ public class GlobalExceptionHandler {
         String requestURI = request.getRequestURI();
         log.error("请求地址'{}',权限校验失败'{}'", requestURI, e.getMessage());
         return AjaxResult.error(HttpStatus.FORBIDDEN, "没有权限，请联系管理员授权");
+    }
+
+    /**
+     * 请求方式不支持
+     */
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public AjaxResult handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException e,
+                                                          HttpServletRequest request) {
+        String requestURI = request.getRequestURI();
+        log.error("请求地址'{}',不支持'{}'请求", requestURI, e.getMethod());
+        return AjaxResult.error(e.getMessage());
     }
 
     /**
@@ -60,4 +72,25 @@ public class GlobalExceptionHandler {
         log.error("请求地址'{}',发生系统异常.", requestURI, e);
         return AjaxResult.error(e.getMessage());
     }
+
+    /**
+     * 自定义验证异常
+     */
+    @ExceptionHandler(BindException.class)
+    public AjaxResult handleBindException(BindException e) {
+        log.error(e.getMessage(), e);
+        String message = e.getAllErrors().get(0).getDefaultMessage();
+        return AjaxResult.error(message);
+    }
+
+    /**
+     * 自定义验证异常
+     */
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Object handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        log.error(e.getMessage(), e);
+        String message = e.getBindingResult().getFieldError().getDefaultMessage();
+        return AjaxResult.error(message);
+    }
+
 }

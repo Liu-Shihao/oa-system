@@ -62,9 +62,14 @@ public class Constants {
     public static final String LOGIN_FAIL = "Error";
 
     /**
-     * 验证码有效期（分钟）
+     * 图片验证码有效期（分钟）
      */
     public static final Integer CAPTCHA_EXPIRATION = 2;
+
+    /**
+     * 短信验证码有效期（分钟）
+     */
+    public static final Integer SMS_EXPIRATION = 5;
 
     /**
      * 令牌

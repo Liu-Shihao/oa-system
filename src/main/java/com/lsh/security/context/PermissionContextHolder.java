@@ -1,5 +1,6 @@
 package com.lsh.security.context;
 
+import com.lsh.util.text.Convert;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 
@@ -14,8 +15,8 @@ public class PermissionContextHolder {
                 RequestAttributes.SCOPE_REQUEST);
     }
 
-//    public static String getContext() {
-//        return Convert.toStr(RequestContextHolder.currentRequestAttributes().getAttribute(PERMISSION_CONTEXT_ATTRIBUTES,
-//                RequestAttributes.SCOPE_REQUEST));
-//    }
+    public static String getContext() {
+        return Convert.toStr(RequestContextHolder.currentRequestAttributes().getAttribute(PERMISSION_CONTEXT_ATTRIBUTES,
+                RequestAttributes.SCOPE_REQUEST));
+    }
 }

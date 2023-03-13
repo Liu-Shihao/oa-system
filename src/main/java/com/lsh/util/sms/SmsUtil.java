@@ -1,13 +1,20 @@
-package com.lsh.util;
+package com.lsh.util.sms;
 
 import com.aliyun.dysmsapi20170525.models.SendSmsResponse;
-import com.aliyun.tea.*;
+import com.aliyun.tea.TeaException;
+import com.lsh.constant.CacheConstants;
+import com.lsh.constant.Constants;
+import com.lsh.util.cache.HazelcastUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
-public class SendSms {
+@Component
+public class SmsUtil {
 
     public static final String AccessKey_ID = "LTAI5t7w3SkEJaMQrTX8G7ow";
 
@@ -17,10 +24,14 @@ public class SendSms {
 
     public static final String SIGNNAME = "OfficeAuto";
 
-    public static void main(String[] args) throws Exception {
-//        send("15037196928","123123");
-        System.out.println(randomCode());
+    private com.aliyun.dysmsapi20170525.Client client;
+
+    public SmsUtil() throws Exception {
+        this.client = createClient(AccessKey_ID, AccessKey_Secret);
     }
+
+    @Autowired
+    HazelcastUtil hazelcastUtil;
 
     /**
      * 使用AK&SK初始化账号Client
@@ -29,7 +40,7 @@ public class SendSms {
      * @return Client
      * @throws Exception
      */
-    public static com.aliyun.dysmsapi20170525.Client createClient(String accessKeyId, String accessKeySecret) throws Exception {
+    public com.aliyun.dysmsapi20170525.Client createClient(String accessKeyId, String accessKeySecret) throws Exception {
         com.aliyun.teaopenapi.models.Config config = new com.aliyun.teaopenapi.models.Config()
                 // 必填，您的 AccessKey ID
                 .setAccessKeyId(accessKeyId)
@@ -40,8 +51,12 @@ public class SendSms {
         return new com.aliyun.dysmsapi20170525.Client(config);
     }
 
-    public static void send(String targetNumber, String code) throws Exception {
-        com.aliyun.dysmsapi20170525.Client client = SendSms.createClient(AccessKey_ID, AccessKey_Secret);
+    public void send(String targetNumber,String uuid) throws Exception {
+        String code = randomCode();
+        // 保存验证码信息
+        String verifyKey = CacheConstants.SMS_CODE_KEY + uuid;
+        hazelcastUtil.setCacheObject(verifyKey, code, Constants.SMS_EXPIRATION, TimeUnit.MINUTES);
+
         com.aliyun.dysmsapi20170525.models.SendSmsRequest sendSmsRequest = new com.aliyun.dysmsapi20170525.models.SendSmsRequest()
                 .setSignName(SIGNNAME)
                 .setTemplateCode(TEMPLATECODE)
@@ -50,7 +65,7 @@ public class SendSms {
         com.aliyun.teautil.models.RuntimeOptions runtime = new com.aliyun.teautil.models.RuntimeOptions();
         try {
             SendSmsResponse sendSmsResponse = client.sendSmsWithOptions(sendSmsRequest, runtime);
-            log.info("{} - {}验证码发送结果：{}",targetNumber,code,sendSmsResponse.getBody());
+            log.info("{} - {} 验证码发送结果：/n{}",targetNumber,code,sendSmsResponse.getBody());
         } catch (TeaException error) {
             com.aliyun.teautil.Common.assertAsString(error.message);
         } catch (Exception _error) {
@@ -64,7 +79,7 @@ public class SendSms {
      * 生成6位数验证码
      * @return
      */
-    public static String randomCode(){
+    public String randomCode(){
         Random random = new Random();
         return String.valueOf(random.nextInt(1000000));
     }
