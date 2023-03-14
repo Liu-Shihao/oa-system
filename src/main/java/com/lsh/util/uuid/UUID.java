@@ -1,6 +1,7 @@
 package com.lsh.util.uuid;
 
-import com.sun.xml.internal.ws.util.UtilException;
+
+import com.lsh.exception.UtilException;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

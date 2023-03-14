@@ -6,11 +6,12 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import javax.persistence.*;
 
 /**
- * 用户和角色关联 sys_user_role
+ * 用户和岗位关联 sys_user_post
+ *
  */
 @Entity   // 声明这是一个JPA的实体类 与 数据表对应
-@Table(name="sys_user_role")  // 与数据表名对应
-public class SysUserRole {
+@Table(name="sys_user_post")  // 与数据表名对应
+public class SysUserPost {
     /**
      * 用户ID
      */
@@ -19,9 +20,9 @@ public class SysUserRole {
     private Long userId;
 
     /**
-     * 角色ID
+     * 岗位ID
      */
-    private Long roleId;
+    private Long postId;
 
     public Long getUserId() {
         return userId;
@@ -31,19 +32,19 @@ public class SysUserRole {
         this.userId = userId;
     }
 
-    public Long getRoleId() {
-        return roleId;
+    public Long getPostId() {
+        return postId;
     }
 
-    public void setRoleId(Long roleId) {
-        this.roleId = roleId;
+    public void setPostId(Long postId) {
+        this.postId = postId;
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
                 .append("userId", getUserId())
-                .append("roleId", getRoleId())
+                .append("postId", getPostId())
                 .toString();
     }
 }

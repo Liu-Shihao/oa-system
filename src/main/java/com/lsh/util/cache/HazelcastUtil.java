@@ -17,7 +17,6 @@ public class HazelcastUtil {
     @Autowired
     private HazelcastInstance hazelcastInstance;
 
-    IMap<String, Object> cache = hazelcastInstance.getMap("hazelcastMap");
 
 
     /**
@@ -27,6 +26,8 @@ public class HazelcastUtil {
      * @param value 缓存的值
      */
     public <T> void setCacheObject(final String key, final T value) {
+        IMap<String, Object> cache = hazelcastInstance.getMap("hazelcastMap");
+
         cache.set(key, value);
     }
 
@@ -39,18 +40,26 @@ public class HazelcastUtil {
      * @param timeUnit 时间颗粒度
      */
     public <T> void setCacheObject(final String key, final T value, final Integer timeout, final TimeUnit timeUnit) {
+        IMap<String, Object> cache = hazelcastInstance.getMap("hazelcastMap");
+
         cache.set(key, value, timeout, timeUnit);
     }
 
     public void deleteObject(String cacheKey) {
+        IMap<String, Object> cache = hazelcastInstance.getMap("hazelcastMap");
+
         cache.remove(cacheKey);
     }
 
     public boolean hasKey(String cacheKey) {
+        IMap<String, Object> cache = hazelcastInstance.getMap("hazelcastMap");
+
         return cache.containsKey(cacheKey);
     }
 
     public <T> T getCacheObject(final String key) {
+        IMap<String, Object> cache = hazelcastInstance.getMap("hazelcastMap");
+
         return (T)cache.get(key);
     }
 }

@@ -1,4 +1,4 @@
-package com.lsh.service.system;
+package com.lsh.service;
 
 
 import com.lsh.domain.entity.SysRole;
@@ -9,6 +9,8 @@ import java.util.Set;
 
 /**
  * 角色业务层
+ *
+ * @author ruoyi
  */
 public interface ISysRoleService {
     /**

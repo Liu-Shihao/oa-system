@@ -4,9 +4,6 @@ import com.lsh.domain.entity.SysUser;
 import com.lsh.domain.model.LoginUser;
 import com.lsh.enums.UserStatus;
 import com.lsh.exception.ServiceException;
-import com.lsh.service.framework.SysPasswordService;
-import com.lsh.service.framework.SysPermissionService;
-import com.lsh.service.system.ISysUserService;
 import com.lsh.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +30,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        SysUser user = userService.findSysUserByUserName(username);
+        SysUser user = userService.selectUserByUserName(username);
         if (StringUtils.isNull(user)) {
             log.info("登录用户：{} 不存在.", username);
             throw new ServiceException("登录用户：" + username + " 不存在");

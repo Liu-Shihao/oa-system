@@ -1,12 +1,12 @@
-package com.lsh.service.framework;
+package com.lsh.service;
 
+import com.lsh.config.OaSystemConfig;
 import com.lsh.constant.CacheConstants;
 import com.lsh.constant.UserConstants;
 import com.lsh.domain.entity.SysUser;
 import com.lsh.domain.model.RegisterBody;
 import com.lsh.exception.user.CaptchaException;
 import com.lsh.exception.user.CaptchaExpireException;
-import com.lsh.service.system.ISysUserService;
 import com.lsh.util.SecurityUtils;
 import com.lsh.util.StringUtils;
 import com.lsh.util.cache.HazelcastUtil;
@@ -16,12 +16,6 @@ import org.springframework.stereotype.Component;
 
 /**
  * 注册校验方法
- * 注册流程：
- * 1. 用户填写用户名和密码
- * 2. 用户输入图片验证码，点击发送短信验证码按钮
- * 3. 后台校验图片验证码，发送短信验证码
- * 5. 用户输入短信验证码，点击注册
- * 6. 后台校验短信验证码，进行注册
  *
  */
 @Slf4j
@@ -29,6 +23,9 @@ import org.springframework.stereotype.Component;
 public class SysRegisterService {
     @Autowired
     private ISysUserService userService;
+
+    @Autowired
+    OaSystemConfig oaSystemConfig;
 
     @Autowired
     private HazelcastUtil hazelcastUtil;
@@ -41,8 +38,11 @@ public class SysRegisterService {
         SysUser sysUser = new SysUser();
         sysUser.setUserName(username);
 
-        // 验证短信验证码
-        validateSmsCode(registerBody.getCode(), registerBody.getUuid());
+        // 验证码开关
+        boolean captchaEnabled = oaSystemConfig.isCaptchaEnabled();
+        if (captchaEnabled) {
+            validateCaptcha(username, registerBody.getCode(), registerBody.getUuid());
+        }
 
         if (StringUtils.isEmpty(username)) {
             msg = "用户名不能为空";
@@ -63,8 +63,7 @@ public class SysRegisterService {
             if (!regFlag) {
                 msg = "注册失败,请联系系统管理人员";
             } else {
-                log.info("{} 用户注册成功。",username);
-//                AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.REGISTER, MessageUtils.message("user.register.success")));
+                log.info("{} 注册成功。",username);
             }
         }
         return msg;
@@ -72,12 +71,14 @@ public class SysRegisterService {
 
     /**
      * 校验验证码
+     *
+     * @param username 用户名
      * @param code     验证码
      * @param uuid     唯一标识
-     * @return
+     * @return 结果
      */
-    public void validateSmsCode(String code, String uuid) {
-        String verifyKey = CacheConstants.SMS_CODE_KEY + StringUtils.nvl(uuid, "");
+    public void validateCaptcha(String username, String code, String uuid) {
+        String verifyKey = CacheConstants.CAPTCHA_CODE_KEY + StringUtils.nvl(uuid, "");
         String captcha = hazelcastUtil.getCacheObject(verifyKey);
         hazelcastUtil.deleteObject(verifyKey);
         if (captcha == null) {

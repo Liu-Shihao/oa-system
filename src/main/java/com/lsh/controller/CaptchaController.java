@@ -8,6 +8,7 @@ import com.lsh.domain.AjaxResult;
 import com.lsh.util.cache.HazelcastUtil;
 import com.lsh.util.sign.Base64;
 import com.lsh.util.uuid.IdUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.FastByteArrayOutputStream;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +26,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author ruoyi
  */
+@Slf4j
 @RestController
 public class CaptchaController {
 
@@ -37,6 +39,9 @@ public class CaptchaController {
     @Autowired
     private HazelcastUtil hazelcastUtil;
 
+    @Autowired
+    OaSystemConfig oaSystemConfig;
+
     /**
      * 生成验证码
      */
@@ -44,7 +49,7 @@ public class CaptchaController {
     public AjaxResult getCode(HttpServletResponse response) throws IOException {
         AjaxResult ajax = AjaxResult.success();
         //获取验证码开关  true开启，false关闭
-        boolean captchaEnabled = OaSystemConfig.getCaptchaEnabled();
+        boolean captchaEnabled = oaSystemConfig.isCaptchaEnabled();
         ajax.put("captchaEnabled", captchaEnabled);
         if (!captchaEnabled) {
             return ajax;
@@ -58,7 +63,7 @@ public class CaptchaController {
         BufferedImage image = null;
 
         // 生成验证码
-        String captchaType = OaSystemConfig.getCaptchaType();
+        String captchaType = oaSystemConfig.getCaptchaType();
         if ("math".equals(captchaType)) {
             String capText = captchaProducerMath.createText();
             capStr = capText.substring(0, capText.lastIndexOf("@"));
@@ -68,7 +73,7 @@ public class CaptchaController {
             capStr = code = captchaProducer.createText();
             image = captchaProducer.createImage(capStr);
         }
-
+        log.info("缓存图片验证码信息：{} - {}",verifyKey,code);
         hazelcastUtil.setCacheObject(verifyKey, code, Constants.CAPTCHA_EXPIRATION, TimeUnit.MINUTES);
         // 转换流信息写出
         FastByteArrayOutputStream os = new FastByteArrayOutputStream();
@@ -80,6 +85,7 @@ public class CaptchaController {
 
         ajax.put("uuid", uuid);
         ajax.put("img", Base64.encode(os.toByteArray()));
+        log.info("* * * * * * * * :{} - {}",uuid,code);
         return ajax;
     }
 }

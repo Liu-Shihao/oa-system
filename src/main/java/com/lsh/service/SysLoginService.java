@@ -1,4 +1,4 @@
-package com.lsh.service.framework;
+package com.lsh.service;
 
 import com.lsh.config.OaSystemConfig;
 import com.lsh.constant.CacheConstants;
@@ -11,11 +11,11 @@ import com.lsh.exception.user.CaptchaExpireException;
 import com.lsh.exception.user.UserNotExistsException;
 import com.lsh.exception.user.UserPasswordNotMatchException;
 import com.lsh.security.context.AuthenticationContextHolder;
-import com.lsh.service.system.ISysUserService;
 import com.lsh.util.DateUtils;
 import com.lsh.util.StringUtils;
 import com.lsh.util.cache.HazelcastUtil;
 import com.lsh.util.ip.IpUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -27,7 +27,9 @@ import javax.annotation.Resource;
 
 /**
  * 登录校验方法
+ *
  */
+@Slf4j
 @Component
 public class SysLoginService {
     @Autowired
@@ -41,6 +43,10 @@ public class SysLoginService {
 
     @Autowired
     private ISysUserService userService;
+
+    @Autowired
+    OaSystemConfig oaSystemConfig;
+
 
     /**
      * 登录验证
@@ -86,17 +92,15 @@ public class SysLoginService {
      * @return 结果
      */
     public void validateCaptcha(String code, String uuid) {
-        boolean captchaEnabled = OaSystemConfig.getCaptchaEnabled();
-        if (captchaEnabled) {
-            String verifyKey = CacheConstants.CAPTCHA_CODE_KEY + StringUtils.nvl(uuid, "");
-            String captcha = hazelcastUtil.getCacheObject(verifyKey);
-            hazelcastUtil.deleteObject(verifyKey);
-            if (captcha == null) {
-                throw new CaptchaExpireException();
-            }
-            if (!code.equalsIgnoreCase(captcha)) {
-                throw new CaptchaException();
-            }
+        String verifyKey = CacheConstants.CAPTCHA_CODE_KEY + StringUtils.nvl(uuid, "");
+        String captcha = hazelcastUtil.getCacheObject(verifyKey);
+        log.info("校验验证码: {} : {}",verifyKey,captcha);
+        hazelcastUtil.deleteObject(verifyKey);
+        if (captcha == null) {
+            throw new CaptchaExpireException();
+        }
+        if (!code.equalsIgnoreCase(captcha)) {
+            throw new CaptchaException();
         }
     }
 
@@ -121,11 +125,6 @@ public class SysLoginService {
                 || username.length() > UserConstants.USERNAME_MAX_LENGTH) {
             throw new UserPasswordNotMatchException();
         }
-        // IP黑名单校验
-//        String blackStr = configService.selectConfigByKey("sys.login.blackIPList");
-//        if (IpUtils.isMatchedIp(blackStr, IpUtils.getIpAddr())) {
-//            throw new BlackListException();
-//        }
     }
 
     /**

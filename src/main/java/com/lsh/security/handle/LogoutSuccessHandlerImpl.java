@@ -3,7 +3,7 @@ package com.lsh.security.handle;
 import com.alibaba.fastjson2.JSON;
 import com.lsh.domain.AjaxResult;
 import com.lsh.domain.model.LoginUser;
-import com.lsh.service.framework.TokenService;
+import com.lsh.service.TokenService;
 import com.lsh.util.ServletUtils;
 import com.lsh.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

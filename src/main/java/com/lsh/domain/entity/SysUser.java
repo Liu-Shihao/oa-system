@@ -4,24 +4,22 @@ import com.lsh.domain.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
 
 /**
  * 用户对象 sys_user
+ *
  */
-@Entity   // 声明这是一个JPA的实体类 与 数据表对应
-@Table(name="sys_user")  // 与数据表名对应
 public class SysUser extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /**
      * 用户ID
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
     /**

@@ -1,12 +1,12 @@
-package com.lsh.service.framework;
+package com.lsh.service;
 
 import com.lsh.constant.CacheConstants;
 import com.lsh.domain.entity.SysUser;
 import com.lsh.exception.user.UserPasswordNotMatchException;
 import com.lsh.exception.user.UserPasswordRetryLimitExceedException;
 import com.lsh.security.context.AuthenticationContextHolder;
-import com.lsh.util.cache.HazelcastUtil;
 import com.lsh.util.SecurityUtils;
+import com.lsh.util.cache.HazelcastUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -16,10 +16,11 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 登录密码方法
+ *
+ * @author ruoyi
  */
 @Component
 public class SysPasswordService {
-
     @Autowired
     private HazelcastUtil hazelcastUtil;
 
@@ -39,10 +40,6 @@ public class SysPasswordService {
         return CacheConstants.PWD_ERR_CNT_KEY + username;
     }
 
-    /**
-     * 登录验证
-     * @param user
-     */
     public void validate(SysUser user) {
         Authentication usernamePasswordAuthenticationToken = AuthenticationContextHolder.getContext();
         String username = usernamePasswordAuthenticationToken.getName();
@@ -67,20 +64,10 @@ public class SysPasswordService {
         }
     }
 
-    /**
-     * 对比密码是否正确
-     * @param user
-     * @param rawPassword
-     * @return
-     */
     public boolean matches(SysUser user, String rawPassword) {
         return SecurityUtils.matchesPassword(rawPassword, user.getPassword());
     }
 
-    /**
-     * 清空用户登录记录缓存
-     * @param loginName
-     */
     public void clearLoginRecordCache(String loginName) {
         if (hazelcastUtil.hasKey(getCacheKey(loginName))) {
             hazelcastUtil.deleteObject(getCacheKey(loginName));

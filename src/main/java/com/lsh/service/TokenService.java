@@ -1,4 +1,4 @@
-package com.lsh.service.framework;
+package com.lsh.service;
 
 import com.lsh.constant.CacheConstants;
 import com.lsh.constant.Constants;
@@ -23,10 +23,10 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * token验证处理
+ *
  */
 @Component
 public class TokenService {
-
     // 令牌自定义标识
     @Value("${token.header}")
     private String header;

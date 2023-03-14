@@ -2,7 +2,7 @@ package com.lsh.controller;
 
 import com.lsh.domain.AjaxResult;
 import com.lsh.domain.model.RegisterBody;
-import com.lsh.service.framework.SysRegisterService;
+import com.lsh.service.SysRegisterService;
 import com.lsh.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

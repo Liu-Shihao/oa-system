@@ -6,30 +6,23 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import javax.persistence.*;
 
 /**
- * 用户和角色关联 sys_user_role
+ * 角色和部门关联 sys_role_dept
+ *
  */
 @Entity   // 声明这是一个JPA的实体类 与 数据表对应
-@Table(name="sys_user_role")  // 与数据表名对应
-public class SysUserRole {
-    /**
-     * 用户ID
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
-
+@Table(name="sys_role_dept")  // 与数据表名对应
+public class SysRoleDept {
     /**
      * 角色ID
      */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long roleId;
 
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
+    /**
+     * 部门ID
+     */
+    private Long deptId;
 
     public Long getRoleId() {
         return roleId;
@@ -39,11 +32,19 @@ public class SysUserRole {
         this.roleId = roleId;
     }
 
+    public Long getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(Long deptId) {
+        this.deptId = deptId;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-                .append("userId", getUserId())
                 .append("roleId", getRoleId())
+                .append("deptId", getDeptId())
                 .toString();
     }
 }

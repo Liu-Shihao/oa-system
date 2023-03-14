@@ -4,6 +4,7 @@ import com.lsh.domain.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -14,12 +15,16 @@ import java.util.List;
 /**
  * 部门表 sys_dept
  */
+@Entity   // 声明这是一个JPA的实体类 与 数据表对应
+@Table(name="sys_dept")  // 与数据表名对应
 public class SysDept extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /**
      * 部门ID
      */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long deptId;
 
     /**
@@ -75,6 +80,7 @@ public class SysDept extends BaseEntity {
     /**
      * 子部门
      */
+    @Transient
     private List<SysDept> children = new ArrayList<SysDept>();
 
     public Long getDeptId() {

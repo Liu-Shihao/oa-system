@@ -3,7 +3,7 @@ package com.lsh.controller;
 import com.lsh.constant.Constants;
 import com.lsh.domain.AjaxResult;
 import com.lsh.domain.model.LoginBody;
-import com.lsh.service.framework.SysLoginService;
+import com.lsh.service.SysLoginService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

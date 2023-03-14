@@ -1,4 +1,5 @@
-package com.lsh.service.system;
+package com.lsh.service;
+
 
 import com.lsh.domain.TreeSelect;
 import com.lsh.domain.entity.SysMenu;
@@ -9,6 +10,7 @@ import java.util.Set;
 
 /**
  * 菜单 业务层
+ *
  */
 public interface ISysMenuService {
     /**
