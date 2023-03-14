@@ -16,9 +16,9 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class SmsUtil {
 
-    public static final String AccessKey_ID = "LTAI5t7w3SkEJaMQrTX8G7ow";
+    public static final String AccessKey_ID = "AccessKey_ID";
 
-    public static final String AccessKey_Secret = "MJIgcsQT6AcA86ZRnQamWlaWTr4xvV";
+    public static final String AccessKey_Secret = "AccessKey_Secret";
 
     public static final String TEMPLATECODE = "SMS_204040109";
 
