@@ -1,6 +1,5 @@
 package com.lsh.domain.entity;
 
-import com.lsh.domain.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 

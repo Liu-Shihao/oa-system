@@ -38,11 +38,8 @@ public class SysRegisterService {
         SysUser sysUser = new SysUser();
         sysUser.setUserName(username);
 
-        // 验证码开关
-        boolean captchaEnabled = oaSystemConfig.isCaptchaEnabled();
-        if (captchaEnabled) {
-            validateCaptcha(username, registerBody.getCode(), registerBody.getUuid());
-        }
+        // 校验短信验证码
+        validateSmsCode(registerBody.getCode(), registerBody.getUuid());
 
         if (StringUtils.isEmpty(username)) {
             msg = "用户名不能为空";
@@ -72,20 +69,20 @@ public class SysRegisterService {
     /**
      * 校验验证码
      *
-     * @param username 用户名
      * @param code     验证码
      * @param uuid     唯一标识
      * @return 结果
      */
-    public void validateCaptcha(String username, String code, String uuid) {
-        String verifyKey = CacheConstants.CAPTCHA_CODE_KEY + StringUtils.nvl(uuid, "");
+    public void validateSmsCode(String code, String uuid) {
+        String verifyKey = CacheConstants.SMS_CODE_KEY + StringUtils.nvl(uuid, "");
         String captcha = hazelcastUtil.getCacheObject(verifyKey);
-        hazelcastUtil.deleteObject(verifyKey);
+
         if (captcha == null) {
             throw new CaptchaExpireException();
         }
         if (!code.equalsIgnoreCase(captcha)) {
             throw new CaptchaException();
         }
+        hazelcastUtil.deleteObject(verifyKey);
     }
 }

@@ -8,11 +8,11 @@ import com.lsh.util.SecurityUtils;
 import com.lsh.util.StringUtils;
 import com.lsh.util.spring.SpringUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,19 +25,19 @@ import java.util.stream.Collectors;
 @Service
 public class SysUserServiceImpl implements ISysUserService {
 
-    @Resource
+    @Autowired
     private SysUserMapper userMapper;
 
-    @Resource
+    @Autowired
     private SysRoleMapper roleMapper;
 
-    @Resource
+    @Autowired
     private SysPostMapper postMapper;
 
-    @Resource
+    @Autowired
     private SysUserRoleMapper userRoleMapper;
 
-    @Resource
+    @Autowired
     private SysUserPostMapper userPostMapper;
 
     /**

@@ -1,10 +1,8 @@
 package com.lsh.domain.entity;
 
-import com.lsh.domain.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -15,16 +13,12 @@ import java.util.List;
  * 菜单权限表 sys_menu
  *
  */
-@Entity   // 声明这是一个JPA的实体类 与 数据表对应
-@Table(name="sys_menu")  // 与数据表名对应
 public class SysMenu extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /**
      * 菜单ID
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long menuId;
 
     /**
@@ -100,7 +94,6 @@ public class SysMenu extends BaseEntity {
     /**
      * 子菜单
      */
-    @Transient
     private List<SysMenu> children = new ArrayList<SysMenu>();
 
     public Long getMenuId() {

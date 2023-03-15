@@ -12,7 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 
 @Slf4j
-@MapperScan("com.lsh.mapper.**")
+@MapperScan("com.lsh.mapper")
 @SpringBootApplication
 public class AppApplication {
     public static void main(String[] args) {

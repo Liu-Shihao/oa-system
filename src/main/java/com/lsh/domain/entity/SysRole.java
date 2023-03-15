@@ -1,10 +1,8 @@
 package com.lsh.domain.entity;
 
-import com.lsh.domain.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -12,18 +10,13 @@ import java.util.Set;
 
 /**
  * 角色表 sys_role
- *
  */
-@Entity   // 声明这是一个JPA的实体类 与 数据表对应
-@Table(name="sys_role")  // 与数据表名对应
 public class SysRole extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /**
      * 角色ID
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long roleId;
 
     /**
@@ -69,24 +62,21 @@ public class SysRole extends BaseEntity {
     /**
      * 用户是否存在此角色标识 默认不存在
      */
-    private boolean flag ;
+    private boolean flag = false;
 
     /**
      * 菜单组
      */
-    @Transient
     private Long[] menuIds;
 
     /**
      * 部门组（数据权限）
      */
-    @Transient
     private Long[] deptIds;
 
     /**
      * 角色菜单权限
      */
-    @Transient
     private Set<String> permissions;
 
     public SysRole() {
