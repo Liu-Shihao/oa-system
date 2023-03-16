@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Hello Vue</title>
+    <script src="./js/vue.js"></script>
+</head>
+<body>
+<div id = "root">
+    <h1>插值语法</h1>
+    <h3>Hello {{name}} ,{{age}} ,{{Date.now()}}!</h3>
+    <hr/>
+    <h1>指令语法</h1>
+     <!-- v-bind是单项绑定
+     v-model是双向绑定 只能用在表单元素上，可以输入值的标签 -->
+    <a v-bind:href="baidu.url"> {{baidu.name}}1</a>
+    <a :href="baidu.url"> {{baidu.name}}2</a>
+    <hr/>
+
+    <br/>
+    <!-- 普通写法-->
+    <!--  
+    v-bind单项绑定 <input type="text" v-bind:value="name"><br/>
+    v-model单项绑定<input type="text" v-model:value="name"> 
+-->
+
+    <!-- 简单写法-->
+    v-bind单项绑定 <input type="text" :value="name"><br/>
+    v-model单项绑定<input type="text" v-model="name"> 
+</div>
+
+<script type="text/javascript">
+    Vue.config.productionTip = false
+
+    new Vue({
+        el : '#root',
+        data:{
+            name:"Vue",
+            age:20,
+            baidu:{
+                name:"百度一下",
+                url:"http://www.baidu.com"
+            }
+            
+        }
+    })
+</script>
+
+</body>
+</html>
