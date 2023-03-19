@@ -28,6 +28,11 @@ public class LoginBody {
     private String code;
 
     /**
+     * 验证码
+     */
+    private String smsCode;
+
+    /**
      * 唯一标识
      */
     private String uuid;

@@ -34,12 +34,13 @@ public class SysRegisterService {
      * 注册
      */
     public String register(RegisterBody registerBody) {
+        log.info("注册参数：{}",registerBody);
         String msg = "", username = registerBody.getUsername(), password = registerBody.getPassword();
         SysUser sysUser = new SysUser();
         sysUser.setUserName(username);
 
         // 校验短信验证码
-        validateSmsCode(registerBody.getCode(), registerBody.getUuid());
+        validateSmsCode(registerBody.getSmsCode(), registerBody.getUuid());
 
         if (StringUtils.isEmpty(username)) {
             msg = "用户名不能为空";

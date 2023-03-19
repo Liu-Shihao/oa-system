@@ -57,3 +57,16 @@ export function getCodeImg() {
     timeout: 20000
   })
 }
+
+// 发送短信验证码
+export function getSmsCode(data) {
+  return request({
+    url: '/sms/send',
+    headers: {
+      isToken: false
+    },
+    method: 'post',
+    data: data,
+    timeout: 20000
+  })
+}
