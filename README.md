@@ -10,7 +10,10 @@
 8.报表模块：管理和查看公司的报表
 
 Java SpringBoot+MySQL+Vue
-
+# 技术栈
+- 前端技术栈 ES6、vue、vuex、vue-router、vue-cli、axios、element-ui
+- 后端技术栈 SpringBoot、MyBatis、Spring Security、Jwt
+#
 # 接口
 ## 用户注册
 - 发送图片验证码
