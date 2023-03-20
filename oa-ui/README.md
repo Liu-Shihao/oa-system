@@ -1,3 +1,10 @@
+## 笔记
+项目启动后进入登录/登录页面:在view目录下的login.Vue register.Vue页面，都是同一个页面样式
+用户注册需要短信验证码进行验证，但是发送短信验证码需要校验图片验证码，防止短信轰炸
+接口调用的方法在api目录下的login.js
+
+用户点击登录后，会调用store的Login action
+然后页面会请求getInfo
 ## 开发
 
 ```bash

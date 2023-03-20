@@ -72,8 +72,8 @@ export default {
     return {
       codeUrl: "",
       loginForm: {
-        username: "admin",
-        password: "admin123",
+        username: "",//admin
+        password: "",//admin123
         rememberMe: false,
         code: "",
         uuid: ""
@@ -103,6 +103,7 @@ export default {
       immediate: true
     }
   },
+  //在实例创建完成后被立即同步调用。
   created() {
     this.getCode();
     this.getCookie();
@@ -141,8 +142,9 @@ export default {
             Cookies.remove('rememberMe');
           }
           this.$store.dispatch("Login", this.loginForm).then(() => {
+          //  console.log('@',this.redirect)// 跳转/index
             this.$router.push({ path: this.redirect || "/" }).catch(()=>{});
-            this.loading = false;
+            
           }).catch(() => {
             this.loading = false;
             if (this.captchaEnabled) {

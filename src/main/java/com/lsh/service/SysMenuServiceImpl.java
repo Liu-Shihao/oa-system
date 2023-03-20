@@ -13,6 +13,7 @@ import com.lsh.mapper.SysRoleMapper;
 import com.lsh.mapper.SysRoleMenuMapper;
 import com.lsh.util.SecurityUtils;
 import com.lsh.util.StringUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 /**
  * 菜单 业务层处理
  */
+@Slf4j
 @Service
 public class SysMenuServiceImpl implements ISysMenuService {
     public static final String PREMISSION_STRING = "perms[\"{0}\"]";

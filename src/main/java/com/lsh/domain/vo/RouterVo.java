@@ -125,4 +125,20 @@ public class RouterVo {
     public void setChildren(List<RouterVo> children) {
         this.children = children;
     }
+
+
+    @Override
+    public String toString() {
+        return "RouterVo{" +
+                "name='" + name + '\'' +
+                ", path='" + path + '\'' +
+                ", hidden=" + hidden +
+                ", redirect='" + redirect + '\'' +
+                ", component='" + component + '\'' +
+                ", query='" + query + '\'' +
+                ", alwaysShow=" + alwaysShow +
+                ", meta=" + meta +
+                ", children=" + children +
+                '}';
+    }
 }
