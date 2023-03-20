@@ -3,6 +3,7 @@ package com.lsh.util.sms;
 import com.aliyun.dysmsapi20170525.models.SendSmsResponse;
 import com.aliyun.tea.TeaException;
 import com.lsh.constant.CacheConstants;
+import com.lsh.constant.Constants;
 import com.lsh.exception.ServiceException;
 import com.lsh.util.cache.HazelcastUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Base64;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Component
@@ -56,7 +58,7 @@ public class SmsUtil {
         String code = randomCode();
         // 保存验证码信息
         String verifyKey = CacheConstants.SMS_CODE_KEY + uuid;
-//        hazelcastUtil.setCacheObject(verifyKey, code, Constants.SMS_EXPIRATION, TimeUnit.MINUTES);
+        hazelcastUtil.setCacheObject(verifyKey, code, Constants.SMS_EXPIRATION, TimeUnit.MINUTES);
 
         com.aliyun.dysmsapi20170525.models.SendSmsRequest sendSmsRequest = new com.aliyun.dysmsapi20170525.models.SendSmsRequest()
                 .setSignName(SIGNNAME)
