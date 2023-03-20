@@ -5,7 +5,6 @@ import com.aliyun.tea.TeaException;
 import com.lsh.constant.CacheConstants;
 import com.lsh.exception.ServiceException;
 import com.lsh.util.cache.HazelcastUtil;
-import com.lsh.util.uuid.IdUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -31,10 +30,6 @@ public class SmsUtil {
         this.client = createClient(AccessKey_ID, AccessKey_Secret);
     }
 
-    public static void main(String[] args) throws Exception {
-        SmsUtil smsUtil = new SmsUtil();
-        smsUtil.send("15037196928", IdUtils.simpleUUID());
-    }
 
     @Autowired
     HazelcastUtil hazelcastUtil;
