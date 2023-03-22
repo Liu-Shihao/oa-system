@@ -1,13 +1,11 @@
 package com.lsh.config;
 
-import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /**
  * 读取项目相关配置
  */
-@Data
 @Component
 @ConfigurationProperties(prefix = "oasystem")
 public class OaSystemConfig {
@@ -15,17 +13,17 @@ public class OaSystemConfig {
     /**
      * 上传路径
      */
-    private  String profile;
+    private String profile;
 
     /**
      * 获取地址开关
      */
-    private  boolean addressEnabled;
+    private boolean addressEnabled;
 
     /**
      * 验证码类型
      */
-    private  String captchaType;
+    private String captchaType;
 
     /**
      * 验证码开关
@@ -83,5 +81,17 @@ public class OaSystemConfig {
      */
     public  String getUploadPath() {
         return getProfile() + "/upload";
+    }
+
+    public void setProfile(String profile) {
+        this.profile = profile;
+    }
+
+    public void setAddressEnabled(boolean addressEnabled) {
+        this.addressEnabled = addressEnabled;
+    }
+
+    public void setCaptchaType(String captchaType) {
+        this.captchaType = captchaType;
     }
 }

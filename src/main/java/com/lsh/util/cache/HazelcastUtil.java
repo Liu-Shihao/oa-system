@@ -47,7 +47,6 @@ public class HazelcastUtil {
 
     public void deleteObject(String cacheKey) {
         IMap<String, Object> cache = hazelcastInstance.getMap("hazelcastMap");
-
         cache.remove(cacheKey);
     }
 
