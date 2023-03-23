@@ -2,7 +2,7 @@
   <div id="app">
     <!-- 路由 指定展示位置 -->
     <router-view />
-    <theme-picker />
+    <!-- <theme-picker /> -->
   </div>
 </template>
 

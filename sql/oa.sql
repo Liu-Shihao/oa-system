@@ -854,3 +854,38 @@ insert into sys_notice
 values ('1', '温馨提醒：2018-07-01 若依新版本发布啦', '2', '新版本内容', '0', 'admin', sysdate(), '', null, '管理员');
 insert into sys_notice
 values ('2', '维护通知：2018-07-01 若依系统凌晨维护', '1', '维护内容', '0', 'admin', sysdate(), '', null, '管理员');
+
+
+drop table if exists sys_timeline;
+create table sys_timeline
+(
+    timeline_id     bigint(20) not null auto_increment comment '流程id',
+    parent_id   bigint(20) default 0 comment '父流程id',
+    timeline_name   varchar(50) default '' comment '流程名称',
+    timeline_content   varchar(200) default '' comment '流程列表',
+    timeline_comment   varchar(200) default '' comment '评论',
+    leader      varchar(20) default null comment '负责人',
+    status      char(1)     default '0' comment '流程状态（0未开始 1进行中 2已完成）',
+    del_flag    char(1)     default '0' comment '删除标志（0代表存在 2代表删除）',
+    create_by   varchar(64) default '' comment '创建者',
+    create_time datetime comment '创建时间',
+    update_by   varchar(64) default '' comment '更新者',
+    update_time datetime comment '更新时间',
+    primary key (timeline_id)
+) engine=innodb auto_increment=100 comment = '流程信息表';
+
+drop table if exists sys_attendance;
+create table sys_attendance
+(
+    attendance_id     bigint(20) not null auto_increment comment '考勤id',
+    attendance_type varchar(50) default '' comment '出勤类型（0正常出勤 1事假 2病假 3缺勤）',
+    on_line   datetime comment '打卡上班时间',
+    off_line   datetime comment '打卡下班时间',
+    duration   varchar(64) default '' comment '工作时长',
+    user_id     bigint(20)  comment '用户ID',
+    create_by   varchar(64) default '' comment '创建者',
+    create_time datetime comment '创建时间',
+    update_by   varchar(64) default '' comment '更新者',
+    update_time datetime comment '更新时间',
+    primary key (attendance_id)
+) engine=innodb auto_increment=100 comment = '考勤信息表';
