@@ -2,6 +2,7 @@ package com.lsh.config;
 
 import com.lsh.constant.Constants;
 import com.lsh.interceptor.RepeatSubmitInterceptor;
+import com.lsh.interceptor.RequestInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +26,9 @@ public class ResourcesConfig implements WebMvcConfigurer {
     private RepeatSubmitInterceptor repeatSubmitInterceptor;
 
     @Autowired
+    RequestInterceptor requestInterceptor;
+
+    @Autowired
     OaSystemConfig oaSystemConfig;
 
     @Override
@@ -45,6 +49,7 @@ public class ResourcesConfig implements WebMvcConfigurer {
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(requestInterceptor);
         registry.addInterceptor(repeatSubmitInterceptor).addPathPatterns("/**");
     }
 

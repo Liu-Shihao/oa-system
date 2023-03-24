@@ -8,6 +8,8 @@ oasystem:
   captchaType: math
   # 图片验证码开关 true/false
   captchaEnabled: true
+  onLine: 9  #上班时间
+  offLine: 18 #下班时间
 
 server:
   port: 8888
@@ -60,6 +62,7 @@ spring:
   jpa:
     show-sql: true
     open-in-view: true
+
 
 
 # 用户配置

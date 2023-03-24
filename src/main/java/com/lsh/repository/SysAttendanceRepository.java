@@ -2,17 +2,18 @@ package com.lsh.repository;
 
 import com.lsh.domain.entity.SysAttendance;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+
+import java.util.Date;
 
 /**
  * @Author: LiuShihao
  * @Date: 2023/3/23 23:58
  * @Desc:
  */
-public interface SysAttendanceRepository extends JpaRepository<SysAttendance,Long> {
+public interface SysAttendanceRepository extends JpaRepository<SysAttendance,Long>, JpaSpecificationExecutor<SysAttendance> {
 
-    SysAttendance findSysAttendanceByCreateByAndAttendanceTypeAndCreateTimeIsStartingWith(String createBy, Integer attendanceType, String createDay);
+    SysAttendance findSysAttendanceByUserNameAndAttendanceTypeAndCreateTimeIsStartingWith(String userName, Integer attendanceType, Date createTime);
 
     SysAttendance findSysAttendanceByAttendanceId (Long id);
-
-
 }

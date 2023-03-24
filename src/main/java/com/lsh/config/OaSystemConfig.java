@@ -30,6 +30,27 @@ public class OaSystemConfig {
      */
     private boolean captchaEnabled;
 
+    private int onLine;
+
+    private int offLine;
+
+
+    public int getOnLine() {
+        return onLine;
+    }
+
+    public void setOnLine(int onLine) {
+        this.onLine = onLine;
+    }
+
+    public int getOffLine() {
+        return offLine;
+    }
+
+    public void setOffLine(int offLine) {
+        this.offLine = offLine;
+    }
+
     public boolean isCaptchaEnabled() {
         return captchaEnabled;
     }

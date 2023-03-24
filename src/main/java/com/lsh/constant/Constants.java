@@ -6,6 +6,26 @@ import io.jsonwebtoken.Claims;
  * 通用常量信息
  */
 public class Constants {
+
+    /**
+     * 当前记录起始索引
+     */
+    public static final String PAGE_NUM = "pageNum";
+
+    /**
+     * 每页显示记录数
+     */
+    public static final String PAGE_SIZE = "pageSize";
+
+    /**
+     * 日期范围-开始时间 yyyy-MM-dd
+     */
+    public static final String BEGIN_TIME = "beginTime";
+
+    /**
+     * 日期范围-结束时间 yyyy-MM-dd
+     */
+    public static final String END_TIME = "endTime";
     /**
      * UTF-8 字符集
      */

@@ -1,6 +1,7 @@
 package com.lsh.service;
 
 import com.lsh.domain.entity.SysAttendance;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -10,9 +11,9 @@ import java.util.List;
  * @Desc:
  */
 public interface ISysAttendanceService {
-    List<SysAttendance> selectAttendanceList(SysAttendance attendance);
+    Page<SysAttendance> selectAttendanceList(SysAttendance attendance) ;
 
-    void add(SysAttendance attendance);
+    void work(SysAttendance attendance);
 
-    void edit(SysAttendance attendance);
+    List<SysAttendance> findUserCurrentMonthAttendanceStatus(String userName,String time);
 }
