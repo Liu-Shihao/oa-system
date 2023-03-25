@@ -9,16 +9,21 @@ export function listAttendance(query) {
   })
 }
 
-export function findUserCurrentMonthAttendanceStatus(data) {
+export function findUserCurrentMonthAttendanceStatus() {
   return request({
     url: '/system/attendance/findUserCurrentMonthAttendanceStatus',
-    method: 'get',
-    data: data
+    method: 'get'
   })
 }
 
+export function findUserCurrentDayAttendanceRecord() {
+  return request({
+    url: '/system/attendance/findUserCurrentDayAttendanceRecord',
+    method: 'get'
+  })
+}
 
-// 打卡
+// 打卡 
 export function attendance(data) {
   return request({
     url: '/system/attendance',

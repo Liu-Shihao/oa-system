@@ -4,13 +4,16 @@ import com.lsh.config.OaSystemConfig;
 import com.lsh.constant.Constants;
 import com.lsh.domain.entity.SysAttendance;
 import com.lsh.repository.SysAttendanceRepository;
+import com.lsh.util.DateUtils;
 import com.lsh.util.ServletUtils;
 import com.lsh.util.StringUtils;
 import com.lsh.util.text.Convert;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +30,7 @@ import java.util.List;
  * @Date: 2023/3/24 00:00
  * @Desc:
  */
+@Slf4j
 @Service
 public class SysAttendanceServiceImpl implements ISysAttendanceService {
 
@@ -41,9 +45,7 @@ public class SysAttendanceServiceImpl implements ISysAttendanceService {
         Integer pageNo = Convert.toInt(ServletUtils.getParameter(Constants.PAGE_NUM), 1);
         Integer pageSize = Convert.toInt(ServletUtils.getParameter(Constants.PAGE_SIZE), 10);
 
-
-
-        Pageable page = PageRequest.of(pageNo - 1, pageSize);
+        Pageable page = PageRequest.of(pageNo - 1, pageSize, Sort.by(Sort.Direction.DESC,"createTime"));
         Page<SysAttendance> attendancePage = sysAttendanceRepository.findAll((Specification<SysAttendance>) (root, query, criteriaBuilder) -> {
             ArrayList<Predicate> predicates = new ArrayList<>();
             if (StringUtils.isNotNull(attendance.getAttendanceType())){
@@ -87,18 +89,20 @@ public class SysAttendanceServiceImpl implements ISysAttendanceService {
      * 考勤打卡
      * 如果当天没有同类型的考勤记录，则新建一个考勤记录
      * 如果存在记录，则更新下班打卡时间
-     * @param attendance
      */
     @Override
-    public void work(SysAttendance attendance) {
+    public void work(String userName) {
         LocalDateTime now = LocalDateTime.now();
-
         //查找该用户当天同类型考勤记录
-        SysAttendance sysAttendance = sysAttendanceRepository.findSysAttendanceByUserNameAndAttendanceTypeAndCreateTimeIsStartingWith(attendance.getUserName(), 1, new Date());
+        String time = DateUtils.parseDateToStr("yyyy-MM-dd", new Date());
+        SysAttendance sysAttendance = findUserCurrentDayAttendanceRecord(userName, time);
+
         int onLine = oaSystemConfig.getOnLine();
         int hour = now.getHour();
         //如果该用户不存在当天改类型考勤记录，则新增一条记录
         if (StringUtils.isNull(sysAttendance)){
+            SysAttendance attendance = new SysAttendance();
+            attendance.setUserName(userName);
             attendance.setAttendanceType(1);//打卡
             //考勤状态（1正常  2迟到  3早退 4请假 5迟到并早退  0旷工）
             attendance.setStatus(onLine >= hour ? 2 : 1);//如果当前时间大于规定上班时间，则算迟到
@@ -146,5 +150,21 @@ public class SysAttendanceServiceImpl implements ISysAttendanceService {
             predicates.add(predicate2);
             return criteriaBuilder.and(predicates.toArray(new Predicate[2]));
         });
+    }
+
+    @Override
+    public SysAttendance findUserCurrentDayAttendanceRecord(String userName, String time) {
+        List<SysAttendance> attendanceList = sysAttendanceRepository.findAll((Specification<SysAttendance>) (root, query, criteriaBuilder) -> {
+            ArrayList<Predicate> predicates = new ArrayList<>();
+
+            Predicate predicate1 = criteriaBuilder.equal(root.get("userName").as(String.class), userName);
+            predicates.add(predicate1);
+            Predicate predicate2 = criteriaBuilder.like(root.get("createTime").as(String.class), DateUtils.parseDateToStr("yyyy-MM-dd", new Date()) + "%");
+            predicates.add(predicate2);
+            Predicate predicate3 = criteriaBuilder.equal(root.get("attendanceType").as(String.class), "1");
+            predicates.add(predicate3);
+            return criteriaBuilder.and(predicates.toArray(new Predicate[3]));
+        });
+        return StringUtils.isNotEmpty(attendanceList)? attendanceList.get(0) : null;
     }
 }

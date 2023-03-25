@@ -13,7 +13,9 @@ import java.util.List;
 public interface ISysAttendanceService {
     Page<SysAttendance> selectAttendanceList(SysAttendance attendance) ;
 
-    void work(SysAttendance attendance);
+    void work(String userName);
 
     List<SysAttendance> findUserCurrentMonthAttendanceStatus(String userName,String time);
+
+    SysAttendance findUserCurrentDayAttendanceRecord(String userName, String time);
 }

@@ -49,8 +49,10 @@ public class SysAttendanceController extends BaseController {
 //    @PreAuthorize("@ss.hasPermi('system:attendance:add')")
     @PostMapping
     @Anonymous
-    public AjaxResult work(@RequestBody SysAttendance attendance) {
-        attendanceService.work(attendance);
+    public AjaxResult work() {
+        LoginUser loginUser = getLoginUser();
+        SysUser user = loginUser.getUser();
+        attendanceService.work(user.getUserName());
         return success();
     }
 
@@ -66,6 +68,20 @@ public class SysAttendanceController extends BaseController {
         String time = DateUtils.parseDateToStr("yyyy-MM", new Date());
         log.info("查询{} 用户{}月份考勤记录。",user.getUserName(), time);
         List<SysAttendance> attendances = attendanceService.findUserCurrentMonthAttendanceStatus(user.getUserName(),time);
+        return success(attendances);
+    }
+
+    /**
+     * 查询当前用户当月的考勤状态
+     * @return
+     */
+    @Anonymous
+    @GetMapping("/findUserCurrentDayAttendanceRecord")
+    public AjaxResult findUserCurrentDayAttendanceRecord() {
+        LoginUser loginUser = getLoginUser();
+        SysUser user = loginUser.getUser();
+        String time = DateUtils.parseDateToStr("yyyy-MM-dd", new Date());
+        SysAttendance attendances = attendanceService.findUserCurrentDayAttendanceRecord(user.getUserName(),time);
         return success(attendances);
     }
 }

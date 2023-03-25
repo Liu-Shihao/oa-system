@@ -1,5 +1,72 @@
 <template>
   <div class="app-container">
+    <el-calendar :first-day-of-week="7">
+      <template slot="dateCell" slot-scope="{ date, data }">
+        <div>
+          <p
+            :class="[
+              data.isSelected ? 'is-selected' : '',
+              isWeekend(date) ? 'is-weekend' : '',
+            ]"
+          >
+            {{ data.day.split("-").slice(1).join("-") }}
+            <!-- {{ data.isSelected ? "✔️" : "" }} -->
+            <el-button
+              v-show="formatDate(date) === formatDate(new Date())"
+              :type="
+                formatDate(date) === formatDate(new Date()) && hasRecord()
+                  ? 'success'
+                  : 'primary'
+              "
+              icon="el-icon-check"
+              circle
+              @click="getAttendance()"
+            ></el-button>
+          </p>
+          <div v-show="formatDate(date) < formatDate(new Date())">
+            <span v-if="getStatuses(date).includes(1)">
+              <p class="success">
+                出勤状态：正常
+                <i class="el-icon-s-claim"></i>
+              </p>
+            </span>
+            <span v-else-if="getStatuses(date).includes(2)">
+              <p class="warning">
+                出勤状态：迟到
+                <i class="el-icon-warning-outline"></i>
+              </p>
+            </span>
+            <span v-else-if="getStatuses(date).includes(3)">
+              <p class="warning">
+                出勤状态：早退
+                <i class="el-icon-warning-outline"></i>
+              </p>
+            </span>
+            <span v-else-if="getStatuses(date).includes(4)">
+              <p class="is-selected">
+                出勤状态：请假
+                <i class="el-icon-s-promotion"></i>
+              </p>
+            </span>
+            <span v-else-if="getStatuses(date).includes(5)">
+              <p class="danger">
+                出勤状态：迟到 & 早退
+                <i class="el-icon-warning"></i>
+              </p>
+            </span>
+            <span v-else>
+              <span v-show="!isWeekend(date)">
+                <p class="info">
+                  出勤状态：缺勤
+                  <i class="el-icon-question"></i>
+                </p>
+              </span>
+            </span>
+          </div>
+        </div>
+      </template>
+    </el-calendar>
+
     <el-form
       :model="queryParams"
       ref="queryForm"
@@ -16,6 +83,7 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
+
       <el-form-item label="出勤状态" prop="status">
         <el-select
           v-model="queryParams.status"
@@ -70,14 +138,53 @@
     </el-form>
 
     <el-table
+      v-if="refreshTable"
       v-loading="loading"
       :data="attendanceList"
       @selection-change="handleSelectionChange"
     >
-      <el-table-column type="selection" width="55" align="center" />
+      <el-table-column type="selection" width="35" align="center" />
       <el-table-column label="用户名称" align="center" prop="userName" />
-      <el-table-column label="出勤状态" align="center" prop="status" />
-      <el-table-column label="出勤类型" align="center" prop="attendanceType" />
+
+      <el-table-column prop="attendanceType" label="出勤类型" width="80">
+        <template slot-scope="scope">
+          <dict-tag
+            :options="dict.type.sys_attendance_type"
+            :value="scope.row.attendanceType"
+          />
+        </template>
+      </el-table-column>
+
+      <el-table-column prop="status" label="出勤状态" width="100">
+        <template slot-scope="scope">
+          <dict-tag
+            :options="dict.type.sys_attendance_status"
+            :value="scope.row.status"
+          />
+        </template>
+      </el-table-column>
+
+      <el-table-column
+        label="上班打卡时间"
+        align="center"
+        prop="onLine"
+        width="180"
+      >
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.onLine) }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="下班打卡时间"
+        align="center"
+        prop="offLine"
+        width="180"
+      >
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.offLine) }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="工时" align="center" prop="duration" />
       <el-table-column
         label="创建时间"
         align="center"
@@ -97,31 +204,16 @@
       :limit.sync="queryParams.pageSize"
       @pagination="getList"
     />
-
-    <el-calendar :first-day-of-week="7">
-      <template slot="dateCell" slot-scope="{ date, data }">
-        <p :class="data.isSelected ? 'is-selected' : ''">
-          {{ data.day.split("-").slice(1).join("-") }}
-          {{ data.isSelected ? "✔️" : "" }}
-          <span v-if="hasData(date)">
-          <p class="success">
-            {{ getData(date).text }}
-        </p>
-            
-            <i class="el-icon-platform-eleme"></i>
-          </span>
-        </p>
-
-      
-      </template>
-    </el-calendar>
-
-  
   </div>
 </template>
 
 <script>
-import { listAttendance, attendance,findUserCurrentMonthAttendanceStatus } from "@/api/system/attendance";
+import {
+  listAttendance,
+  attendance,
+  findUserCurrentMonthAttendanceStatus,
+  findUserCurrentDayAttendanceRecord,
+} from "@/api/system/attendance";
 export default {
   name: "Calendar",
   dicts: ["sys_attendance_type", "sys_attendance_status"],
@@ -147,6 +239,7 @@ export default {
       dateRange: [],
       // 是否显示弹出层
       open: false,
+      refreshTable: true,
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -154,6 +247,9 @@ export default {
         userName: undefined,
         status: undefined,
         attendanceType: undefined,
+        onLine: undefined,
+        offLine: undefined,
+        duration: undefined,
       },
       // 表单参数
       form: {},
@@ -163,6 +259,11 @@ export default {
   created() {
     this.getList();
     this.getcalendarData();
+    this.form = {
+      userName: undefined,
+      status: undefined,
+      attendanceType: undefined,
+    };
   },
   methods: {
     /** 查询考勤列表 */
@@ -176,15 +277,34 @@ export default {
         }
       );
     },
-    getcalendarData(){
-      findUserCurrentMonthAttendanceStatus().then(
-        (response) => {
-          console.log('@@@',response.data)
-          this.calendarData = response.data;
-          
-        }
-      );
+    getcalendarData() {
+      findUserCurrentMonthAttendanceStatus().then((response) => {
+        // console.log("@@@", response.data);
+        this.calendarData = response.data;
+      });
     },
+    hasRecord() {
+      return findUserCurrentDayAttendanceRecord().then((response) => {
+        // console.log("@@@", response.data);
+        return response.data !== null;
+      });
+    },
+    getAttendance() {
+      attendance(this.form).then((response) => {
+        if (response.code === 200) {
+          this.$alert("<font color='red'>打卡成功 </font>", "系统提示", {
+            dangerouslyUseHTMLString: true,
+            type: "success",
+          });
+        } else {
+          this.$alert("<font color='red'>网络错误 </font>", "系统提示", {
+            dangerouslyUseHTMLString: true,
+            type: "error",
+          });
+        }
+      });
+    },
+
     // 取消按钮
     cancel() {
       this.open = false;
@@ -275,11 +395,17 @@ export default {
         `post_${new Date().getTime()}.xlsx`
       );
     },
-    hasData(date) {
-      return this.calendarData.some(
-        (item) => item.date === this.formatDate(date)
-      );
+    getStatuses(date) {
+      return this.calendarData.map((item) => {
+        const itemCreateTime = this.formatDate(new Date(item.createTime));
+        if (itemCreateTime === this.formatDate(date)) {
+          // console.log("查询到考勤信息:", itemCreateTime, item.status,typeof(item.status));
+          return parseInt(item.status);
+        }
+        return 0;
+      });
     },
+
     getData(date) {
       return this.calendarData.find(
         (item) => item.date === this.formatDate(date)
@@ -291,6 +417,9 @@ export default {
       const day = date.getDate().toString().padStart(2, "0");
       return `${year}-${month}-${day}`;
     },
+    isWeekend(date) {
+      return date.getDay() === 0 || date.getDay() === 6 ? true : false;
+    },
   },
 };
 </script>
@@ -299,17 +428,19 @@ export default {
 .is-selected {
   color: #1989fa;
 }
+.is-weekend {
+  color: #c0c4cc;
+}
 .success {
-  color: #67C23A;
+  color: #67c23a;
 }
 .warning {
-  color: #E6A23C;
+  color: #e6a23c;
 }
 .danger {
-  color: #F56C6C;
+  color: #f56c6c;
 }
 .info {
   color: #909399;
 }
-
 </style>
