@@ -4,10 +4,9 @@ import com.lsh.domain.AjaxResult;
 import com.lsh.domain.entity.SysTimeline;
 import com.lsh.service.ISysTimelineService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * @Author: Joey
@@ -22,13 +21,16 @@ public class SysTimelineController extends BaseController {
     private ISysTimelineService timelineService;
 
     /**
-     * 获取考勤列表
+     * 获取列表
      */
     @PreAuthorize("@ss.hasPermi('system:timeline:list')")
     @GetMapping("/list")
-    public AjaxResult list(@RequestBody SysTimeline timeline) {
-        List<SysTimeline> timelines = timelineService.selectTimelineList(timeline);
-        return success(timelines);
+    public AjaxResult list(SysTimeline timeline) {
+        AjaxResult success = success();
+        Page<SysTimeline> timelines = timelineService.selectTimelineList(timeline);
+        success.put("rows",timelines.getContent());
+        success.put("total",timelines.getTotalElements());
+        return success;
     }
 
     /**

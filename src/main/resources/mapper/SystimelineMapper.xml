@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lsh.mapper.SysTimelineMapper">
+
+    <resultMap type="SysTimeline" id="SysUserResult">
+        <id     property="timelineId"       column="timeline_id"      />
+        <result property="parentId"       column="parent_id"      />
+        <result property="timelineName"     column="timeline_name"    />
+        <result property="timelineContent"     column="timeline_content"    />
+        <result property="timelineComment"        column="timeline_comment"        />
+        <result property="leader"  column="leader"  />
+        <result property="creator"          column="creator"          />
+        <result property="status"       column="status"       />
+        <result property="delFlag"      column="del_flag"     />
+        <result property="createTime"   column="create_time"  />
+        <result property="updateBy"     column="update_by"    />
+        <result property="updateTime"   column="update_time"  />
+    </resultMap>
+
+	<insert id="addSysTimeline" parameterType="SysTimeline" useGeneratedKeys="true" keyProperty="timelineId">
+ 		insert into sys_timeline(
+ 			<if test="timelineId != null and timelineId != 0">timeline_id,</if>
+ 			<if test="parentId != null and parentId != 0">parent_id,</if>
+ 			<if test="timelineName != null and timelineName != ''">timeline_name,</if>
+ 			<if test="timelineContent != null and timelineContent != ''">timeline_content,</if>
+ 			<if test="timelineComment != null and timelineComment != ''">timeline_comment,</if>
+ 			<if test="leader != null and leader != ''">leader,</if>
+ 			<if test="creator != null and creator != ''">creator,</if>
+ 			<if test="status != null and status != ''">status,</if>
+ 			<if test="createBy != null and createBy != ''">create_by,</if>
+ 			create_time
+ 		)values(
+		<if test="timelineId != null and timelineId != 0">#{timelineId},</if>
+		<if test="parentId != null and parentId != 0">#{parentId},</if>
+		<if test="timelineName != null and timelineName != ''">#{timelineName},</if>
+		<if test="timelineContent != null and timelineContent != ''">#{timelineContent},</if>
+		<if test="timelineComment != null and timelineComment != ''">#{timelineComment},</if>
+		<if test="leader != null and leader != ''">#{leader},</if>
+		<if test="creator != null and creator != ''">#{creator},</if>
+		<if test="status != null and status != ''">#{status},</if>
+		<if test="createBy != null and createBy != ''">#{createBy},</if>
+ 			sysdate()
+ 		)
+	</insert>
+	
+	<update id="updateUser" parameterType="SysUser">
+ 		update sys_user
+ 		<set>
+ 			<if test="deptId != null and deptId != 0">dept_id = #{deptId},</if>
+ 			<if test="userName != null and userName != ''">user_name = #{userName},</if>
+ 			<if test="nickName != null and nickName != ''">nick_name = #{nickName},</if>
+ 			<if test="email != null ">email = #{email},</if>
+ 			<if test="phonenumber != null ">phonenumber = #{phonenumber},</if>
+ 			<if test="sex != null and sex != ''">sex = #{sex},</if>
+ 			<if test="avatar != null and avatar != ''">avatar = #{avatar},</if>
+ 			<if test="password != null and password != ''">password = #{password},</if>
+ 			<if test="status != null and status != ''">status = #{status},</if>
+ 			<if test="loginIp != null and loginIp != ''">login_ip = #{loginIp},</if>
+ 			<if test="loginDate != null">login_date = #{loginDate},</if>
+ 			<if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+ 			<if test="remark != null">remark = #{remark},</if>
+ 			update_time = sysdate()
+ 		</set>
+ 		where user_id = #{userId}
+	</update>
+	
+	<update id="updateUserStatus" parameterType="SysUser">
+ 		update sys_user set status = #{status} where user_id = #{userId}
+	</update>
+	
+	<update id="updateUserAvatar" parameterType="SysUser">
+ 		update sys_user set avatar = #{avatar} where user_name = #{userName}
+	</update>
+	
+	<update id="resetUserPwd" parameterType="SysUser">
+ 		update sys_user set password = #{password} where user_name = #{userName}
+	</update>
+	
+	<delete id="deleteUserById" parameterType="Long">
+ 		update sys_user set del_flag = '2' where user_id = #{userId}
+ 	</delete>
+ 	
+ 	<delete id="deleteUserByIds" parameterType="Long">
+ 		update sys_user set del_flag = '2' where user_id in
+ 		<foreach collection="array" item="userId" open="(" separator="," close=")">
+ 			#{userId}
+        </foreach> 
+ 	</delete>
+	
+</mapper> 

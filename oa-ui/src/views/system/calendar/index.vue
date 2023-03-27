@@ -11,7 +11,6 @@
           >
             {{ data.day.split("-").slice(1).join("-") }}
             <!-- {{ data.isSelected ? "✔️" : "" }} -->
-            
               <el-button
               v-show="formatDate(date) === formatDate(new Date())"
               :type="isWork ? 'success' : 'primary'"
@@ -329,6 +328,7 @@ export default {
     },
     /** 重置按钮操作 */
     resetQuery() {
+      this.dateRange=[],
       this.resetForm("queryForm");
       this.handleQuery();
     },

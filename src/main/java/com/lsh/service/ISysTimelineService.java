@@ -1,8 +1,7 @@
 package com.lsh.service;
 
 import com.lsh.domain.entity.SysTimeline;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 /**
  * @Author: LiuShihao
@@ -10,9 +9,9 @@ import java.util.List;
  * @Desc:
  */
 public interface ISysTimelineService {
+    Page<SysTimeline> selectTimelineList(SysTimeline timeline);
+
     void add(SysTimeline timeline);
 
     void edit(SysTimeline timeline);
-
-    List<SysTimeline> selectTimelineList(SysTimeline timeline);
 }
