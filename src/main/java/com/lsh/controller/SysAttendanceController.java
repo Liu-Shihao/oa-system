@@ -7,6 +7,7 @@ import com.lsh.domain.entity.SysUser;
 import com.lsh.domain.model.LoginUser;
 import com.lsh.service.ISysAttendanceService;
 import com.lsh.util.DateUtils;
+import com.lsh.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -82,6 +83,7 @@ public class SysAttendanceController extends BaseController {
         SysUser user = loginUser.getUser();
         String time = DateUtils.parseDateToStr("yyyy-MM-dd", new Date());
         SysAttendance attendances = attendanceService.findUserCurrentDayAttendanceRecord(user.getUserName(),time);
-        return success(attendances);
+        log.info("{} {} 考勤信息：{}",user.getUserName(),time,attendances);
+        return success(StringUtils.isNull(attendances) ? 0 : 1);
     }
 }

@@ -11,17 +11,16 @@
           >
             {{ data.day.split("-").slice(1).join("-") }}
             <!-- {{ data.isSelected ? "✔️" : "" }} -->
-            <el-button
+            
+              <el-button
               v-show="formatDate(date) === formatDate(new Date())"
-              :type="
-                formatDate(date) === formatDate(new Date()) && hasRecord()
-                  ? 'success'
-                  : 'primary'
-              "
+              :type="isWork ? 'success' : 'primary'"
               icon="el-icon-check"
               circle
               @click="getAttendance()"
             ></el-button>
+  
+            
           </p>
           <div v-show="formatDate(date) < formatDate(new Date())">
             <span v-if="getStatuses(date).includes(1)">
@@ -229,6 +228,7 @@ export default {
       multiple: true,
       // 显示搜索条件
       showSearch: true,
+      isWork: false,
       // 总条数
       total: 0,
       // 考勤表格数据
@@ -256,6 +256,7 @@ export default {
       calendarData: [],
     };
   },
+
   created() {
     this.getList();
     this.getcalendarData();
@@ -264,6 +265,7 @@ export default {
       status: undefined,
       attendanceType: undefined,
     };
+    this.hasRecord();
   },
   methods: {
     /** 查询考勤列表 */
@@ -284,10 +286,10 @@ export default {
       });
     },
     hasRecord() {
-      return findUserCurrentDayAttendanceRecord().then((response) => {
-        // console.log("@@@", response.data);
-        return response.data !== null;
-      });
+      findUserCurrentDayAttendanceRecord().then((response) =>{
+        console.log('response.data:',response.data)
+        this.isWork =  response.data === 1;
+      })
     },
     getAttendance() {
       attendance(this.form).then((response) => {
@@ -296,6 +298,7 @@ export default {
             dangerouslyUseHTMLString: true,
             type: "success",
           });
+          this.isWork = true;
         } else {
           this.$alert("<font color='red'>网络错误 </font>", "系统提示", {
             dangerouslyUseHTMLString: true,
