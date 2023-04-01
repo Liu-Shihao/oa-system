@@ -15,7 +15,7 @@ public interface ISysAttendanceService {
 
     void work(String userName);
 
-    List<SysAttendance> findUserCurrentMonthAttendanceStatus(String userName,String time);
+    List<SysAttendance> findUserCurrentMonthAttendanceStatus(String userName,String currentDate,Boolean isPre) throws Exception;
 
     SysAttendance findUserCurrentDayAttendanceRecord(String userName, String time);
 }

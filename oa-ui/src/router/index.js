@@ -30,6 +30,7 @@ import Layout from '@/layout'
 
 // 公共路由
 export const constantRoutes = [
+
   {
     path: '/redirect',
     component: Layout,
@@ -60,6 +61,19 @@ export const constantRoutes = [
     path: '/401',
     component: () => import('@/views/error/401'),
     hidden: true
+  },
+  {
+    path: '',
+    component: Layout,
+    redirect: 'index',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/index'),
+        name: 'Index',
+        meta: { title: '报表管理', icon: 'dashboard', affix: true }
+      }
+    ]
   },
   {
     path: '/user',

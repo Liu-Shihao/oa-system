@@ -22,6 +22,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -120,6 +121,8 @@ public class SysAttendanceServiceImpl implements ISysAttendanceService {
                 //仅早退
                 sysAttendance.setStatus(3);
             }
+        }else {
+            sysAttendance.setStatus(2);
         }
         //如果该用户存在当天改类型考勤记录，则更新改记录下班打卡时间
         sysAttendance.setOffLine(new Date());
@@ -139,17 +142,54 @@ public class SysAttendanceServiceImpl implements ISysAttendanceService {
     }
 
     @Override
-    public List<SysAttendance> findUserCurrentMonthAttendanceStatus(String userName,String time) {
+    public List<SysAttendance> findUserCurrentMonthAttendanceStatus(String userName,String currentDate,Boolean isPre) throws Exception {
 
         return sysAttendanceRepository.findAll((Specification<SysAttendance>) (root, query, criteriaBuilder) -> {
             ArrayList<Predicate> predicates = new ArrayList<>();
-
+            String dateString = formatDateString(currentDate);
+            if (isPre){
+                try {
+                    dateString = getLastMonth(dateString);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            log.info("解析时间：{} ====》{}",currentDate,dateString);
             Predicate predicate1 = criteriaBuilder.equal(root.get("userName").as(String.class), userName);
             predicates.add(predicate1);
-            Predicate predicate2 = criteriaBuilder.like(root.get("createTime").as(String.class), time+"%");
+            Predicate predicate2 = criteriaBuilder.like(root.get("createTime").as(String.class), dateString+"%");
             predicates.add(predicate2);
             return criteriaBuilder.and(predicates.toArray(new Predicate[2]));
         });
+    }
+
+    public String formatDateString(String dateString) {
+        SimpleDateFormat inputFormat;
+        if (dateString.contains("-")) {
+            // 日期字符串中包含"-"，则按照"年-月-日"格式解析
+            inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+        } else {
+            // 否则按照"年 月"格式解析
+            inputFormat = new SimpleDateFormat("yyyy 年 MM 月");
+        }
+
+        SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM");
+        try {
+            Date date = inputFormat.parse(dateString);
+            return outputFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return "";
+    }
+
+    public String getLastMonth(String dateStr) throws Exception {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(sdf.parse(dateStr));
+        cal.add(Calendar.MONTH, -1);
+        return sdf.format(cal.getTime());
     }
 
     @Override

@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-calendar :first-day-of-week="7">
+    <el-calendar :first-day-of-week="7" ref="calendar" >
       <template slot="dateCell" slot-scope="{ date, data }">
         <div>
           <p
@@ -18,8 +18,6 @@
               circle
               @click="getAttendance()"
             ></el-button>
-  
-            
           </p>
           <div v-show="formatDate(date) < formatDate(new Date())">
             <span v-if="getStatuses(date).includes(1)">
@@ -64,7 +62,6 @@
         </div>
       </template>
     </el-calendar>
-
     <el-form
       :model="queryParams"
       ref="queryForm"
@@ -215,6 +212,7 @@ import {
 export default {
   name: "Calendar",
   dicts: ["sys_attendance_type", "sys_attendance_status"],
+  
   data() {
     return {
       // 遮罩层
@@ -253,12 +251,46 @@ export default {
       // 表单参数
       form: {},
       calendarData: [],
+      queryDateStatus:{
+        currentDate:undefined,
+        isPre:undefined
+      }
     };
   },
 
+
+  mounted() {
+    this.$nextTick(() => {
+      const calendar = this.$refs.calendar;
+      const devElement = calendar.$el.querySelector('.el-calendar__title');
+      var text = 'title'
+      if (devElement) {
+        text = devElement.textContent.trim();
+        console.log('calendar__title',text); // 输出 "这是标题"
+       
+      }
+      
+      const spanElement = calendar.$el.querySelector('span');
+      if (spanElement && spanElement.textContent.trim() === '上个月') {
+        spanElement.addEventListener('click', () => {
+          // 处理点击事件的逻辑
+          console.log('点击上个月,当前时间为：',text)
+          this.queryDateStatus = {
+            currentDate:text,
+            isPre:true
+          }
+          this.getcalendarData(this.queryDateStatus);
+        });
+      }
+    });
+  },
   created() {
     this.getList();
-    this.getcalendarData();
+    this.queryDateStatus = {
+        currentDate:this.formatDate(new Date()),
+        isPre:false
+    }
+    this.getcalendarData(this.queryDateStatus);
     this.form = {
       userName: undefined,
       status: undefined,
@@ -267,6 +299,7 @@ export default {
     this.hasRecord();
   },
   methods: {
+  
     /** 查询考勤列表 */
     getList() {
       this.loading = true;
@@ -278,10 +311,11 @@ export default {
         }
       );
     },
-    getcalendarData() {
-      findUserCurrentMonthAttendanceStatus().then((response) => {
-        // console.log("@@@", response.data);
-        this.calendarData = response.data;
+    getcalendarData(date) {
+      findUserCurrentMonthAttendanceStatus(date).then((response) => {
+        this.calendarData = [...this.calendarData, ...response.data];
+        const uniqueArr = Array.from(new Set(this.calendarData)); // [1, 2, 3]
+        this.calendarData = uniqueArr
       });
     },
     hasRecord() {

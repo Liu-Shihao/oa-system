@@ -8,6 +8,7 @@ import com.lsh.domain.model.LoginUser;
 import com.lsh.service.ISysAttendanceService;
 import com.lsh.util.DateUtils;
 import com.lsh.util.StringUtils;
+import com.lsh.util.text.Convert;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -59,21 +60,25 @@ public class SysAttendanceController extends BaseController {
 
     /**
      * 查询当前用户当月的考勤状态
+     * currentDate : 2023-04-01
+     * isPre : false
+     * currentDate : 2023 年 4 月
+     * isPre : true
      * @return
      */
     @Anonymous
     @GetMapping("/findUserCurrentMonthAttendanceStatus")
-    public AjaxResult findUserCurrentMonthAttendanceStatus() {
+    public AjaxResult findUserCurrentMonthAttendanceStatus(String currentDate,String isPre) throws Exception {
         LoginUser loginUser = getLoginUser();
         SysUser user = loginUser.getUser();
         String time = DateUtils.parseDateToStr("yyyy-MM", new Date());
         log.info("查询{} 用户{}月份考勤记录。",user.getUserName(), time);
-        List<SysAttendance> attendances = attendanceService.findUserCurrentMonthAttendanceStatus(user.getUserName(),time);
+        List<SysAttendance> attendances = attendanceService.findUserCurrentMonthAttendanceStatus(user.getUserName(),currentDate, Convert.toBool(isPre));
         return success(attendances);
     }
 
     /**
-     * 查询当前用户当月的考勤状态
+     * 查询当前用户当天的考勤状态
      * @return
      */
     @Anonymous

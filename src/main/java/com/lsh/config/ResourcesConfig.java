@@ -49,7 +49,7 @@ public class ResourcesConfig implements WebMvcConfigurer {
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(requestInterceptor);
+        registry.addInterceptor(requestInterceptor);
         registry.addInterceptor(repeatSubmitInterceptor).addPathPatterns("/**");
     }
 

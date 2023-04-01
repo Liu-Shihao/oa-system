@@ -9,10 +9,11 @@ export function listAttendance(query) {
   })
 }
 
-export function findUserCurrentMonthAttendanceStatus() {
+export function findUserCurrentMonthAttendanceStatus(query) {
   return request({
     url: '/system/attendance/findUserCurrentMonthAttendanceStatus',
-    method: 'get'
+    method: 'get',
+    params: query
   })
 }
 
