@@ -3,6 +3,7 @@ package com.lsh.service;
 import com.lsh.domain.entity.SysAttendance;
 import org.springframework.data.domain.Page;
 
+import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -18,4 +19,6 @@ public interface ISysAttendanceService {
     List<SysAttendance> findUserCurrentMonthAttendanceStatus(String userName,String currentDate,Boolean isPre) throws Exception;
 
     SysAttendance findUserCurrentDayAttendanceRecord(String userName, String time);
+
+    void leave(SysAttendance attendance) throws ParseException;
 }

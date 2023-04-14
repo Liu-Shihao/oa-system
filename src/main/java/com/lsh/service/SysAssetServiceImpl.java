@@ -47,10 +47,6 @@ public class SysAssetServiceImpl implements ISysAssetService{
                 Predicate attendanceType = criteriaBuilder.like(root.get("assetName").as(String.class), "%" + sysAsset.getAssetName() + "%");
                 predicates.add(attendanceType);
             }
-//                if (StringUtils.isNotEmpty(sysAsset.getAssetValue())){
-//                    Predicate createBy = criteriaBuilder.like(root.get("assetValue").as(String.class), sysAsset.getAssetValue());
-//                    predicates.add(createBy);
-//                }
             if (StringUtils.isNotNull(sysAsset.getParams())) {
                 String beginTime = Convert.toStr(sysAsset.getParams().get(Constants.BEGIN_TIME), "");
                 String endTime = Convert.toStr(sysAsset.getParams().get(Constants.END_TIME), "");

@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -55,6 +56,16 @@ public class SysAttendanceController extends BaseController {
         LoginUser loginUser = getLoginUser();
         SysUser user = loginUser.getUser();
         attendanceService.work(user.getUserName());
+        return success();
+    }
+
+    @GetMapping("/leave")
+    @Anonymous
+    public AjaxResult leave(SysAttendance attendance) throws ParseException {
+        LoginUser loginUser = getLoginUser();
+        SysUser user = loginUser.getUser();
+        attendance.setUserName(user.getUserName());
+        attendanceService.leave(attendance);
         return success();
     }
 

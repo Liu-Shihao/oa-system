@@ -55,7 +55,6 @@ public class SysUserController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:user:query')")
     @GetMapping(value = {"/", "/{userId}"})
     public AjaxResult getInfo(@PathVariable(value = "userId", required = false) Long userId) {
-        userService.checkUserDataScope(userId);
         AjaxResult ajax = AjaxResult.success();
         List<SysRole> roles = roleService.selectRoleAll();
         ajax.put("roles", SysUser.isAdmin(userId) ? roles : roles.stream().filter(r -> !r.isAdmin()).collect(Collectors.toList()));
@@ -94,7 +93,6 @@ public class SysUserController extends BaseController {
     @PutMapping
     public AjaxResult edit(@Validated @RequestBody SysUser user) {
         userService.checkUserAllowed(user);
-        userService.checkUserDataScope(user.getUserId());
         if (!userService.checkUserNameUnique(user)) {
             return error("修改用户'" + user.getUserName() + "'失败，登录账号已存在");
         } else if (StringUtils.isNotEmpty(user.getPhonenumber()) && !userService.checkPhoneUnique(user)) {
@@ -125,7 +123,6 @@ public class SysUserController extends BaseController {
     @PutMapping("/resetPwd")
     public AjaxResult resetPwd(@RequestBody SysUser user) {
         userService.checkUserAllowed(user);
-        userService.checkUserDataScope(user.getUserId());
         user.setPassword(SecurityUtils.encryptPassword(user.getPassword()));
         user.setUpdateBy(getUsername());
         return toAjax(userService.resetPwd(user));
@@ -138,7 +135,6 @@ public class SysUserController extends BaseController {
     @PutMapping("/changeStatus")
     public AjaxResult changeStatus(@RequestBody SysUser user) {
         userService.checkUserAllowed(user);
-        userService.checkUserDataScope(user.getUserId());
         user.setUpdateBy(getUsername());
         return toAjax(userService.updateUserStatus(user));
     }
@@ -163,7 +159,6 @@ public class SysUserController extends BaseController {
     @PreAuthorize("@ss.hasPermi('system:user:edit')")
     @PutMapping("/authRole")
     public AjaxResult insertAuthRole(Long userId, Long[] roleIds) {
-        userService.checkUserDataScope(userId);
         userService.insertUserAuth(userId, roleIds);
         return success();
     }

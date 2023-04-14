@@ -79,20 +79,7 @@
         />
       </el-form-item>
 
-      <el-form-item label="出勤状态" prop="status">
-        <el-select
-          v-model="queryParams.status"
-          placeholder="出勤状态"
-          clearable
-        >
-          <el-option
-            v-for="dict in dict.type.sys_attendance_status"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
-          />
-        </el-select>
-      </el-form-item>
+     
       <el-form-item label="出勤类型" prop="attendanceType">
         <el-select
           v-model="queryParams.attendanceType"
@@ -101,6 +88,21 @@
         >
           <el-option
             v-for="dict in dict.type.sys_attendance_type"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          />
+        </el-select>
+      </el-form-item>
+
+      <el-form-item label="出勤状态" prop="status">
+        <el-select
+          v-model="queryParams.status"
+          placeholder="出勤状态"
+          clearable
+        >
+          <el-option
+            v-for="dict in dict.type.sys_attendance_status"
             :key="dict.value"
             :label="dict.label"
             :value="dict.value"
@@ -128,6 +130,14 @@
         >
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery"
           >重置</el-button
+        >
+
+        <el-button
+          type="warning"
+          icon="el-icon-s-promotion"
+          size="mini"
+          @click="handleLeave"
+          >请假</el-button
         >
       </el-form-item>
     </el-form>
@@ -199,6 +209,30 @@
       :limit.sync="queryParams.pageSize"
       @pagination="getList"
     />
+
+    <el-dialog :title="title" :visible.sync="leaveFormOpen" width="500px" append-to-body>
+      <el-form ref="leaveForm" :model="leaveForm" :rules="rules" label-width="80px">
+       
+        <el-form-item label="请假时间">
+        <el-date-picker
+          v-model="leaveDateRange"
+          style="width: 240px"
+          value-format="yyyy-MM-dd"
+          type="daterange"
+          range-separator="-"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+        ></el-date-picker>
+      </el-form-item>
+        <el-form-item label="备注" prop="remark">
+          <el-input v-model="leaveForm.remark" type="textarea" placeholder="请输入内容" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitLeaveForm">确 定</el-button>
+        <el-button @click="cancelLeave">取 消</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -208,6 +242,7 @@ import {
   attendance,
   findUserCurrentMonthAttendanceStatus,
   findUserCurrentDayAttendanceRecord,
+  leave
 } from "@/api/system/attendance";
 export default {
   name: "Calendar",
@@ -234,8 +269,10 @@ export default {
       title: "",
       // 日期范围
       dateRange: [],
+      leaveDateRange: [],
       // 是否显示弹出层
       open: false,
+      leaveFormOpen: false,
       refreshTable: true,
       // 查询参数
       queryParams: {
@@ -250,6 +287,7 @@ export default {
       },
       // 表单参数
       form: {},
+      leaveForm: {},
       calendarData: [],
       queryDateStatus:{
         currentDate:undefined,
@@ -311,11 +349,11 @@ export default {
         }
       );
     },
-    getcalendarData(date) {
-      findUserCurrentMonthAttendanceStatus(date).then((response) => {
+    getcalendarData(data) {
+      findUserCurrentMonthAttendanceStatus(data).then((response) => {
         this.calendarData = [...this.calendarData, ...response.data];
-        const uniqueArr = Array.from(new Set(this.calendarData)); // [1, 2, 3]
-        this.calendarData = uniqueArr
+        // const uniqueArr = Array.from(new Set(this.calendarData));
+        // this.calendarData = uniqueArr
       });
     },
     hasRecord() {
@@ -332,6 +370,7 @@ export default {
             type: "success",
           });
           this.isWork = true;
+          this.getList();
         } else {
           this.$alert("<font color='red'>网络错误 </font>", "系统提示", {
             dangerouslyUseHTMLString: true,
@@ -346,6 +385,10 @@ export default {
       this.open = false;
       this.reset();
     },
+    cancelLeave() {
+      this.leaveFormOpen = false;
+      this.resetLeaveForm();
+    },
     // 表单重置
     reset() {
       this.form = {
@@ -355,9 +398,22 @@ export default {
       };
       this.resetForm("form");
     },
+    resetLeaveForm() {
+      this.leaveForm = {
+        remark: undefined
+      };
+      this.leaveDateRange=[],
+      this.resetForm("leaveForm");
+    },
     /** 搜索按钮操作 */
     handleQuery() {
       this.queryParams.pageNum = 1;
+      this.getList();
+    },
+
+    handleLeave() {
+      this.leaveFormOpen = true;
+      this.title = "请假";
       this.getList();
     },
     /** 重置按钮操作 */
@@ -408,6 +464,28 @@ export default {
         }
       });
     },
+    submitLeaveForm: function () {
+      this.$refs["leaveForm"].validate((valid) => {
+        if (valid) {
+        leave(this.addDateRange(this.queryParams, this.leaveDateRange)).then((response) => {
+        if (response.code === 200) {
+          this.$alert("<font color='red'>请假成功 </font>", "系统提示", {
+            dangerouslyUseHTMLString: true,
+            type: "success",
+          });
+          this.getList();
+        } else {
+          this.$alert("<font color='red'>网络错误 </font>", "系统提示", {
+            dangerouslyUseHTMLString: true,
+            type: "error",
+          });
+        }
+        });
+        this.leaveFormOpen = false;
+       
+        }
+      });
+    },
     /** 删除按钮操作 */
     handleDelete(row) {
       const postIds = row.postId || this.ids;
@@ -422,16 +500,7 @@ export default {
         })
         .catch(() => {});
     },
-    /** 导出按钮操作 */
-    handleExport() {
-      this.download(
-        "system/post/export",
-        {
-          ...this.queryParams,
-        },
-        `post_${new Date().getTime()}.xlsx`
-      );
-    },
+  
     getStatuses(date) {
       return this.calendarData.map((item) => {
         const itemCreateTime = this.formatDate(new Date(item.createTime));

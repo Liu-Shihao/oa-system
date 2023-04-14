@@ -1,6 +1,5 @@
 package com.lsh.controller;
 
-import com.lsh.annotation.Anonymous;
 import com.lsh.domain.AjaxResult;
 import com.lsh.domain.entity.SysAsset;
 import com.lsh.domain.entity.SysUser;
@@ -9,6 +8,7 @@ import com.lsh.service.ISysAssetService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -24,11 +24,10 @@ public class SysAssetController extends BaseController{
     @Autowired
     private ISysAssetService assetService;
 
-
     /**
      * 获取资产列表
      */
-    @Anonymous
+    @PreAuthorize("@ss.hasPermi('system:asset:list')")
     @GetMapping("/list")
     public AjaxResult list(SysAsset sysAsset) {
         AjaxResult success = success();
@@ -37,7 +36,7 @@ public class SysAssetController extends BaseController{
         success.put("total",assetPage.getTotalElements());
         return success;
     }
-    @Anonymous
+    @PreAuthorize("@ss.hasPermi('system:asset:add')")
     @PostMapping
     public AjaxResult add(@RequestBody SysAsset sysAsset) {
         LoginUser loginUser = getLoginUser();
@@ -46,7 +45,7 @@ public class SysAssetController extends BaseController{
         assetService.add(sysAsset);
         return AjaxResult.success("添加成功");
     }
-    @Anonymous
+    @PreAuthorize("@ss.hasPermi('system:asset:edit')")
     @PutMapping
     public AjaxResult update(@RequestBody SysAsset sysAsset) {
         LoginUser loginUser = getLoginUser();
@@ -55,7 +54,7 @@ public class SysAssetController extends BaseController{
         assetService.update(sysAsset);
         return AjaxResult.success("更新成功");
     }
-    @Anonymous
+    @PreAuthorize("@ss.hasPermi('system:asset:remove')")
     @DeleteMapping ("/{assetIds}")
     public AjaxResult delete(@PathVariable Long[]  assetIds) {
         assetService.delete(assetIds);

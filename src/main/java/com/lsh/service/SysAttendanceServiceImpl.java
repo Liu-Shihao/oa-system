@@ -54,7 +54,7 @@ public class SysAttendanceServiceImpl implements ISysAttendanceService {
                 predicates.add(attendanceType);
             }
             if (StringUtils.isNotEmpty(attendance.getUserName())){
-                Predicate createBy = criteriaBuilder.like(root.get("createBy").as(String.class), "%"+attendance.getUserName()+"%");
+                Predicate createBy = criteriaBuilder.like(root.get("userName").as(String.class), "%"+attendance.getUserName()+"%");
                 predicates.add(createBy);
             }
             if (StringUtils.isNotNull(attendance.getParams())){
@@ -99,6 +99,7 @@ public class SysAttendanceServiceImpl implements ISysAttendanceService {
         SysAttendance sysAttendance = findUserCurrentDayAttendanceRecord(userName, time);
 
         int onLine = oaSystemConfig.getOnLine();
+        //现在打卡时间
         int hour = now.getHour();
         //如果该用户不存在当天改类型考勤记录，则新增一条记录
         if (StringUtils.isNull(sysAttendance)){
@@ -106,7 +107,7 @@ public class SysAttendanceServiceImpl implements ISysAttendanceService {
             attendance.setUserName(userName);
             attendance.setAttendanceType(1);//打卡
             //考勤状态（1正常  2迟到  3早退 4请假 5迟到并早退  0旷工）
-            attendance.setStatus(onLine >= hour ? 2 : 1);//如果当前时间大于规定上班时间，则算迟到
+            attendance.setStatus(onLine <= hour ? 2 : 1);//如果当前时间大于规定上班时间，则算迟到
             attendance.setOnLine(new Date());
             attendance.setCreateTime(new Date());
             sysAttendanceRepository.save(attendance);
@@ -114,6 +115,7 @@ public class SysAttendanceServiceImpl implements ISysAttendanceService {
         }
         int offLine = oaSystemConfig.getOffLine();
         if (hour < offLine){
+            //早退
             if (sysAttendance.getStatus() == 2 || sysAttendance.getStatus() == 5){
                 //迟到又早退
                 sysAttendance.setStatus(5);
@@ -121,8 +123,6 @@ public class SysAttendanceServiceImpl implements ISysAttendanceService {
                 //仅早退
                 sysAttendance.setStatus(3);
             }
-        }else {
-            sysAttendance.setStatus(2);
         }
         //如果该用户存在当天改类型考勤记录，则更新改记录下班打卡时间
         sysAttendance.setOffLine(new Date());
@@ -139,6 +139,33 @@ public class SysAttendanceServiceImpl implements ISysAttendanceService {
             sysAttendance.setDuration(hour2+"小时"+min+"分钟");
         }
         sysAttendanceRepository.save(sysAttendance);
+    }
+
+
+    @Override
+    public void leave(SysAttendance attendance) throws ParseException {
+        String beginTime = Convert.toStr(attendance.getParams().get(Constants.BEGIN_TIME), "");
+        String endTime = Convert.toStr(attendance.getParams().get(Constants.END_TIME), "");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date beginDate = simpleDateFormat.parse(beginTime);
+        Date endDate = simpleDateFormat.parse(endTime);
+        String userName = attendance.getUserName();
+        while (!beginDate.after(endDate)){
+            attendance.setCreateTime(beginDate);
+            attendance.setAttendanceType(2);
+            attendance.setStatus(4);
+            sysAttendanceRepository.save(attendance);
+            attendance = new SysAttendance();
+            attendance.setUserName(userName);
+            beginDate = addDays(beginDate,1);
+        }
+    }
+
+    public Date addDays(Date date, int days) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.DAY_OF_MONTH, days);
+        return cal.getTime();
     }
 
     @Override
@@ -207,4 +234,5 @@ public class SysAttendanceServiceImpl implements ISysAttendanceService {
         });
         return StringUtils.isNotEmpty(attendanceList)? attendanceList.get(0) : null;
     }
+
 }

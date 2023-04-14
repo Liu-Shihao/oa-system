@@ -9,6 +9,14 @@ export function listAttendance(query) {
   })
 }
 
+export function leave(query) {
+  return request({
+    url: '/system/attendance/leave',
+    method: 'get',
+    params: query
+  })
+}
+
 export function findUserCurrentMonthAttendanceStatus(query) {
   return request({
     url: '/system/attendance/findUserCurrentMonthAttendanceStatus',

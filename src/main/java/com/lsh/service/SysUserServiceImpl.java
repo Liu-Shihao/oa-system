@@ -190,17 +190,17 @@ public class SysUserServiceImpl implements ISysUserService {
      *
      * @param userId 用户id
      */
-    @Override
-    public void checkUserDataScope(Long userId) {
-        if (!SysUser.isAdmin(SecurityUtils.getUserId())) {
-            SysUser user = new SysUser();
-            user.setUserId(userId);
-            List<SysUser> users = SpringUtils.getAopProxy(this).selectUserList(user);
-            if (StringUtils.isEmpty(users)) {
-                throw new ServiceException("没有权限访问用户数据！");
-            }
-        }
-    }
+//    @Override
+//    public void checkUserDataScope(Long userId) {
+//        if (!SysUser.isAdmin(SecurityUtils.getUserId())) {
+//            SysUser user = new SysUser();
+//            user.setUserId(userId);
+//            List<SysUser> users = SpringUtils.getAopProxy(this).selectUserList(user);
+//            if (StringUtils.isEmpty(users)) {
+//                throw new ServiceException("没有权限访问用户数据！");
+//            }
+//        }
+//    }
 
     /**
      * 新增保存用户信息
@@ -398,7 +398,6 @@ public class SysUserServiceImpl implements ISysUserService {
     public int deleteUserByIds(Long[] userIds) {
         for (Long userId : userIds) {
             checkUserAllowed(new SysUser(userId));
-            checkUserDataScope(userId);
         }
         // 删除用户与角色关联
         userRoleMapper.deleteUserRole(userIds);

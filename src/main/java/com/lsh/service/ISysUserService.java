@@ -102,7 +102,7 @@ public interface ISysUserService {
      *
      * @param userId 用户id
      */
-    public void checkUserDataScope(Long userId);
+//    public void checkUserDataScope(Long userId);
 
     /**
      * 新增用户信息
