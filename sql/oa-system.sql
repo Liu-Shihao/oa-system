@@ -11,7 +11,7 @@
  Target Server Version : 80029
  File Encoding         : 65001
 
- Date: 15/04/2023 03:01:26
+ Date: 15/04/2023 03:06:38
 */
 
 SET NAMES utf8mb4;
@@ -585,34 +585,6 @@ INSERT INTO `sys_steps` (`steps_id`, `processes_id`, `steps_title`, `steps_descr
 INSERT INTO `sys_steps` (`steps_id`, `processes_id`, `steps_title`, `steps_description`, `steps_status`, `approver_user`, `create_time`, `update_time`) VALUES (5, 2, '批准', '批准', 2, '王局', '2023-04-15 02:35:00', NULL);
 INSERT INTO `sys_steps` (`steps_id`, `processes_id`, `steps_title`, `steps_description`, `steps_status`, `approver_user`, `create_time`, `update_time`) VALUES (6, 2, '同意', '同意', 2, '张董', '2023-04-15 02:35:20', NULL);
 INSERT INTO `sys_steps` (`steps_id`, `processes_id`, `steps_title`, `steps_description`, `steps_status`, `approver_user`, `create_time`, `update_time`) VALUES (7, 1, '呃呃呃', '呃呃呃', 1, '呃呃', '2023-04-15 02:45:14', NULL);
-COMMIT;
-
--- ----------------------------
--- Table structure for sys_timeline
--- ----------------------------
-DROP TABLE IF EXISTS `sys_timeline`;
-CREATE TABLE `sys_timeline` (
-  `timeline_id` bigint NOT NULL AUTO_INCREMENT COMMENT '流程id',
-  `parent_id` varchar(20) COLLATE utf8mb4_general_ci DEFAULT '0' COMMENT '父流程id',
-  `timeline_name` varchar(50) COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '流程名称',
-  `timeline_content` varchar(200) COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '流程列表',
-  `timeline_comment` varchar(200) COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '评论',
-  `leader` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '负责人',
-  `creator` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
-  `status` char(1) COLLATE utf8mb4_general_ci DEFAULT '0' COMMENT '流程状态（0未开始 1进行中 2已完成）',
-  `del_flag` char(1) COLLATE utf8mb4_general_ci DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
-  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(64) COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '更新者',
-  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-  PRIMARY KEY (`timeline_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=102 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='流程信息表';
-
--- ----------------------------
--- Records of sys_timeline
--- ----------------------------
-BEGIN;
-INSERT INTO `sys_timeline` (`timeline_id`, `parent_id`, `timeline_name`, `timeline_content`, `timeline_comment`, `leader`, `creator`, `status`, `del_flag`, `create_time`, `update_by`, `update_time`) VALUES (100, NULL, 'sss', 'sss', NULL, 'sss', 'sss', '0', NULL, '2023-03-28 00:19:53', NULL, NULL);
-INSERT INTO `sys_timeline` (`timeline_id`, `parent_id`, `timeline_name`, `timeline_content`, `timeline_comment`, `leader`, `creator`, `status`, `del_flag`, `create_time`, `update_by`, `update_time`) VALUES (101, NULL, '嘎嘎嘎', '收到罚单', NULL, '速度是多少', '是的是的', '0', NULL, '2023-03-28 00:25:36', NULL, NULL);
 COMMIT;
 
 -- ----------------------------
