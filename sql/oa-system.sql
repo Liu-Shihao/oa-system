@@ -11,11 +11,40 @@
  Target Server Version : 80029
  File Encoding         : 65001
 
- Date: 09/04/2023 17:52:36
+ Date: 15/04/2023 03:01:26
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for sys_asset
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_asset`;
+CREATE TABLE `sys_asset` (
+  `asset_id` bigint NOT NULL AUTO_INCREMENT,
+  `asset_name` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '资产名称',
+  `asset_value` varchar(11) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '资产价值',
+  `num` int DEFAULT NULL COMMENT '资产数量',
+  `total_value` varchar(11) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '资产总价值（价值x数量）',
+  `del_flag` char(1) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '删除标志（0代表存在 2代表删除）',
+  `create_by` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(20) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '更新者',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`asset_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- ----------------------------
+-- Records of sys_asset
+-- ----------------------------
+BEGIN;
+INSERT INTO `sys_asset` (`asset_id`, `asset_name`, `asset_value`, `num`, `total_value`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`) VALUES (1, 'iPhone 14 pro Max', '3999.99', 4, '15999.96', '0', 'admin', '2023-04-12 17:08:28', 'admin', '2023-04-12 17:08:18');
+INSERT INTO `sys_asset` (`asset_id`, `asset_name`, `asset_value`, `num`, `total_value`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`) VALUES (2, 'MacBook Pro', '2999.99', 1, '2999.99', '0', 'admin', '2023-04-12 16:51:10', 'admin', '2023-04-12 17:08:41');
+INSERT INTO `sys_asset` (`asset_id`, `asset_name`, `asset_value`, `num`, `total_value`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`) VALUES (3, 'test22', '0.94', 9, '8.46', '2', 'admin', '2023-04-12 17:35:50', 'admin', '2023-04-12 17:39:10');
+INSERT INTO `sys_asset` (`asset_id`, `asset_name`, `asset_value`, `num`, `total_value`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`) VALUES (4, 'test1', '1', 3, '3.00', '0', 'admin', '2023-04-12 17:39:29', NULL, NULL);
+INSERT INTO `sys_asset` (`asset_id`, `asset_name`, `asset_value`, `num`, `total_value`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`) VALUES (5, 'test2', '2', 3, '6.00', '0', 'admin', '2023-04-12 17:39:39', NULL, NULL);
+COMMIT;
 
 -- ----------------------------
 -- Table structure for sys_attendance
@@ -32,7 +61,7 @@ CREATE TABLE `sys_attendance` (
   `create_time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`attendance_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=122 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='考勤信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=148 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='考勤信息表';
 
 -- ----------------------------
 -- Records of sys_attendance
@@ -64,6 +93,27 @@ INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_
 INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (119, '1', 2, '2023-03-28 00:56:19', '2023-03-28 23:40:25', '22小时44分钟', 'admin', '2023-03-28 00:56:19', '2023-03-28 23:40:25');
 INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (120, '1', 2, '2023-03-28 23:44:36', '2023-03-28 23:44:51', '0小时0分钟', 'zs', '2023-03-28 23:44:36', '2023-03-28 23:44:51');
 INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (121, '1', 2, '2023-04-01 18:46:09', '2023-04-01 18:46:28', '0小时0分钟', 'admin', '2023-04-01 18:46:09', '2023-04-01 18:46:28');
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (122, '1', 1, '2023-04-10 18:00:13', NULL, NULL, 'admin', '2023-04-10 18:00:13', NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (123, '1', 2, '2023-04-14 19:47:32', '2023-04-14 23:28:23', '3小时40分钟', 'admin', '2023-04-14 19:47:32', '2023-04-14 23:28:23');
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (126, '1', 3, '2023-04-15 01:02:19', '2023-04-15 02:49:19', '1小时47分钟', 'admin', '2023-04-15 01:02:19', '2023-04-15 02:49:19');
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (130, '2', 4, NULL, NULL, NULL, 'admin', '2023-04-17 00:00:00', NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (131, '2', 4, NULL, NULL, NULL, 'admin', '2023-04-18 00:00:00', NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (132, '2', 4, NULL, NULL, NULL, 'admin', '2023-04-19 00:00:00', NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (133, '1', 1, '2023-04-15 02:10:22', NULL, NULL, 'zs', '2023-04-15 02:10:22', NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (134, '2', 4, NULL, NULL, NULL, 'zs', '2023-04-10 00:00:00', NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (135, '2', 4, NULL, NULL, NULL, 'zs', '2023-04-11 00:00:00', NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (136, '2', 4, NULL, NULL, NULL, 'zs', '2023-04-12 00:00:00', NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (137, '2', 4, NULL, NULL, NULL, 'zs', '2023-04-13 00:00:00', NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (138, '2', 4, NULL, NULL, NULL, 'zs', '2023-04-14 00:00:00', NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (139, '2', 4, NULL, NULL, NULL, 'zs', '2023-04-06 00:00:00', NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (140, '2', 4, NULL, NULL, NULL, 'zs', '2023-04-05 00:00:00', NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (141, '2', 4, NULL, NULL, NULL, 'admin', '2023-04-03 00:00:00', NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (142, '2', 4, NULL, NULL, NULL, 'admin', '2023-04-04 00:00:00', NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (143, '2', 4, NULL, NULL, NULL, 'admin', '2023-04-06 00:00:00', NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (144, '2', 4, NULL, NULL, NULL, 'admin', '2023-04-07 00:00:00', NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (145, '2', 4, NULL, NULL, NULL, 'admin', '2023-04-11 00:00:00', NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (146, '2', 4, NULL, NULL, NULL, 'admin', '2023-04-12 00:00:00', NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (147, '2', 4, NULL, NULL, NULL, 'admin', '2023-04-13 00:00:00', NULL);
 COMMIT;
 
 -- ----------------------------
@@ -270,46 +320,56 @@ CREATE TABLE `sys_menu` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '备注',
   PRIMARY KEY (`menu_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2004 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='菜单权限表';
+) ENGINE=InnoDB AUTO_INCREMENT=2016 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='菜单权限表';
 
 -- ----------------------------
 -- Records of sys_menu
 -- ----------------------------
 BEGIN;
 INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (2, '考勤管理', 0, 2, 'system/calendar', 'system/calendar/index', NULL, 1, 0, 'C', '0', '0', 'system:calendar:list', 'date', 'admin', '2023-03-23 21:22:45', 'zs', '2023-03-28 23:49:39', '考勤管理菜单');
-INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (3, '流程管理', 0, 3, 'system/timeline', 'system/timeline/index', NULL, 1, 0, 'C', '0', '0', 'system:timeline:list', 'time-range', 'admin', '2023-03-23 22:04:32', '', NULL, '流程管理菜单');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (3, '流程管理', 0, 3, 'system/processes', 'system/processes/index', NULL, 1, 0, 'C', '0', '0', 'system:processes:list', 'time-range', 'admin', '2023-03-23 22:04:32', '', NULL, '流程管理菜单');
 INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (4, '通知公告', 0, 4, 'system/notice', 'system/notice/index', '', 1, 0, 'C', '0', '0', 'system:notice:list', 'message', 'admin', '2023-03-22 19:13:00', '', NULL, '通知公告菜单');
-INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (5, '资产管理', 0, 5, 'system/money', 'system/money/index', NULL, 1, 0, 'C', '0', '1', 'system:money:list', 'money', 'admin', '2023-03-23 21:43:03', 'admin', '2023-03-25 14:30:20', '资产管理菜单');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (5, '资产管理', 0, 5, 'system/asset', 'system/asset/index', NULL, 1, 0, 'C', '0', '0', 'system:asset:list', 'money', 'admin', '2023-03-23 21:43:03', 'admin', '2023-04-12 16:19:18', '资产管理菜单');
 INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (6, '用户管理', 0, 6, 'system/user', 'system/user/index', '', 1, 0, 'C', '0', '0', 'system:user:list', 'user', 'admin', '2023-03-22 19:13:00', '', NULL, '用户管理菜单');
 INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (7, '角色管理', 0, 6, 'system/role', 'system/role/index', '', 1, 0, 'C', '0', '0', 'system:role:list', 'peoples', 'admin', '2023-03-22 19:13:00', 'admin', '2023-03-28 20:22:00', '角色管理菜单');
 INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (8, '岗位管理', 0, 7, 'system/post', 'system/post/index', '', 1, 0, 'C', '0', '0', 'system:post:list', 'post', 'admin', '2023-03-22 19:13:00', '', NULL, '岗位管理菜单');
 INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (9, '部门管理', 0, 8, 'system/dept', 'system/dept/index', '', 1, 0, 'C', '0', '0', 'system:dept:list', 'tree', 'admin', '2023-03-22 19:13:00', '', NULL, '部门管理菜单');
 INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (10, '菜单管理', 0, 9, 'system/menu', 'system/menu/index', '', 1, 0, 'C', '0', '0', 'system:menu:list', 'tree-table', 'admin', '2023-03-22 19:13:00', '', NULL, '菜单管理菜单');
-INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1000, '用户查询', 100, 1, '', '', '', 1, 0, 'F', '0', '0', 'system:user:query', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
-INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1001, '用户新增', 100, 2, '', '', '', 1, 0, 'F', '0', '0', 'system:user:add', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
-INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1002, '用户修改', 100, 3, '', '', '', 1, 0, 'F', '0', '0', 'system:user:edit', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
-INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1003, '用户删除', 100, 4, '', '', '', 1, 0, 'F', '0', '0', 'system:user:remove', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
-INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1006, '重置密码', 100, 7, '', '', '', 1, 0, 'F', '0', '0', 'system:user:resetPwd', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
-INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1007, '角色查询', 101, 1, '', '', '', 1, 0, 'F', '0', '0', 'system:role:query', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
-INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1008, '角色新增', 101, 2, '', '', '', 1, 0, 'F', '0', '0', 'system:role:add', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
-INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1009, '角色修改', 101, 3, '', '', '', 1, 0, 'F', '0', '0', 'system:role:edit', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
-INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1010, '角色删除', 101, 4, '', '', '', 1, 0, 'F', '0', '0', 'system:role:remove', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
-INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1012, '菜单查询', 102, 1, '', '', '', 1, 0, 'F', '0', '0', 'system:menu:query', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
-INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1013, '菜单新增', 102, 2, '', '', '', 1, 0, 'F', '0', '0', 'system:menu:add', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
-INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1014, '菜单修改', 102, 3, '', '', '', 1, 0, 'F', '0', '0', 'system:menu:edit', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
-INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1015, '菜单删除', 102, 4, '', '', '', 1, 0, 'F', '0', '0', 'system:menu:remove', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
-INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1016, '部门查询', 103, 1, '', '', '', 1, 0, 'F', '0', '0', 'system:dept:query', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
-INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1017, '部门新增', 103, 2, '', '', '', 1, 0, 'F', '0', '0', 'system:dept:add', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
-INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1018, '部门修改', 103, 3, '', '', '', 1, 0, 'F', '0', '0', 'system:dept:edit', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
-INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1019, '部门删除', 103, 4, '', '', '', 1, 0, 'F', '0', '0', 'system:dept:remove', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
-INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1020, '岗位查询', 104, 1, '', '', '', 1, 0, 'F', '0', '0', 'system:post:query', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
-INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1021, '岗位新增', 104, 2, '', '', '', 1, 0, 'F', '0', '0', 'system:post:add', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
-INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1022, '岗位修改', 104, 3, '', '', '', 1, 0, 'F', '0', '0', 'system:post:edit', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
-INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1023, '岗位删除', 104, 4, '', '', '', 1, 0, 'F', '0', '0', 'system:post:remove', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
-INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1035, '公告查询', 107, 1, '#', '', '', 1, 0, 'F', '0', '0', 'system:notice:query', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
-INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1036, '公告新增', 107, 2, '#', '', '', 1, 0, 'F', '0', '0', 'system:notice:add', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
-INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1037, '公告修改', 107, 3, '#', '', '', 1, 0, 'F', '0', '0', 'system:notice:edit', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
-INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1038, '公告删除', 107, 4, '#', '', '', 1, 0, 'F', '0', '0', 'system:notice:remove', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1000, '用户查询', 6, 1, '', '', '', 1, 0, 'F', '0', '0', 'system:user:query', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1001, '用户新增', 6, 2, '', '', '', 1, 0, 'F', '0', '0', 'system:user:add', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1002, '用户修改', 6, 3, '', '', '', 1, 0, 'F', '0', '0', 'system:user:edit', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1003, '用户删除', 6, 4, '', '', '', 1, 0, 'F', '0', '0', 'system:user:remove', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1006, '重置密码', 6, 7, '', '', '', 1, 0, 'F', '0', '0', 'system:user:resetPwd', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1007, '角色查询', 7, 1, '', '', '', 1, 0, 'F', '0', '0', 'system:role:query', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1008, '角色新增', 7, 2, '', '', '', 1, 0, 'F', '0', '0', 'system:role:add', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1009, '角色修改', 7, 3, '', '', '', 1, 0, 'F', '0', '0', 'system:role:edit', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1010, '角色删除', 7, 4, '', '', '', 1, 0, 'F', '0', '0', 'system:role:remove', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1012, '菜单查询', 10, 1, '', '', '', 1, 0, 'F', '0', '0', 'system:menu:query', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1013, '菜单新增', 10, 2, '', '', '', 1, 0, 'F', '0', '0', 'system:menu:add', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1014, '菜单修改', 10, 3, '', '', '', 1, 0, 'F', '0', '0', 'system:menu:edit', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1015, '菜单删除', 10, 4, '', '', '', 1, 0, 'F', '0', '0', 'system:menu:remove', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1016, '部门查询', 9, 1, '', '', '', 1, 0, 'F', '0', '0', 'system:dept:query', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1017, '部门新增', 9, 2, '', '', '', 1, 0, 'F', '0', '0', 'system:dept:add', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1018, '部门修改', 9, 3, '', '', '', 1, 0, 'F', '0', '0', 'system:dept:edit', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1019, '部门删除', 9, 4, '', '', '', 1, 0, 'F', '0', '0', 'system:dept:remove', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1020, '岗位查询', 8, 1, '', '', '', 1, 0, 'F', '0', '0', 'system:post:query', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1021, '岗位新增', 8, 2, '', '', '', 1, 0, 'F', '0', '0', 'system:post:add', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1022, '岗位修改', 8, 3, '', '', '', 1, 0, 'F', '0', '0', 'system:post:edit', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1023, '岗位删除', 8, 4, '', '', '', 1, 0, 'F', '0', '0', 'system:post:remove', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1035, '公告查询', 4, 1, '#', '', '', 1, 0, 'F', '0', '0', 'system:notice:query', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1036, '公告新增', 4, 2, '#', '', '', 1, 0, 'F', '0', '0', 'system:notice:add', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1037, '公告修改', 4, 3, '#', '', '', 1, 0, 'F', '0', '0', 'system:notice:edit', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1038, '公告删除', 4, 4, '#', '', '', 1, 0, 'F', '0', '0', 'system:notice:remove', '#', 'admin', '2023-03-22 19:13:00', '', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (2004, '资产新增', 5, 1, '', NULL, NULL, 1, 0, 'F', '0', '0', 'system:asset:add', '#', 'admin', '2023-04-14 23:55:29', '', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (2005, '资产修改', 5, 2, '', NULL, NULL, 1, 0, 'F', '0', '0', 'system:asset:edit', '#', 'admin', '2023-04-14 23:55:29', '', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (2007, '资产删除', 5, 4, '', NULL, NULL, 1, 0, 'F', '0', '0', 'system:asset:remove', '#', 'admin', '2023-04-14 23:55:29', '', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (2009, '流程新增', 3, 2, '', NULL, NULL, 1, 0, 'F', '0', '0', 'system:processes:add', '#', 'admin', '2023-04-14 23:55:29', '', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (2010, '流程修改', 3, 3, '', NULL, NULL, 1, 0, 'F', '0', '0', 'system:processes:edit', '#', 'admin', '2023-04-14 23:55:29', '', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (2011, '流程删除', 3, 4, '', NULL, NULL, 1, 0, 'F', '0', '0', 'system:processes:remove', '#', 'admin', '2023-04-14 23:55:29', '', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (2012, '步骤新增', 3, 5, '', NULL, NULL, 1, 0, 'F', '0', '0', 'system:steps:add', '#', 'admin', '2023-04-14 23:55:29', '', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (2013, '步骤修改', 3, 6, '', NULL, NULL, 1, 0, 'F', '0', '0', 'system:steps:edit', '#', 'admin', '2023-04-14 23:55:29', '', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (2014, '流程查询', 3, 1, '', NULL, NULL, 1, 0, 'F', '0', '0', 'system:processes:query', '#', 'admin', '2023-04-15 00:21:19', '', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (2015, '资产查询', 5, 1, '', NULL, NULL, 1, 0, 'F', '0', '0', 'system:asset:query', '#', 'admin', '2023-04-15 00:26:23', '', NULL, '');
 COMMIT;
 
 -- ----------------------------
@@ -368,6 +428,31 @@ INSERT INTO `sys_post` (`post_id`, `post_code`, `post_name`, `post_sort`, `statu
 COMMIT;
 
 -- ----------------------------
+-- Table structure for sys_processes
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_processes`;
+CREATE TABLE `sys_processes` (
+  `processes_id` bigint NOT NULL AUTO_INCREMENT,
+  `processes_title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '流程名称',
+  `processes_description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci COMMENT '流程描述',
+  `processes_status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '流程状态',
+  `del_flag` char(1) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `create_by` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '流程创建人username',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间\n',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间\n',
+  PRIMARY KEY (`processes_id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- ----------------------------
+-- Records of sys_processes
+-- ----------------------------
+BEGIN;
+INSERT INTO `sys_processes` (`processes_id`, `processes_title`, `processes_description`, `processes_status`, `del_flag`, `create_by`, `create_time`, `update_time`) VALUES (1, '我要辞职', '辞职辞职辞职', '2', '0', 'admin', '2023-04-14 21:19:41', '2023-04-14 21:56:33');
+INSERT INTO `sys_processes` (`processes_id`, `processes_title`, `processes_description`, `processes_status`, `del_flag`, `create_by`, `create_time`, `update_time`) VALUES (2, '我要请假', '请假请假请假', '0', '0', 'admin', '2023-04-14 21:34:43', '2023-04-15 00:44:47');
+INSERT INTO `sys_processes` (`processes_id`, `processes_title`, `processes_description`, `processes_status`, `del_flag`, `create_by`, `create_time`, `update_time`) VALUES (3, 'test', 'del', '1', '2', 'admin', '2023-04-14 23:36:18', '2023-04-14 23:42:15');
+COMMIT;
+
+-- ----------------------------
 -- Table structure for sys_role
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role`;
@@ -394,9 +479,9 @@ CREATE TABLE `sys_role` (
 -- ----------------------------
 BEGIN;
 INSERT INTO `sys_role` (`role_id`, `role_name`, `role_key`, `role_sort`, `data_scope`, `menu_check_strictly`, `dept_check_strictly`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1, '超级管理员', 'admin', 1, '1', 1, 1, '0', '0', 'admin', '2023-03-22 19:13:00', '', NULL, '超级管理员');
-INSERT INTO `sys_role` (`role_id`, `role_name`, `role_key`, `role_sort`, `data_scope`, `menu_check_strictly`, `dept_check_strictly`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (2, '普通角色', 'common', 2, '2', 1, 1, '0', '0', 'admin', '2023-03-22 19:13:00', 'admin', '2023-03-22 23:31:05', '普通角色');
+INSERT INTO `sys_role` (`role_id`, `role_name`, `role_key`, `role_sort`, `data_scope`, `menu_check_strictly`, `dept_check_strictly`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (2, '普通角色', 'common', 2, '2', 1, 1, '0', '0', 'admin', '2023-03-22 19:13:00', 'admin', '2023-04-15 00:21:38', '普通角色');
 INSERT INTO `sys_role` (`role_id`, `role_name`, `role_key`, `role_sort`, `data_scope`, `menu_check_strictly`, `dept_check_strictly`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (100, 'test2', 'test2', 3, '1', 1, 1, '0', '2', 'admin', '2023-03-22 23:02:17', 'admin', '2023-03-22 23:02:24', NULL);
-INSERT INTO `sys_role` (`role_id`, `role_name`, `role_key`, `role_sort`, `data_scope`, `menu_check_strictly`, `dept_check_strictly`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (101, '经理', 'manager', 3, '1', 1, 1, '0', '0', 'admin', '2023-03-28 23:44:03', '', NULL, NULL);
+INSERT INTO `sys_role` (`role_id`, `role_name`, `role_key`, `role_sort`, `data_scope`, `menu_check_strictly`, `dept_check_strictly`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (101, '经理', 'manager', 3, '1', 1, 1, '0', '0', 'admin', '2023-03-28 23:44:03', 'admin', '2023-04-15 00:39:04', NULL);
 COMMIT;
 
 -- ----------------------------
@@ -433,37 +518,15 @@ CREATE TABLE `sys_role_menu` (
 -- ----------------------------
 BEGIN;
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (2, 2);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (2, 100);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (2, 101);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (2, 102);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (2, 103);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (2, 104);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (2, 107);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (2, 1000);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (2, 1001);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (2, 1002);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (2, 1003);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (2, 1006);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (2, 1007);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (2, 1008);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (2, 1009);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (2, 1010);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (2, 1012);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (2, 1013);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (2, 1014);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (2, 1015);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (2, 1016);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (2, 1017);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (2, 1018);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (2, 1019);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (2, 1020);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (2, 1021);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (2, 1022);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (2, 1023);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (2, 3);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (2, 4);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (2, 1035);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (2, 1036);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (2, 1037);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (2, 1038);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (2, 2009);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (2, 2010);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (2, 2011);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (2, 2012);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (2, 2013);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (2, 2014);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 3);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 4);
@@ -479,25 +542,49 @@ INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 1002);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 1003);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 1006);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 1007);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 1008);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 1009);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 1010);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 1012);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 1013);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 1014);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 1015);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 1016);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 1017);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 1018);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 1019);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 1020);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 1021);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 1022);
-INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 1023);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 1035);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 1036);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 1037);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 1038);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2009);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2010);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2011);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2012);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2013);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2014);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2015);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for sys_steps
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_steps`;
+CREATE TABLE `sys_steps` (
+  `steps_id` bigint NOT NULL AUTO_INCREMENT,
+  `processes_id` bigint DEFAULT NULL COMMENT '对应的sys_process表ID',
+  `steps_title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '步骤名称',
+  `steps_description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci COMMENT '步骤描述\n',
+  `steps_status` int DEFAULT NULL COMMENT '步骤状态',
+  `approver_user` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '负责人',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`steps_id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- ----------------------------
+-- Records of sys_steps
+-- ----------------------------
+BEGIN;
+INSERT INTO `sys_steps` (`steps_id`, `processes_id`, `steps_title`, `steps_description`, `steps_status`, `approver_user`, `create_time`, `update_time`) VALUES (1, 2, '组长', '请组长批准', 0, '张组长', '2023-04-14 22:27:13', NULL);
+INSERT INTO `sys_steps` (`steps_id`, `processes_id`, `steps_title`, `steps_description`, `steps_status`, `approver_user`, `create_time`, `update_time`) VALUES (2, 2, '经理', '请经理批准', 2, '李总', '2023-04-14 23:22:10', NULL);
+INSERT INTO `sys_steps` (`steps_id`, `processes_id`, `steps_title`, `steps_description`, `steps_status`, `approver_user`, `create_time`, `update_time`) VALUES (3, 1, '张三辞职申请', '请张经理批准', 1, '张经理', '2023-04-14 23:23:17', NULL);
+INSERT INTO `sys_steps` (`steps_id`, `processes_id`, `steps_title`, `steps_description`, `steps_status`, `approver_user`, `create_time`, `update_time`) VALUES (4, 1, '张三辞职报告', '张三于本周五正式离职，请李副总批准', 2, '李副总', '2023-04-14 23:24:22', NULL);
+INSERT INTO `sys_steps` (`steps_id`, `processes_id`, `steps_title`, `steps_description`, `steps_status`, `approver_user`, `create_time`, `update_time`) VALUES (5, 2, '批准', '批准', 2, '王局', '2023-04-15 02:35:00', NULL);
+INSERT INTO `sys_steps` (`steps_id`, `processes_id`, `steps_title`, `steps_description`, `steps_status`, `approver_user`, `create_time`, `update_time`) VALUES (6, 2, '同意', '同意', 2, '张董', '2023-04-15 02:35:20', NULL);
+INSERT INTO `sys_steps` (`steps_id`, `processes_id`, `steps_title`, `steps_description`, `steps_status`, `approver_user`, `create_time`, `update_time`) VALUES (7, 1, '呃呃呃', '呃呃呃', 1, '呃呃', '2023-04-15 02:45:14', NULL);
 COMMIT;
 
 -- ----------------------------
@@ -553,19 +640,20 @@ CREATE TABLE `sys_user` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=105 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='用户信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=106 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='用户信息表';
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_user` (`user_id`, `dept_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1, 103, 'admin', 'admin', '00', '123123@qq.com', '15012312312', '0', '/profile/avatar/2023/03/22/blob_20230322224838A001.png', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2023-04-01 20:44:02', 'admin', '2023-03-22 19:13:00', '', '2023-04-01 20:44:01', '管理员');
+INSERT INTO `sys_user` (`user_id`, `dept_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1, 103, 'admin', 'admin', '00', '123123@qq.com', '15012312312', '0', '/profile/avatar/2023/03/22/blob_20230322224838A001.png', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2023-04-15 02:57:25', 'admin', '2023-03-22 19:13:00', '', '2023-04-15 02:57:25', '管理员');
 INSERT INTO `sys_user` (`user_id`, `dept_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (2, 100, 'gaoqiqiang', '高启强', '00', '123121673@qq.com', '18012312312', '0', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2023-03-22 19:13:00', 'admin', '2023-03-22 19:13:00', 'admin', '2023-03-22 22:52:35', 'CEO');
 INSERT INTO `sys_user` (`user_id`, `dept_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (100, 102, 'gaoqishegn', '高启盛', '00', '12@qq.com', '15022323123', '0', '', '$2a$10$5e11ED796Vss7spfuYg54OScULlkOQSjunDRjtQulEqUwkrELAXRy', '0', '0', '', NULL, 'admin', '2023-03-22 22:51:22', 'admin', '2023-03-22 22:52:45', '...');
 INSERT INTO `sys_user` (`user_id`, `dept_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (101, 101, 'gaoqilan', '高启兰', '00', '12343@163.com', '15012341234', '1', '', '$2a$10$HD6cBAwMhnJuHvITmD5/Ze9h7hhY8B52eaZgvwL.QA9zTD20nNfpu', '0', '0', '', NULL, 'admin', '2023-03-22 22:53:46', '', NULL, '。。');
 INSERT INTO `sys_user` (`user_id`, `dept_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (102, 101, '11111', 'test22222', '00', '12312312@qq.com', '13012312343', '0', '', '$2a$10$y8shN6I8cdqc9OrTKByKCOdx1vrJbNtNllGd1FJMsPn4t2XA1OSTK', '1', '2', '', NULL, 'admin', '2023-03-22 22:54:41', 'admin', '2023-03-22 22:54:49', '1212312');
-INSERT INTO `sys_user` (`user_id`, `dept_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (103, 200, 'zhangsan', 'zhangsan', '00', '34132@qq.com', '15012414212', '0', '', '$2a$10$Dz7K5/jBFDE54nbotgY9IOydDFWkPHUns331IPKD3s2zqbI/cIVsW', '0', '0', '127.0.0.1', '2023-03-22 23:24:33', '', '2023-03-22 23:21:01', 'admin', '2023-03-22 23:24:32', 'eeee');
-INSERT INTO `sys_user` (`user_id`, `dept_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (104, 100, 'zs', 'zs', '00', '', '', '0', '', '$2a$10$ir8Hlwljq5OzkdlSkDI/iewsctvzEPQosVjxJLwjkm8aeilclAkfG', '0', '0', '127.0.0.1', '2023-03-28 23:46:36', '', '2023-03-28 23:41:52', 'admin', '2023-03-28 23:46:36', NULL);
+INSERT INTO `sys_user` (`user_id`, `dept_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (103, 200, 'zhangsan', '张三', '00', '34132@qq.com', '15012414212', '0', '', '$2a$10$Dz7K5/jBFDE54nbotgY9IOydDFWkPHUns331IPKD3s2zqbI/cIVsW', '0', '2', '127.0.0.1', '2023-03-22 23:24:33', '', '2023-03-22 23:21:01', 'zs', '2023-04-15 00:49:49', 'eeee');
+INSERT INTO `sys_user` (`user_id`, `dept_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (104, 100, 'zs', 'zs', '00', 'ssss@qq.com', '13312312311', '1', '/profile/avatar/2023/04/15/blob_20230415003647A001.png', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2023-04-15 02:10:17', '', '2023-03-28 23:41:52', 'admin', '2023-04-15 02:10:16', NULL);
+INSERT INTO `sys_user` (`user_id`, `dept_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (105, 201, '哈哈哈', 'sss', '00', 'qqsss@qq.com', '13312312312', '1', '', '$2a$10$.ZZPHOTYQAmY1Gg8KlPKfeSAgOs/2ZseLu/i5UztGK5eTolZawlOm', '1', '2', '', NULL, 'zs', '2023-04-15 00:50:40', 'zs', '2023-04-15 00:51:05', 'sss');
 COMMIT;
 
 -- ----------------------------
@@ -586,7 +674,6 @@ INSERT INTO `sys_user_post` (`user_id`, `post_id`) VALUES (1, 1);
 INSERT INTO `sys_user_post` (`user_id`, `post_id`) VALUES (2, 1);
 INSERT INTO `sys_user_post` (`user_id`, `post_id`) VALUES (100, 2);
 INSERT INTO `sys_user_post` (`user_id`, `post_id`) VALUES (101, 2);
-INSERT INTO `sys_user_post` (`user_id`, `post_id`) VALUES (103, 3);
 INSERT INTO `sys_user_post` (`user_id`, `post_id`) VALUES (104, 4);
 COMMIT;
 
@@ -608,7 +695,6 @@ INSERT INTO `sys_user_role` (`user_id`, `role_id`) VALUES (1, 1);
 INSERT INTO `sys_user_role` (`user_id`, `role_id`) VALUES (2, 2);
 INSERT INTO `sys_user_role` (`user_id`, `role_id`) VALUES (100, 2);
 INSERT INTO `sys_user_role` (`user_id`, `role_id`) VALUES (101, 2);
-INSERT INTO `sys_user_role` (`user_id`, `role_id`) VALUES (103, 2);
 INSERT INTO `sys_user_role` (`user_id`, `role_id`) VALUES (104, 101);
 COMMIT;
 
