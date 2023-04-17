@@ -33,7 +33,7 @@ public class SysProcesses {
     private String processesDescription;
 
     /**
-     * 流程状态
+     * 流程状态 同意0 驳回2 等待审批1
      */
     private String processesStatus;
 
@@ -41,6 +41,16 @@ public class SysProcesses {
      * 流程创建人username
      */
     private String createBy;
+
+    /**
+     * 审批人
+     */
+    private String approverUser;
+
+    /**
+     * 审批意见
+     */
+    private String approvalOpinion;
 
     private String delFlag;
 
@@ -56,6 +66,11 @@ public class SysProcesses {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updateTime;
 
+    /**
+     * 审批时间
+     */
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date approvalTime;
 
     /**
      * 请求参数

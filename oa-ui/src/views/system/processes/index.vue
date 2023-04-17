@@ -24,14 +24,14 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="创建人" prop="createBy">
+      <!-- <el-form-item label="创建人" prop="createBy">
         <el-input
           v-model="queryParams.createBy"
           placeholder="创建人"
           clearable
           @keyup.enter.native="handleQuery"
         />
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="流程状态" prop="processesStatus">
         <el-select
           v-model="queryParams.processesStatus"
@@ -122,9 +122,14 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="流程编号" align="center" prop="processesId" />
       <el-table-column label="流程名称" align="center" prop="processesTitle" />
-      <el-table-column label="流程描述" align="center" prop="processesDescription" />
+      <el-table-column
+        label="流程描述"
+        align="center"
+        prop="processesDescription"
+      />
 
       <el-table-column label="创建人" align="center" prop="createBy" />
+      <el-table-column label="审批人" align="center" prop="approverUser" />
       <el-table-column label="状态" align="center" prop="processesStatus">
         <template slot-scope="scope">
           <dict-tag
@@ -133,6 +138,19 @@
           />
         </template>
       </el-table-column>
+      <el-table-column label="审批意见" align="center" prop="approvalOpinion" />
+      <el-table-column
+        label="审批时间"
+        align="center"
+        prop="approvalTime"
+        width="180"
+      >
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.approvalTime) }}</span>
+        </template>
+      </el-table-column>
+
+
       <el-table-column
         label="创建时间"
         align="center"
@@ -149,22 +167,30 @@
         class-name="small-padding fixed-width"
       >
         <template slot-scope="scope">
-          <el-button
+          <!-- <el-button
             size="mini"
             type="text"
             icon="el-icon-chat-dot-square"
             @click="addStep(scope.row)"
             v-hasPermi="['system:steps:add']"
             >添加步骤</el-button
-          >
+          > -->
 
           <el-button
+            v-show="userName === scope.row.approverUser"
+            size="mini"
+            type="text"
+            icon="el-icon-chat-dot-square"
+            @click="approve(scope.row)"
+            >审批</el-button
+          >
+          <!-- <el-button
             size="mini"
             type="text"
             icon="el-icon-thumb"
             @click="handleLook(scope.row)"
             >详情</el-button
-          >
+          > -->
 
           <el-button
             size="mini"
@@ -197,7 +223,10 @@
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="100px">
         <el-form-item label="流程名称" prop="processesTitle">
-          <el-input v-model="form.processesTitle" placeholder="请输入流程名称" />
+          <el-input
+            v-model="form.processesTitle"
+            placeholder="请输入流程名称"
+          />
         </el-form-item>
         <el-form-item label="流程描述" prop="processesDescription">
           <el-input
@@ -205,11 +234,11 @@
             placeholder="请输入流程描述"
           />
         </el-form-item>
-        <el-form-item label="创建人" prop="createBy">
-          <el-input v-model="form.createBy" placeholder="请输入创建人" />
+        <el-form-item label="审批人" prop="approverUser">
+          <el-input v-model="form.approverUser" placeholder="请输入审批人" />
         </el-form-item>
-        
-        <el-form-item label="状态">
+
+        <!-- <el-form-item label="状态">
           <el-radio-group v-model="form.processesStatus">
             <el-radio
               v-for="dict in dict.type.sys_timeline_status"
@@ -218,9 +247,8 @@
               >{{ dict.label }}</el-radio
             >
           </el-radio-group>
-        </el-form-item>
+        </el-form-item> -->
       </el-form>
-
 
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -228,14 +256,26 @@
       </div>
     </el-dialog>
 
-
-    <el-dialog :title="title" :visible.sync="openAddStep" width="500px" append-to-body>
-      <el-form ref="stepForm" :model="stepForm" :rules="stepRules" label-width="100px">
+    <el-dialog
+      :title="title"
+      :visible.sync="openAddStep"
+      width="500px"
+      append-to-body
+    >
+      <el-form
+        ref="stepForm"
+        :model="stepForm"
+        :rules="stepRules"
+        label-width="100px"
+      >
         <el-form-item label="流程编号" prop="processesId">
           <el-input v-model="stepForm.processesId" :disabled="true"></el-input>
         </el-form-item>
         <el-form-item label="步骤名称" prop="stepsTitle">
-          <el-input v-model="stepForm.stepsTitle" placeholder="请输入步骤名称" />
+          <el-input
+            v-model="stepForm.stepsTitle"
+            placeholder="请输入步骤名称"
+          />
         </el-form-item>
         <el-form-item label="步骤描述" prop="stepsDescription">
           <el-input
@@ -245,9 +285,12 @@
           />
         </el-form-item>
         <el-form-item label="负责人" prop="approverUser">
-          <el-input v-model="stepForm.approverUser" placeholder="请输入审批人" />
+          <el-input
+            v-model="stepForm.approverUser"
+            placeholder="请输入审批人"
+          />
         </el-form-item>
-        
+
         <el-form-item label="状态">
           <el-radio-group v-model="stepForm.stepsStatus">
             <el-radio
@@ -264,23 +307,72 @@
         <el-button @click="cancelAddStep">取 消</el-button>
       </div>
     </el-dialog>
-    <br>
+    <br />
 
-    <div class="block">
-    <el-timeline>
-      <el-timeline-item v-for="(item, index) in stepData" :key="index" :timestamp="item.createTime" placement="top">
-        <el-card>
-          <h4>{{ item.stepsTitle }}</h4>
-          <h5>{{ item.stepsDescription }}</h5>
-          <p>{{ item.approverUser }} 提交于{{ parseTime(item.createTime) }} </p>
-        </el-card>
-      </el-timeline-item>
-    </el-timeline>
+    <el-dialog :visible.sync="approval"  title="审批">
+      <el-form ref="form" :model="form" :rules="rules">
+        <el-form-item label="流程名称" prop="processesTitle">
+          <el-input v-model="form.processesTitle" :disabled="true" />
+        </el-form-item>
+        <el-form-item label="流程描述" prop="processesDescription">
+          <el-input v-model="form.processesDescription" :disabled="true" />
+        </el-form-item>
+        <el-form-item label="创建人" prop="createBy">
+          <el-input v-model="form.createBy" :disabled="true" />
+        </el-form-item>
+        <el-form-item label="审批人" prop="approverUser">
+          <el-input v-model="form.approverUser" placeholder="请输入审批人" />
+        </el-form-item>
+        <el-form-item label="审批意见" prop="approvalOpinion">
+          <el-input
+            v-model="form.approvalOpinion"
+            placeholder="请输入审批意见"
+          />
+        </el-form-item>
+
+        <!-- <el-form-item label="状态">
+          <el-radio-group v-model="form.processesStatus">
+            <el-radio
+              v-for="dict in dict.type.sys_timeline_status"
+              :key="dict.value"
+              :label="dict.value"
+              >{{ dict.label }}</el-radio
+            >
+          </el-radio-group>
+        </el-form-item> -->
+
+        <el-form-item label="审批结果" prop="processesStatus">
+          <el-radio-group v-model="form.processesStatus">
+            <el-radio label="0">同意</el-radio>
+            <el-radio label="2">驳回</el-radio>
+          </el-radio-group>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="cancelApproval">取消</el-button>
+        <el-button type="primary" @click="submitApproval">确定</el-button>
+      </div>
+    </el-dialog>
+
+    <!-- <div class="block">
+      <el-timeline>
+        <el-timeline-item
+          v-for="(item, index) in stepData"
+          :key="index"
+          :timestamp="item.createTime"
+          placement="top"
+        >
+          <el-card>
+            <h4>{{ item.stepsTitle }}</h4>
+            <h5>{{ item.stepsDescription }}</h5>
+            <p>
+              {{ item.approverUser }} 提交于{{ parseTime(item.createTime) }}
+            </p>
+          </el-card>
+        </el-timeline-item>
+      </el-timeline>
+    </div> -->
   </div>
-
-
-
-</div>
 </template>
   
   <script>
@@ -322,6 +414,7 @@ export default {
       open: false,
       // 是否显示弹出层
       openAddStep: false,
+      approval: false,
       // 是否显示弹出层
       isShowSteps: false,
       // 查询参数
@@ -337,6 +430,7 @@ export default {
       // 表单参数
       form: {},
       stepForm: {},
+      approvalForm: {},
       // 表单校验
       rules: {
         processesTitle: [
@@ -363,6 +457,12 @@ export default {
       },
     };
   },
+  computed: {
+    userName() {
+      return this.$store.getters["name"];
+    },
+  },
+
   created() {
     this.getList();
   },
@@ -370,11 +470,13 @@ export default {
     /** 查询列表 */
     getList() {
       this.loading = true;
-      listProcesses(this.addDateRange(this.queryParams, this.dateRange)).then((response) => {
-        this.processesList = response.rows;
-        this.total = response.total;
-        this.loading = false;
-      });
+      listProcesses(this.addDateRange(this.queryParams, this.dateRange)).then(
+        (response) => {
+          this.processesList = response.rows;
+          this.total = response.total;
+          this.loading = false;
+        }
+      );
     },
     // 取消按钮
     cancel() {
@@ -413,8 +515,7 @@ export default {
     },
     /** 重置按钮操作 */
     resetQuery() {
-      this.dateRange=[],
-      this.resetForm("queryForm");
+      (this.dateRange = []), this.resetForm("queryForm");
       this.handleQuery();
     },
     // 多选框选中数据
@@ -431,12 +532,43 @@ export default {
     },
     addStep(row) {
       this.stepForm = {
-        processesId: row.processesId
+        processesId: row.processesId,
       };
       this.openAddStep = true;
       this.title = "添加流程步骤";
-   
     },
+    approve(row) {
+      this.form = {
+        processesId: row.processesId,
+        processesTitle: row.processesTitle,
+        processesDescription: row.processesDescription,
+        createBy: row.createBy,
+        approverUser: row.approverUser,
+        processesStatus: row.processesStatus,
+        approvalOpinion: row.approvalOpinion,
+        approvalTime: row.approvalTime,
+        delFlag: row.delFlag,
+        createTime: row.createTime,
+        updateTime: row.updateTime,
+      };
+      this.approval = true;
+    },
+    cancelApproval() {
+      this.form = {};
+      this.approval = false;
+    },
+    submitApproval() {
+      this.$refs["form"].validate((valid) => {
+        if (valid) {
+          editProcesses(this.form).then((response) => {
+            this.$modal.msgSuccess("审批成功");
+            this.approval = false;
+            this.getList();
+          });
+        }
+      });
+    },
+
     handleLook(row) {
       this.stepData = row.steps;
     },
@@ -448,14 +580,15 @@ export default {
         processesTitle: row.processesTitle,
         processesDescription: row.processesDescription,
         createBy: row.createBy,
-        processesStatus: row.processesStatus,
+        approverUser: row.approverUser,
+        approvalOpinion: row.approvalOpinion,
+        approvalTime: row.approvalTime,
         delFlag: row.delFlag,
         createTime: row.createTime,
-        updateTime: row.updateTime
+        updateTime: row.updateTime,
       };
       this.open = true;
       this.title = "编辑流程";
-   
     },
     /** 提交按钮 */
     submitForm: function () {

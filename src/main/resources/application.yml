@@ -59,9 +59,7 @@ spring:
       testWhileIdle: true
       testOnBorrow: false
       testOnReturn: false
-  jpa:
-    show-sql: true
-    open-in-view: true
+
 
 
 

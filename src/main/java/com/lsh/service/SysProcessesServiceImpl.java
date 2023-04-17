@@ -47,6 +47,7 @@ public class SysProcessesServiceImpl implements ISysProcessesService{
         Integer pageSize = Convert.toInt(ServletUtils.getParameter(Constants.PAGE_SIZE), 10);
 
         Pageable page = PageRequest.of(pageNo - 1, pageSize, Sort.by(Sort.Direction.DESC,"createTime"));
+        String username = processes.getCreateBy();
         Page<SysProcesses> sysProcessesPage = sysProcessesRepository.findAll((Specification<SysProcesses>) (root, query, criteriaBuilder) -> {
             ArrayList<Predicate> predicates = new ArrayList<>();
             if (StringUtils.isNotNull(processes.getProcessesTitle())) {
@@ -80,10 +81,8 @@ public class SysProcessesServiceImpl implements ISysProcessesService{
                 Predicate processesStatus = criteriaBuilder.equal(root.get("processesStatus"), processes.getProcessesStatus());
                 predicates.add(processesStatus);
             }
-            if (StringUtils.isNotNull(processes.getCreateBy())) {
-                Predicate createBy = criteriaBuilder.like(root.get("createBy"), "%" + processes.getCreateBy() + "%");
-                predicates.add(createBy);
-            }
+            Predicate user = criteriaBuilder.or( criteriaBuilder.equal(root.get("createBy"), username ),criteriaBuilder.equal(root.get("approverUser"), username));
+            predicates.add(user);
             Predicate delFlag = criteriaBuilder.equal(root.get("delFlag"), "0");
             predicates.add(delFlag);
             return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
