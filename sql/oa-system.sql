@@ -11,7 +11,7 @@
  Target Server Version : 80029
  File Encoding         : 65001
 
- Date: 18/04/2023 09:26:34
+ Date: 20/04/2023 00:58:55
 */
 
 SET NAMES utf8mb4;
@@ -52,7 +52,7 @@ COMMIT;
 DROP TABLE IF EXISTS `sys_attendance`;
 CREATE TABLE `sys_attendance` (
   `attendance_id` bigint NOT NULL AUTO_INCREMENT COMMENT '考勤id',
-  `attendance_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '考勤类型（1 打卡 2事假 3病假 ）',
+  `attendance_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '考勤类型（1 打卡 2请假）',
   `status` int DEFAULT NULL COMMENT '考勤状态（1正常  2迟到  3早退 4请假 5迟到并早退  0旷工）',
   `on_line` datetime DEFAULT NULL COMMENT '打卡上班时间',
   `off_line` datetime DEFAULT NULL COMMENT '打卡下班时间',
@@ -60,61 +60,80 @@ CREATE TABLE `sys_attendance` (
   `user_name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '用户ID',
   `create_time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `leave_type` int DEFAULT NULL COMMENT '请假类型，比如病假、事假、年假等',
+  `leave_reason` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci COMMENT '请假原因',
   PRIMARY KEY (`attendance_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=149 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='考勤信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=166 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='考勤信息表';
 
 -- ----------------------------
 -- Records of sys_attendance
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (1, '1', 1, '2023-03-01 08:54:48', '2023-03-25 19:54:50', '12小时', 'admin', '2023-03-01 02:55:05', NULL);
-INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (2, '1', 1, '2023-03-02 08:54:48', '2023-03-25 19:54:50', '12小时', 'admin', '2023-03-02 02:55:05', NULL);
-INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (3, '1', 2, '2023-03-03 09:54:48', '2023-03-25 19:54:50', '10小时', 'admin', '2023-03-03 02:55:05', NULL);
-INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (4, '1', 2, '2023-03-04 09:54:48', '2023-03-25 19:54:50', '10小时', 'admin', '2023-03-04 02:55:05', NULL);
-INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (6, '2', 4, NULL, NULL, NULL, 'admin', '2023-03-06 02:55:05', NULL);
-INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (7, '1', 1, '2023-03-07 02:54:48', '2023-03-25 02:54:50', '12小时', 'admin', '2023-03-07 02:55:05', NULL);
-INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (8, '1', 1, '2023-03-08 02:54:48', '2023-03-25 02:54:50', '12小时', 'admin', '2023-03-08 02:55:05', NULL);
-INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (9, '1', 1, '2023-03-09 02:54:48', '2023-03-25 02:54:50', '12小时', 'admin', '2023-03-09 02:55:05', NULL);
-INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (10, '1', 1, '2023-03-10 02:54:48', '2023-03-25 02:54:50', '12小时', 'admin', '2023-03-10 02:55:05', NULL);
-INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (13, '2', 4, NULL, NULL, NULL, 'admin', '2023-03-13 02:55:05', NULL);
-INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (14, '2', 4, NULL, NULL, NULL, 'admin', '2023-03-14 02:55:05', NULL);
-INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (15, '2', 4, NULL, NULL, NULL, 'admin', '2023-03-15 02:55:05', NULL);
-INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (16, '2', 4, NULL, NULL, NULL, 'admin', '2023-03-16 02:55:05', NULL);
-INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (17, '2', 4, NULL, NULL, NULL, 'admin', '2023-03-17 02:55:05', NULL);
-INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (18, '1', 3, '2023-03-18 08:54:48', '2023-03-18 17:54:50', '9小时', 'admin', '2023-03-18 02:55:05', NULL);
-INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (19, '1', 3, '2023-03-19 08:54:48', '2023-03-19 14:54:50', '9小时', 'admin', '2023-03-19 02:55:05', NULL);
-INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (20, '1', 1, '2023-03-20 02:54:48', '2023-03-20 02:54:50', '12小时', 'admin', '2023-03-20 02:55:05', NULL);
-INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (21, '1', 1, '2023-03-21 02:54:48', '2023-03-21 02:54:50', '12小时', 'admin', '2023-03-21 02:55:05', NULL);
-INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (22, '1', 5, '2023-03-22 10:54:48', '2023-03-22 16:54:50', '8小时', 'admin', '2023-03-22 02:55:05', NULL);
-INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (23, '1', 1, '2023-03-23 02:54:48', '2023-03-23 02:54:50', '12小时', 'admin', '2023-03-23 02:55:05', NULL);
-INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (24, '1', 1, '2023-03-24 02:54:48', '2023-03-24 02:54:50', '12小时', 'admin', '2023-03-24 02:55:05', NULL);
-INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (110, '1', 5, '2023-03-26 02:25:55', '2023-03-26 11:30:47', '9小时4分钟', 'admin', '2023-03-26 02:25:55', '2023-03-26 11:30:47');
-INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (117, '1', 1, '2023-03-27 23:36:41', '2023-03-27 23:51:01', '0小时14分钟', 'admin', '2023-03-27 23:36:41', '2023-03-27 23:51:01');
-INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (119, '1', 2, '2023-03-28 00:56:19', '2023-03-28 23:40:25', '22小时44分钟', 'admin', '2023-03-28 00:56:19', '2023-03-28 23:40:25');
-INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (120, '1', 2, '2023-03-28 23:44:36', '2023-03-28 23:44:51', '0小时0分钟', 'zs', '2023-03-28 23:44:36', '2023-03-28 23:44:51');
-INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (121, '1', 2, '2023-04-01 18:46:09', '2023-04-01 18:46:28', '0小时0分钟', 'admin', '2023-04-01 18:46:09', '2023-04-01 18:46:28');
-INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (122, '1', 1, '2023-04-10 18:00:13', NULL, NULL, 'admin', '2023-04-10 18:00:13', NULL);
-INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (123, '1', 2, '2023-04-14 19:47:32', '2023-04-14 23:28:23', '3小时40分钟', 'admin', '2023-04-14 19:47:32', '2023-04-14 23:28:23');
-INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (126, '1', 3, '2023-04-15 01:02:19', '2023-04-15 02:49:19', '1小时47分钟', 'admin', '2023-04-15 01:02:19', '2023-04-15 02:49:19');
-INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (130, '2', 4, NULL, NULL, NULL, 'admin', '2023-04-17 00:00:00', NULL);
-INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (131, '2', 4, NULL, NULL, NULL, 'admin', '2023-04-18 00:00:00', NULL);
-INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (132, '2', 4, NULL, NULL, NULL, 'admin', '2023-04-19 00:00:00', NULL);
-INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (133, '1', 1, '2023-04-15 02:10:22', NULL, NULL, 'zs', '2023-04-15 02:10:22', NULL);
-INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (134, '2', 4, NULL, NULL, NULL, 'zs', '2023-04-10 00:00:00', NULL);
-INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (135, '2', 4, NULL, NULL, NULL, 'zs', '2023-04-11 00:00:00', NULL);
-INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (136, '2', 4, NULL, NULL, NULL, 'zs', '2023-04-12 00:00:00', NULL);
-INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (137, '2', 4, NULL, NULL, NULL, 'zs', '2023-04-13 00:00:00', NULL);
-INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (138, '2', 4, NULL, NULL, NULL, 'zs', '2023-04-14 00:00:00', NULL);
-INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (139, '2', 4, NULL, NULL, NULL, 'zs', '2023-04-06 00:00:00', NULL);
-INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (140, '2', 4, NULL, NULL, NULL, 'zs', '2023-04-05 00:00:00', NULL);
-INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (141, '2', 4, NULL, NULL, NULL, 'admin', '2023-04-03 00:00:00', NULL);
-INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (142, '2', 4, NULL, NULL, NULL, 'admin', '2023-04-04 00:00:00', NULL);
-INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (143, '2', 4, NULL, NULL, NULL, 'admin', '2023-04-06 00:00:00', NULL);
-INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (144, '2', 4, NULL, NULL, NULL, 'admin', '2023-04-07 00:00:00', NULL);
-INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (145, '2', 4, NULL, NULL, NULL, 'admin', '2023-04-11 00:00:00', NULL);
-INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (146, '2', 4, NULL, NULL, NULL, 'admin', '2023-04-12 00:00:00', NULL);
-INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (147, '2', 4, NULL, NULL, NULL, 'admin', '2023-04-13 00:00:00', NULL);
-INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (148, '1', 2, '2023-04-17 22:48:23', NULL, NULL, 'zs', '2023-04-17 22:48:23', NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (1, '1', 1, '2023-03-01 08:54:48', '2023-03-25 19:54:50', '12小时', 'admin', '2023-03-01 02:55:05', NULL, NULL, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (2, '1', 1, '2023-03-02 08:54:48', '2023-03-25 19:54:50', '12小时', 'admin', '2023-03-02 02:55:05', NULL, NULL, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (3, '1', 2, '2023-03-03 09:54:48', '2023-03-25 19:54:50', '10小时', 'admin', '2023-03-03 02:55:05', NULL, NULL, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (4, '1', 2, '2023-03-04 09:54:48', '2023-03-25 19:54:50', '10小时', 'admin', '2023-03-04 02:55:05', NULL, NULL, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (6, '2', 4, NULL, NULL, NULL, 'admin', '2023-03-06 02:55:05', NULL, NULL, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (7, '1', 1, '2023-03-07 02:54:48', '2023-03-25 02:54:50', '12小时', 'admin', '2023-03-07 02:55:05', NULL, NULL, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (8, '1', 1, '2023-03-08 02:54:48', '2023-03-25 02:54:50', '12小时', 'admin', '2023-03-08 02:55:05', NULL, NULL, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (9, '1', 1, '2023-03-09 02:54:48', '2023-03-25 02:54:50', '12小时', 'admin', '2023-03-09 02:55:05', NULL, NULL, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (10, '1', 1, '2023-03-10 02:54:48', '2023-03-25 02:54:50', '12小时', 'admin', '2023-03-10 02:55:05', NULL, NULL, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (13, '2', 4, NULL, NULL, NULL, 'admin', '2023-03-13 02:55:05', NULL, NULL, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (14, '2', 4, NULL, NULL, NULL, 'admin', '2023-03-14 02:55:05', NULL, NULL, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (15, '2', 4, NULL, NULL, NULL, 'admin', '2023-03-15 02:55:05', NULL, NULL, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (16, '2', 4, NULL, NULL, NULL, 'admin', '2023-03-16 02:55:05', NULL, NULL, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (17, '2', 4, NULL, NULL, NULL, 'admin', '2023-03-17 02:55:05', NULL, NULL, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (18, '1', 3, '2023-03-18 08:54:48', '2023-03-18 17:54:50', '9小时', 'admin', '2023-03-18 02:55:05', NULL, NULL, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (19, '1', 3, '2023-03-19 08:54:48', '2023-03-19 14:54:50', '9小时', 'admin', '2023-03-19 02:55:05', NULL, NULL, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (20, '1', 1, '2023-03-20 02:54:48', '2023-03-20 02:54:50', '12小时', 'admin', '2023-03-20 02:55:05', NULL, NULL, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (21, '1', 1, '2023-03-21 02:54:48', '2023-03-21 02:54:50', '12小时', 'admin', '2023-03-21 02:55:05', NULL, NULL, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (22, '1', 5, '2023-03-22 10:54:48', '2023-03-22 16:54:50', '8小时', 'admin', '2023-03-22 02:55:05', NULL, NULL, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (23, '1', 1, '2023-03-23 02:54:48', '2023-03-23 02:54:50', '12小时', 'admin', '2023-03-23 02:55:05', NULL, NULL, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (24, '1', 1, '2023-03-24 02:54:48', '2023-03-24 02:54:50', '12小时', 'admin', '2023-03-24 02:55:05', NULL, NULL, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (110, '1', 5, '2023-03-26 02:25:55', '2023-03-26 11:30:47', '9小时4分钟', 'admin', '2023-03-26 02:25:55', '2023-03-26 11:30:47', NULL, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (117, '1', 1, '2023-03-27 23:36:41', '2023-03-27 23:51:01', '0小时14分钟', 'admin', '2023-03-27 23:36:41', '2023-03-27 23:51:01', NULL, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (119, '1', 2, '2023-03-28 00:56:19', '2023-03-28 23:40:25', '22小时44分钟', 'admin', '2023-03-28 00:56:19', '2023-03-28 23:40:25', NULL, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (120, '1', 2, '2023-03-28 23:44:36', '2023-03-28 23:44:51', '0小时0分钟', 'zs', '2023-03-28 23:44:36', '2023-03-28 23:44:51', NULL, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (121, '1', 2, '2023-04-01 18:46:09', '2023-04-01 18:46:28', '0小时0分钟', 'admin', '2023-04-01 18:46:09', '2023-04-01 18:46:28', NULL, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (122, '1', 1, '2023-04-10 18:00:13', NULL, NULL, 'admin', '2023-04-10 18:00:13', NULL, NULL, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (123, '1', 2, '2023-04-14 19:47:32', '2023-04-14 23:28:23', '3小时40分钟', 'admin', '2023-04-14 19:47:32', '2023-04-14 23:28:23', NULL, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (126, '1', 3, '2023-04-15 01:02:19', '2023-04-15 02:49:19', '1小时47分钟', 'admin', '2023-04-15 01:02:19', '2023-04-15 02:49:19', NULL, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (130, '2', 4, NULL, NULL, NULL, 'admin', '2023-04-17 00:00:00', NULL, NULL, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (131, '2', 4, NULL, NULL, NULL, 'admin', '2023-04-18 00:00:00', NULL, NULL, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (132, '2', 4, NULL, NULL, NULL, 'admin', '2023-04-19 00:00:00', NULL, NULL, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (133, '1', 1, '2023-04-15 02:10:22', NULL, NULL, 'zs', '2023-04-15 02:10:22', NULL, NULL, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (134, '2', 4, NULL, NULL, NULL, 'zs', '2023-04-10 00:00:00', NULL, NULL, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (135, '2', 4, NULL, NULL, NULL, 'zs', '2023-04-11 00:00:00', NULL, NULL, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (136, '2', 4, NULL, NULL, NULL, 'zs', '2023-04-12 00:00:00', NULL, NULL, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (137, '2', 4, NULL, NULL, NULL, 'zs', '2023-04-13 00:00:00', NULL, NULL, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (138, '2', 4, NULL, NULL, NULL, 'zs', '2023-04-14 00:00:00', NULL, NULL, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (139, '2', 4, NULL, NULL, NULL, 'zs', '2023-04-06 00:00:00', NULL, NULL, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (140, '2', 4, NULL, NULL, NULL, 'zs', '2023-04-05 00:00:00', NULL, NULL, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (141, '2', 4, NULL, NULL, NULL, 'admin', '2023-04-03 00:00:00', NULL, 3, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (142, '2', 4, NULL, NULL, NULL, 'admin', '2023-04-04 00:00:00', NULL, 3, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (143, '2', 4, NULL, NULL, NULL, 'admin', '2023-04-06 00:00:00', NULL, 2, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (144, '2', 4, NULL, NULL, NULL, 'admin', '2023-04-07 00:00:00', NULL, 1, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (145, '2', 4, NULL, NULL, NULL, 'admin', '2023-04-11 00:00:00', NULL, NULL, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (146, '2', 4, NULL, NULL, NULL, 'admin', '2023-04-12 00:00:00', NULL, NULL, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (147, '2', 4, NULL, NULL, NULL, 'admin', '2023-04-13 00:00:00', NULL, NULL, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (148, '1', 2, '2023-04-17 22:48:23', NULL, NULL, 'zs', '2023-04-17 22:48:23', NULL, NULL, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (149, '1', 2, '2023-04-19 14:55:01', '2023-04-19 21:56:02', '7小时1分钟', 'admin', '2023-04-19 14:55:01', '2023-04-19 21:56:02', NULL, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (150, '2', 4, NULL, NULL, NULL, 'admin', '2023-04-19 00:00:00', NULL, 3, '2天');
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (151, '2', 4, NULL, NULL, NULL, 'admin', '2023-04-20 00:00:00', NULL, 3, '2天');
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (152, '2', 4, NULL, NULL, NULL, 'admin', '2023-04-24 00:00:00', NULL, 3, '大点的');
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (153, '2', 4, NULL, NULL, NULL, 'admin', '2023-04-25 00:00:00', NULL, 3, '大点的');
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (154, '2', 4, NULL, NULL, NULL, 'admin', '2023-02-06 00:00:00', NULL, 3, 'haha ');
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (155, '2', 4, NULL, NULL, NULL, 'admin', '2023-02-07 00:00:00', NULL, 3, 'haha ');
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (156, '2', 4, NULL, NULL, NULL, 'admin', '2023-02-08 00:00:00', NULL, 3, 'haha ');
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (157, '2', 4, NULL, NULL, NULL, 'admin', '2023-02-09 00:00:00', NULL, 3, 'haha ');
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (158, '2', 4, NULL, NULL, NULL, 'admin', '2023-02-10 00:00:00', NULL, 3, 'haha ');
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (159, '2', 4, NULL, NULL, NULL, 'admin', '2023-02-11 00:00:00', NULL, 3, 'haha ');
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (160, '2', 4, NULL, NULL, NULL, 'admin', '2023-02-12 00:00:00', NULL, 3, 'haha ');
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (161, '2', 4, NULL, NULL, NULL, 'admin', '2023-02-13 00:00:00', NULL, 3, 'haha ');
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (162, '2', 4, NULL, NULL, NULL, 'admin', '2023-02-14 00:00:00', NULL, 3, 'haha ');
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (163, '2', 4, NULL, NULL, NULL, 'admin', '2023-02-15 00:00:00', NULL, 3, 'haha ');
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (164, '1', 3, '2023-04-20 00:21:51', '2023-04-20 00:30:13', '0小时8分钟', 'ls', '2023-04-20 00:21:51', '2023-04-20 00:30:13', NULL, NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`, `leave_type`, `leave_reason`) VALUES (165, '2', 4, NULL, NULL, NULL, 'ls', '2023-04-20 00:00:00', NULL, 1, '事假；请假一天');
 COMMIT;
 
 -- ----------------------------
@@ -210,7 +229,7 @@ CREATE TABLE `sys_dict_data` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`dict_code`)
-) ENGINE=InnoDB AUTO_INCREMENT=110 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='字典数据表';
+) ENGINE=InnoDB AUTO_INCREMENT=113 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='字典数据表';
 
 -- ----------------------------
 -- Records of sys_dict_data
@@ -251,12 +270,15 @@ INSERT INTO `sys_dict_data` (`dict_code`, `dict_sort`, `dict_label`, `dict_value
 INSERT INTO `sys_dict_data` (`dict_code`, `dict_sort`, `dict_label`, `dict_value`, `dict_type`, `css_class`, `list_class`, `is_default`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (33, 1, '正常', '1', 'sys_attendance_status', ' ', 'success', 'Y', '0', 'admin', '2023-03-24 23:36:02', '', NULL, '正常');
 INSERT INTO `sys_dict_data` (`dict_code`, `dict_sort`, `dict_label`, `dict_value`, `dict_type`, `css_class`, `list_class`, `is_default`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (102, 2, '迟到', '2', 'sys_attendance_status', ' ', 'warning', 'N', '0', 'admin', '2023-03-24 23:39:40', '', NULL, '迟到');
 INSERT INTO `sys_dict_data` (`dict_code`, `dict_sort`, `dict_label`, `dict_value`, `dict_type`, `css_class`, `list_class`, `is_default`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (103, 3, '早退', '3', 'sys_attendance_status', ' ', 'warning', 'N', '0', 'admin', '2023-03-24 23:39:42', '', NULL, '早退');
-INSERT INTO `sys_dict_data` (`dict_code`, `dict_sort`, `dict_label`, `dict_value`, `dict_type`, `css_class`, `list_class`, `is_default`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (104, 4, '事假', '4', 'sys_attendance_status', ' ', 'warning', 'N', '0', 'admin', '2023-03-24 23:39:48', '', NULL, '请假');
+INSERT INTO `sys_dict_data` (`dict_code`, `dict_sort`, `dict_label`, `dict_value`, `dict_type`, `css_class`, `list_class`, `is_default`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (104, 4, '请假', '4', 'sys_attendance_status', ' ', 'warning', 'N', '0', 'admin', '2023-03-24 23:39:48', '', NULL, '请假');
 INSERT INTO `sys_dict_data` (`dict_code`, `dict_sort`, `dict_label`, `dict_value`, `dict_type`, `css_class`, `list_class`, `is_default`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (105, 5, '迟到+早退', '5', 'sys_attendance_status', ' ', 'danger', 'N', '0', 'admin', '2023-03-24 23:39:45', '', NULL, '迟到&早退');
 INSERT INTO `sys_dict_data` (`dict_code`, `dict_sort`, `dict_label`, `dict_value`, `dict_type`, `css_class`, `list_class`, `is_default`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (106, 6, '旷工', '0', 'sys_attendance_status', ' ', 'danger', 'N', '0', 'admin', '2023-03-24 23:39:51', '', NULL, '旷工');
 INSERT INTO `sys_dict_data` (`dict_code`, `dict_sort`, `dict_label`, `dict_value`, `dict_type`, `css_class`, `list_class`, `is_default`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (107, 1, '考勤', '1', 'sys_attendance_type', ' ', 'primary', 'Y', '0', 'admin', '2023-03-24 23:42:10', '', NULL, '考勤');
 INSERT INTO `sys_dict_data` (`dict_code`, `dict_sort`, `dict_label`, `dict_value`, `dict_type`, `css_class`, `list_class`, `is_default`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (108, 2, '请假', '2', 'sys_attendance_type', ' ', 'warning', 'N', '0', 'admin', '2023-03-24 23:42:14', '', NULL, '事假');
 INSERT INTO `sys_dict_data` (`dict_code`, `dict_sort`, `dict_label`, `dict_value`, `dict_type`, `css_class`, `list_class`, `is_default`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (109, 3, '病假', '3', 'sys_attendance_type', ' ', 'warning', 'N', '1', 'admin', '2023-03-24 23:42:17', '', NULL, '病假');
+INSERT INTO `sys_dict_data` (`dict_code`, `dict_sort`, `dict_label`, `dict_value`, `dict_type`, `css_class`, `list_class`, `is_default`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (110, 1, '事假', '1', 'sys_limit_type', NULL, 'primary', 'N', '0', 'admin', '2023-04-20 21:23:47', '', NULL, '事假');
+INSERT INTO `sys_dict_data` (`dict_code`, `dict_sort`, `dict_label`, `dict_value`, `dict_type`, `css_class`, `list_class`, `is_default`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (111, 2, '病假', '2', 'sys_limit_type', NULL, 'warning', 'N', '0', 'admin', '2023-04-19 21:24:09', '', NULL, '病假');
+INSERT INTO `sys_dict_data` (`dict_code`, `dict_sort`, `dict_label`, `dict_value`, `dict_type`, `css_class`, `list_class`, `is_default`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (112, 3, '年假', '3', 'sys_limit_type', NULL, 'success', 'N', '0', 'admin', '2023-04-19 21:24:12', '', NULL, '年假');
 COMMIT;
 
 -- ----------------------------
@@ -275,7 +297,7 @@ CREATE TABLE `sys_dict_type` (
   `remark` varchar(500) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`dict_id`),
   UNIQUE KEY `dict_type` (`dict_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=106 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='字典类型表';
+) ENGINE=InnoDB AUTO_INCREMENT=107 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='字典类型表';
 
 -- ----------------------------
 -- Records of sys_dict_type
@@ -294,6 +316,7 @@ INSERT INTO `sys_dict_type` (`dict_id`, `dict_name`, `dict_type`, `status`, `cre
 INSERT INTO `sys_dict_type` (`dict_id`, `dict_name`, `dict_type`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (11, '时间线状态', 'sys_timeline_status', '0', 'admin', '2023-03-23 22:41:15', '', NULL, '流程状态列表');
 INSERT INTO `sys_dict_type` (`dict_id`, `dict_name`, `dict_type`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (12, '出勤状态', 'sys_attendance_status', '0', 'admin', '2023-03-24 23:34:48', '', NULL, '出勤状态列表');
 INSERT INTO `sys_dict_type` (`dict_id`, `dict_name`, `dict_type`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (13, '考勤类型', 'sys_attendance_type', '0', 'admin', '2023-03-24 23:35:08', '', NULL, '考勤类型列表');
+INSERT INTO `sys_dict_type` (`dict_id`, `dict_name`, `dict_type`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (14, '限制类型', 'sys_limit_type', '0', 'admin', '2023-04-19 21:22:02', '', NULL, '限制类型列表');
 COMMIT;
 
 -- ----------------------------
@@ -321,7 +344,7 @@ CREATE TABLE `sys_menu` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) COLLATE utf8mb4_general_ci DEFAULT '' COMMENT '备注',
   PRIMARY KEY (`menu_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2016 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='菜单权限表';
+) ENGINE=InnoDB AUTO_INCREMENT=2021 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='菜单权限表';
 
 -- ----------------------------
 -- Records of sys_menu
@@ -371,6 +394,11 @@ INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`
 INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (2013, '步骤修改', 3, 6, '', NULL, NULL, 1, 0, 'F', '0', '0', 'system:steps:edit', '#', 'admin', '2023-04-14 23:55:29', '', NULL, '');
 INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (2014, '流程查询', 3, 1, '', NULL, NULL, 1, 0, 'F', '0', '0', 'system:processes:query', '#', 'admin', '2023-04-15 00:21:19', '', NULL, '');
 INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (2015, '资产查询', 5, 1, '', NULL, NULL, 1, 0, 'F', '0', '0', 'system:asset:query', '#', 'admin', '2023-04-15 00:26:23', '', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (2016, '假期管理', 0, 11, 'system/limit', 'system/limit/index', NULL, 1, 0, 'C', '0', '0', 'system:limit:list', 'date-range', 'admin', '2023-04-19 21:16:47', 'admin', '2023-04-19 21:19:03', '假期管理菜单');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (2017, '假期查询', 2016, 1, '', NULL, NULL, 1, 0, 'F', '0', '0', 'system:limit:query', '#', 'admin', '2023-04-20 00:25:41', '', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (2018, '假期新增', 2016, 2, '', NULL, NULL, 1, 0, 'F', '0', '0', 'system:limit:add', '#', 'admin', '2023-04-20 00:25:41', '', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (2019, '假期修改', 2016, 3, '', NULL, NULL, 1, 0, 'F', '0', '0', 'system:limit:edit', '#', 'admin', '2023-04-20 00:25:41', '', NULL, '');
+INSERT INTO `sys_menu` (`menu_id`, `menu_name`, `parent_id`, `order_num`, `path`, `component`, `query`, `is_frame`, `is_cache`, `menu_type`, `visible`, `status`, `perms`, `icon`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (2020, '假期删除', 2016, 4, '', NULL, NULL, 1, 0, 'F', '0', '0', 'system:limit:remove', '#', 'admin', '2023-04-20 00:25:41', '', NULL, '');
 COMMIT;
 
 -- ----------------------------
@@ -491,7 +519,7 @@ BEGIN;
 INSERT INTO `sys_role` (`role_id`, `role_name`, `role_key`, `role_sort`, `data_scope`, `menu_check_strictly`, `dept_check_strictly`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1, '超级管理员', 'admin', 1, '1', 1, 1, '0', '0', 'admin', '2023-03-22 19:13:00', '', NULL, '超级管理员');
 INSERT INTO `sys_role` (`role_id`, `role_name`, `role_key`, `role_sort`, `data_scope`, `menu_check_strictly`, `dept_check_strictly`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (2, '普通角色', 'common', 2, '2', 1, 1, '0', '0', 'admin', '2023-03-22 19:13:00', 'admin', '2023-04-15 00:21:38', '普通角色');
 INSERT INTO `sys_role` (`role_id`, `role_name`, `role_key`, `role_sort`, `data_scope`, `menu_check_strictly`, `dept_check_strictly`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (100, 'test2', 'test2', 3, '1', 1, 1, '0', '2', 'admin', '2023-03-22 23:02:17', 'admin', '2023-03-22 23:02:24', NULL);
-INSERT INTO `sys_role` (`role_id`, `role_name`, `role_key`, `role_sort`, `data_scope`, `menu_check_strictly`, `dept_check_strictly`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (101, '经理', 'manager', 3, '1', 1, 1, '0', '0', 'admin', '2023-03-28 23:44:03', 'admin', '2023-04-15 00:39:04', NULL);
+INSERT INTO `sys_role` (`role_id`, `role_name`, `role_key`, `role_sort`, `data_scope`, `menu_check_strictly`, `dept_check_strictly`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (101, '经理', 'manager', 3, '1', 1, 1, '0', '0', 'admin', '2023-03-28 23:44:03', 'admin', '2023-04-20 00:26:24', NULL);
 COMMIT;
 
 -- ----------------------------
@@ -566,6 +594,11 @@ INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2012);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2013);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2014);
 INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2015);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2016);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2017);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2018);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2019);
+INSERT INTO `sys_role_menu` (`role_id`, `menu_id`) VALUES (101, 2020);
 COMMIT;
 
 -- ----------------------------
@@ -628,15 +661,46 @@ CREATE TABLE `sys_user` (
 -- Records of sys_user
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_user` (`user_id`, `dept_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1, 103, 'admin', 'admin', '00', '123123@qq.com', '15012312312', '0', '/profile/avatar/2023/03/22/blob_20230322224838A001.png', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2023-04-17 23:04:17', 'admin', '2023-03-22 19:13:00', '', '2023-04-17 23:04:16', '管理员');
+INSERT INTO `sys_user` (`user_id`, `dept_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1, 103, 'admin', 'admin', '00', '123123@qq.com', '15012312312', '0', '/profile/avatar/2023/03/22/blob_20230322224838A001.png', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2023-04-20 00:40:06', 'admin', '2023-03-22 19:13:00', '', '2023-04-20 00:40:06', '管理员');
 INSERT INTO `sys_user` (`user_id`, `dept_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (2, 100, 'gaoqiqiang', '高启强', '00', '123121673@qq.com', '18012312312', '0', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2023-03-22 19:13:00', 'admin', '2023-03-22 19:13:00', 'admin', '2023-03-22 22:52:35', 'CEO');
 INSERT INTO `sys_user` (`user_id`, `dept_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (100, 102, 'gaoqishegn', '高启盛', '00', '12@qq.com', '15022323123', '0', '', '$2a$10$5e11ED796Vss7spfuYg54OScULlkOQSjunDRjtQulEqUwkrELAXRy', '0', '0', '', NULL, 'admin', '2023-03-22 22:51:22', 'admin', '2023-03-22 22:52:45', '...');
 INSERT INTO `sys_user` (`user_id`, `dept_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (101, 101, 'gaoqilan', '高启兰', '00', '12343@163.com', '15012341234', '1', '', '$2a$10$HD6cBAwMhnJuHvITmD5/Ze9h7hhY8B52eaZgvwL.QA9zTD20nNfpu', '0', '0', '', NULL, 'admin', '2023-03-22 22:53:46', '', NULL, '。。');
 INSERT INTO `sys_user` (`user_id`, `dept_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (102, 101, '11111', 'test22222', '00', '12312312@qq.com', '13012312343', '0', '', '$2a$10$y8shN6I8cdqc9OrTKByKCOdx1vrJbNtNllGd1FJMsPn4t2XA1OSTK', '1', '2', '', NULL, 'admin', '2023-03-22 22:54:41', 'admin', '2023-03-22 22:54:49', '1212312');
-INSERT INTO `sys_user` (`user_id`, `dept_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (103, 200, 'ls', 'ls', '00', '34132@qq.com', '15012414212', '0', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2023-04-17 23:04:54', '', '2023-03-22 23:21:01', 'zs', '2023-04-17 23:04:54', 'eeee');
+INSERT INTO `sys_user` (`user_id`, `dept_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (103, 200, 'ls', 'ls', '00', '34132@qq.com', '15012414212', '0', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2023-04-20 00:30:08', '', '2023-03-22 23:21:01', 'admin', '2023-04-20 00:30:07', 'eeee');
 INSERT INTO `sys_user` (`user_id`, `dept_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (104, 100, 'zs', 'zs', '00', 'ssss@qq.com', '13312312311', '1', '/profile/avatar/2023/04/15/blob_20230415003647A001.png', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2023-04-17 23:02:51', '', '2023-03-28 23:41:52', 'admin', '2023-04-17 23:02:50', NULL);
 INSERT INTO `sys_user` (`user_id`, `dept_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (105, 201, '哈哈哈', 'sss', '00', 'qqsss@qq.com', '13312312312', '1', '', '$2a$10$.ZZPHOTYQAmY1Gg8KlPKfeSAgOs/2ZseLu/i5UztGK5eTolZawlOm', '1', '2', '', NULL, 'zs', '2023-04-15 00:50:40', 'zs', '2023-04-15 00:51:05', 'sss');
-INSERT INTO `sys_user` (`user_id`, `dept_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (106, 201, 'Yoana', 'wyt', '00', '', '', '1', '', '$2a$10$9If3wOgio2KKTldvcIueXOV2.yEosO9742Eg4PquyIWC0WZ3RPY4C', '0', '0', '', NULL, 'admin', '2023-04-15 15:52:52', 'admin', '2023-04-15 15:53:59', NULL);
+INSERT INTO `sys_user` (`user_id`, `dept_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (106, 201, 'Yoana', 'wyt', '00', '', '', '1', '', '$2a$10$9If3wOgio2KKTldvcIueXOV2.yEosO9742Eg4PquyIWC0WZ3RPY4C', '0', '0', '', NULL, 'admin', '2023-04-15 15:52:52', 'admin', '2023-04-20 00:07:27', NULL);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for sys_user_limit
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_user_limit`;
+CREATE TABLE `sys_user_limit` (
+  `limit_id` bigint NOT NULL AUTO_INCREMENT,
+  `user_name` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `limit_type` int DEFAULT NULL COMMENT '限制类型：1年假、2事假、3病假',
+  `limit_value` int DEFAULT NULL COMMENT '限制天数',
+  `create_by` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `update_by` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  `update_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`limit_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- ----------------------------
+-- Records of sys_user_limit
+-- ----------------------------
+BEGIN;
+INSERT INTO `sys_user_limit` (`limit_id`, `user_name`, `limit_type`, `limit_value`, `create_by`, `update_by`, `create_time`, `update_time`) VALUES (1, 'zs', 1, 3, 'admin', 'admin', '2023-04-19 21:44:05', '2023-04-19 21:44:56');
+INSERT INTO `sys_user_limit` (`limit_id`, `user_name`, `limit_type`, `limit_value`, `create_by`, `update_by`, `create_time`, `update_time`) VALUES (2, 'zs', 2, 2, 'admin', NULL, '2023-04-19 21:57:28', NULL);
+INSERT INTO `sys_user_limit` (`limit_id`, `user_name`, `limit_type`, `limit_value`, `create_by`, `update_by`, `create_time`, `update_time`) VALUES (3, 'zs', 3, 10, 'admin', NULL, '2023-04-19 21:57:37', NULL);
+INSERT INTO `sys_user_limit` (`limit_id`, `user_name`, `limit_type`, `limit_value`, `create_by`, `update_by`, `create_time`, `update_time`) VALUES (7, 'admin', 3, 16, 'admin', 'admin', '2023-04-19 22:27:57', '2023-04-19 23:57:55');
+INSERT INTO `sys_user_limit` (`limit_id`, `user_name`, `limit_type`, `limit_value`, `create_by`, `update_by`, `create_time`, `update_time`) VALUES (8, 'admin', 2, 2, 'admin', NULL, '2023-04-20 00:20:50', NULL);
+INSERT INTO `sys_user_limit` (`limit_id`, `user_name`, `limit_type`, `limit_value`, `create_by`, `update_by`, `create_time`, `update_time`) VALUES (9, 'admin', 1, 2, 'admin', NULL, '2023-04-20 00:21:05', NULL);
+INSERT INTO `sys_user_limit` (`limit_id`, `user_name`, `limit_type`, `limit_value`, `create_by`, `update_by`, `create_time`, `update_time`) VALUES (10, 'ls', 1, 2, 'admin', NULL, '2023-04-20 00:21:12', NULL);
+INSERT INTO `sys_user_limit` (`limit_id`, `user_name`, `limit_type`, `limit_value`, `create_by`, `update_by`, `create_time`, `update_time`) VALUES (11, 'ls', 2, 2, 'admin', NULL, '2023-04-20 00:21:17', NULL);
+INSERT INTO `sys_user_limit` (`limit_id`, `user_name`, `limit_type`, `limit_value`, `create_by`, `update_by`, `create_time`, `update_time`) VALUES (12, 'ls', 3, 9, 'admin', NULL, '2023-04-20 00:21:26', NULL);
 COMMIT;
 
 -- ----------------------------
@@ -657,7 +721,9 @@ INSERT INTO `sys_user_post` (`user_id`, `post_id`) VALUES (1, 1);
 INSERT INTO `sys_user_post` (`user_id`, `post_id`) VALUES (2, 1);
 INSERT INTO `sys_user_post` (`user_id`, `post_id`) VALUES (100, 2);
 INSERT INTO `sys_user_post` (`user_id`, `post_id`) VALUES (101, 2);
+INSERT INTO `sys_user_post` (`user_id`, `post_id`) VALUES (103, 1);
 INSERT INTO `sys_user_post` (`user_id`, `post_id`) VALUES (104, 4);
+INSERT INTO `sys_user_post` (`user_id`, `post_id`) VALUES (106, 1);
 COMMIT;
 
 -- ----------------------------
