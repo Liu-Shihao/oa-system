@@ -156,7 +156,8 @@
         <el-form-item label="员工姓名" prop="userName">
           <el-input v-model="form.userName" placeholder="请输入员工姓名" />
         </el-form-item>
-        <el-form-item label="类型"  prop="limitType">
+
+        <el-form-item label="类型" prop="limitType">
           <el-select v-model="form.limitType" placeholder="请选择类型">
             <el-option
               v-for="dict in dict.type.sys_limit_type"
@@ -289,7 +290,7 @@ export default {
       this.form = {
         limitId: row.limitId,
         userName: row.userName,
-        limitType: row.limitType,
+        limitType: row.limitType.toString(),
         limitValue: row.limitValue,
         updateBy: row.updateBy,
         createBy: row.createBy,
