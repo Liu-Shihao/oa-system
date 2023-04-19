@@ -32,7 +32,7 @@ spring:
       max-request-size:  20MB
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/oa-system?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+    url: jdbc:mysql://localhost:3306/oa-system?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=Asia/Shanghai
     username: root
     password: Lsh123456!
     druid:
@@ -59,9 +59,7 @@ spring:
       testWhileIdle: true
       testOnBorrow: false
       testOnReturn: false
-  jpa:
-    show-sql: true
-    open-in-view: true
+
 
 
 

@@ -11,7 +11,7 @@
  Target Server Version : 80029
  File Encoding         : 65001
 
- Date: 15/04/2023 03:06:38
+ Date: 18/04/2023 09:26:34
 */
 
 SET NAMES utf8mb4;
@@ -61,7 +61,7 @@ CREATE TABLE `sys_attendance` (
   `create_time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`attendance_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=148 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='考勤信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=149 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='考勤信息表';
 
 -- ----------------------------
 -- Records of sys_attendance
@@ -114,6 +114,7 @@ INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_
 INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (145, '2', 4, NULL, NULL, NULL, 'admin', '2023-04-11 00:00:00', NULL);
 INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (146, '2', 4, NULL, NULL, NULL, 'admin', '2023-04-12 00:00:00', NULL);
 INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (147, '2', 4, NULL, NULL, NULL, 'admin', '2023-04-13 00:00:00', NULL);
+INSERT INTO `sys_attendance` (`attendance_id`, `attendance_type`, `status`, `on_line`, `off_line`, `duration`, `user_name`, `create_time`, `update_time`) VALUES (148, '1', 2, '2023-04-17 22:48:23', NULL, NULL, 'zs', '2023-04-17 22:48:23', NULL);
 COMMIT;
 
 -- ----------------------------
@@ -244,9 +245,9 @@ INSERT INTO `sys_dict_data` (`dict_code`, `dict_sort`, `dict_label`, `dict_value
 INSERT INTO `sys_dict_data` (`dict_code`, `dict_sort`, `dict_label`, `dict_value`, `dict_type`, `css_class`, `list_class`, `is_default`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (27, 9, '清空数据', '9', 'sys_oper_type', '', 'danger', 'N', '0', 'admin', '2023-03-22 19:13:00', '', NULL, '清空操作');
 INSERT INTO `sys_dict_data` (`dict_code`, `dict_sort`, `dict_label`, `dict_value`, `dict_type`, `css_class`, `list_class`, `is_default`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (28, 1, '成功', '0', 'sys_common_status', '', 'primary', 'N', '0', 'admin', '2023-03-22 19:13:00', '', NULL, '正常状态');
 INSERT INTO `sys_dict_data` (`dict_code`, `dict_sort`, `dict_label`, `dict_value`, `dict_type`, `css_class`, `list_class`, `is_default`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (29, 2, '失败', '1', 'sys_common_status', '', 'danger', 'N', '0', 'admin', '2023-03-22 19:13:00', '', NULL, '停用状态');
-INSERT INTO `sys_dict_data` (`dict_code`, `dict_sort`, `dict_label`, `dict_value`, `dict_type`, `css_class`, `list_class`, `is_default`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (30, 0, '进行中', '0', 'sys_timeline_status', ' ', 'success', 'N', '0', 'admin', '2023-03-23 22:34:55', '', NULL, '进行中');
-INSERT INTO `sys_dict_data` (`dict_code`, `dict_sort`, `dict_label`, `dict_value`, `dict_type`, `css_class`, `list_class`, `is_default`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (31, 1, '未开始', '1', 'sys_timeline_status', ' ', 'warning', 'Y', '0', 'admin', '2023-03-23 22:37:45', '', NULL, '未开始');
-INSERT INTO `sys_dict_data` (`dict_code`, `dict_sort`, `dict_label`, `dict_value`, `dict_type`, `css_class`, `list_class`, `is_default`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (32, 2, '已完成', '2', 'sys_timeline_status', '', 'primary', 'N', '0', 'admin', '2023-03-23 22:37:48', '', NULL, '已完成');
+INSERT INTO `sys_dict_data` (`dict_code`, `dict_sort`, `dict_label`, `dict_value`, `dict_type`, `css_class`, `list_class`, `is_default`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (30, 0, '同意', '0', 'sys_timeline_status', ' ', 'success', 'N', '0', 'admin', '2023-03-23 22:34:55', '', NULL, '进行中');
+INSERT INTO `sys_dict_data` (`dict_code`, `dict_sort`, `dict_label`, `dict_value`, `dict_type`, `css_class`, `list_class`, `is_default`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (31, 1, '等待审批', '1', 'sys_timeline_status', ' ', 'warning', 'Y', '0', 'admin', '2023-03-23 22:37:45', '', NULL, '未开始');
+INSERT INTO `sys_dict_data` (`dict_code`, `dict_sort`, `dict_label`, `dict_value`, `dict_type`, `css_class`, `list_class`, `is_default`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (32, 2, '驳回', '2', 'sys_timeline_status', '', 'danger', 'N', '0', 'admin', '2023-03-23 22:37:48', '', NULL, '已完成');
 INSERT INTO `sys_dict_data` (`dict_code`, `dict_sort`, `dict_label`, `dict_value`, `dict_type`, `css_class`, `list_class`, `is_default`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (33, 1, '正常', '1', 'sys_attendance_status', ' ', 'success', 'Y', '0', 'admin', '2023-03-24 23:36:02', '', NULL, '正常');
 INSERT INTO `sys_dict_data` (`dict_code`, `dict_sort`, `dict_label`, `dict_value`, `dict_type`, `css_class`, `list_class`, `is_default`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (102, 2, '迟到', '2', 'sys_attendance_status', ' ', 'warning', 'N', '0', 'admin', '2023-03-24 23:39:40', '', NULL, '迟到');
 INSERT INTO `sys_dict_data` (`dict_code`, `dict_sort`, `dict_label`, `dict_value`, `dict_type`, `css_class`, `list_class`, `is_default`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (103, 3, '早退', '3', 'sys_attendance_status', ' ', 'warning', 'N', '0', 'admin', '2023-03-24 23:39:42', '', NULL, '早退');
@@ -437,19 +438,28 @@ CREATE TABLE `sys_processes` (
   `processes_description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci COMMENT '流程描述',
   `processes_status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '流程状态',
   `del_flag` char(1) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `create_by` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '流程创建人username',
+  `create_by` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '流程创建人username',
+  `approver_user` varchar(20) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '流程审批人',
+  `approval_opinion` text COLLATE utf8mb4_general_ci COMMENT '审批意见',
+  `approval_time` datetime DEFAULT NULL COMMENT '审批时间',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间\n',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间\n',
   PRIMARY KEY (`processes_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- ----------------------------
 -- Records of sys_processes
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_processes` (`processes_id`, `processes_title`, `processes_description`, `processes_status`, `del_flag`, `create_by`, `create_time`, `update_time`) VALUES (1, '我要辞职', '辞职辞职辞职', '2', '0', 'admin', '2023-04-14 21:19:41', '2023-04-14 21:56:33');
-INSERT INTO `sys_processes` (`processes_id`, `processes_title`, `processes_description`, `processes_status`, `del_flag`, `create_by`, `create_time`, `update_time`) VALUES (2, '我要请假', '请假请假请假', '0', '0', 'admin', '2023-04-14 21:34:43', '2023-04-15 00:44:47');
-INSERT INTO `sys_processes` (`processes_id`, `processes_title`, `processes_description`, `processes_status`, `del_flag`, `create_by`, `create_time`, `update_time`) VALUES (3, 'test', 'del', '1', '2', 'admin', '2023-04-14 23:36:18', '2023-04-14 23:42:15');
+INSERT INTO `sys_processes` (`processes_id`, `processes_title`, `processes_description`, `processes_status`, `del_flag`, `create_by`, `approver_user`, `approval_opinion`, `approval_time`, `create_time`, `update_time`) VALUES (1, '我要辞职', '辞职辞职辞职', '2', '2', 'admin', NULL, NULL, NULL, '2023-04-14 21:19:41', '2023-04-17 23:00:18');
+INSERT INTO `sys_processes` (`processes_id`, `processes_title`, `processes_description`, `processes_status`, `del_flag`, `create_by`, `approver_user`, `approval_opinion`, `approval_time`, `create_time`, `update_time`) VALUES (2, '我要请假', '请假请假请假', '0', '2', 'admin', NULL, NULL, NULL, '2023-04-14 21:34:43', '2023-04-17 23:00:18');
+INSERT INTO `sys_processes` (`processes_id`, `processes_title`, `processes_description`, `processes_status`, `del_flag`, `create_by`, `approver_user`, `approval_opinion`, `approval_time`, `create_time`, `update_time`) VALUES (3, 'test', 'del', '1', '2', 'admin', NULL, NULL, NULL, '2023-04-14 23:36:18', '2023-04-14 23:42:15');
+INSERT INTO `sys_processes` (`processes_id`, `processes_title`, `processes_description`, `processes_status`, `del_flag`, `create_by`, `approver_user`, `approval_opinion`, `approval_time`, `create_time`, `update_time`) VALUES (4, '休假', '旅游', '0', '2', 'admin', NULL, NULL, NULL, '2023-04-15 15:54:49', '2023-04-17 23:00:18');
+INSERT INTO `sys_processes` (`processes_id`, `processes_title`, `processes_description`, `processes_status`, `del_flag`, `create_by`, `approver_user`, `approval_opinion`, `approval_time`, `create_time`, `update_time`) VALUES (5, 'Starship请求发射', '北京时间21;20发射', '2', '0', '马斯克', 'admin', '延迟2天后进行', '2023-04-17 23:00:05', '2023-04-17 21:09:51', '2023-04-17 23:00:05');
+INSERT INTO `sys_processes` (`processes_id`, `processes_title`, `processes_description`, `processes_status`, `del_flag`, `create_by`, `approver_user`, `approval_opinion`, `approval_time`, `create_time`, `update_time`) VALUES (6, '请假', '张三要请假', '2', '0', 'zs', 'ls', '公司最近正处于攻坚克难的时候，希望每一位员工恪守岗位，尽职尽责', '2023-04-17 23:02:34', '2023-04-17 21:24:22', '2023-04-17 23:02:34');
+INSERT INTO `sys_processes` (`processes_id`, `processes_title`, `processes_description`, `processes_status`, `del_flag`, `create_by`, `approver_user`, `approval_opinion`, `approval_time`, `create_time`, `update_time`) VALUES (9, '辞职申请', '不干了', '0', '0', 'zs', 'ls', '立即离职', '2023-04-17 23:02:30', '2023-04-17 22:48:56', '2023-04-17 23:02:30');
+INSERT INTO `sys_processes` (`processes_id`, `processes_title`, `processes_description`, `processes_status`, `del_flag`, `create_by`, `approver_user`, `approval_opinion`, `approval_time`, `create_time`, `update_time`) VALUES (10, '我要涨薪', '得加钱', '2', '0', 'ls', 'zs', '我已辞职，请找其他主管', '2023-04-17 23:02:58', '2023-04-17 22:54:48', '2023-04-17 23:02:58');
+INSERT INTO `sys_processes` (`processes_id`, `processes_title`, `processes_description`, `processes_status`, `del_flag`, `create_by`, `approver_user`, `approval_opinion`, `approval_time`, `create_time`, `update_time`) VALUES (11, '请假', '当前张三', '0', '0', 'zs', 'ls', '同意', '2023-04-17 23:05:56', '2023-04-17 23:03:58', '2023-04-17 23:05:56');
 COMMIT;
 
 -- ----------------------------
@@ -612,20 +622,21 @@ CREATE TABLE `sys_user` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=106 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='用户信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=107 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='用户信息表';
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_user` (`user_id`, `dept_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1, 103, 'admin', 'admin', '00', '123123@qq.com', '15012312312', '0', '/profile/avatar/2023/03/22/blob_20230322224838A001.png', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2023-04-15 02:57:25', 'admin', '2023-03-22 19:13:00', '', '2023-04-15 02:57:25', '管理员');
+INSERT INTO `sys_user` (`user_id`, `dept_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1, 103, 'admin', 'admin', '00', '123123@qq.com', '15012312312', '0', '/profile/avatar/2023/03/22/blob_20230322224838A001.png', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2023-04-17 23:04:17', 'admin', '2023-03-22 19:13:00', '', '2023-04-17 23:04:16', '管理员');
 INSERT INTO `sys_user` (`user_id`, `dept_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (2, 100, 'gaoqiqiang', '高启强', '00', '123121673@qq.com', '18012312312', '0', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2023-03-22 19:13:00', 'admin', '2023-03-22 19:13:00', 'admin', '2023-03-22 22:52:35', 'CEO');
 INSERT INTO `sys_user` (`user_id`, `dept_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (100, 102, 'gaoqishegn', '高启盛', '00', '12@qq.com', '15022323123', '0', '', '$2a$10$5e11ED796Vss7spfuYg54OScULlkOQSjunDRjtQulEqUwkrELAXRy', '0', '0', '', NULL, 'admin', '2023-03-22 22:51:22', 'admin', '2023-03-22 22:52:45', '...');
 INSERT INTO `sys_user` (`user_id`, `dept_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (101, 101, 'gaoqilan', '高启兰', '00', '12343@163.com', '15012341234', '1', '', '$2a$10$HD6cBAwMhnJuHvITmD5/Ze9h7hhY8B52eaZgvwL.QA9zTD20nNfpu', '0', '0', '', NULL, 'admin', '2023-03-22 22:53:46', '', NULL, '。。');
 INSERT INTO `sys_user` (`user_id`, `dept_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (102, 101, '11111', 'test22222', '00', '12312312@qq.com', '13012312343', '0', '', '$2a$10$y8shN6I8cdqc9OrTKByKCOdx1vrJbNtNllGd1FJMsPn4t2XA1OSTK', '1', '2', '', NULL, 'admin', '2023-03-22 22:54:41', 'admin', '2023-03-22 22:54:49', '1212312');
-INSERT INTO `sys_user` (`user_id`, `dept_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (103, 200, 'zhangsan', '张三', '00', '34132@qq.com', '15012414212', '0', '', '$2a$10$Dz7K5/jBFDE54nbotgY9IOydDFWkPHUns331IPKD3s2zqbI/cIVsW', '0', '2', '127.0.0.1', '2023-03-22 23:24:33', '', '2023-03-22 23:21:01', 'zs', '2023-04-15 00:49:49', 'eeee');
-INSERT INTO `sys_user` (`user_id`, `dept_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (104, 100, 'zs', 'zs', '00', 'ssss@qq.com', '13312312311', '1', '/profile/avatar/2023/04/15/blob_20230415003647A001.png', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2023-04-15 02:10:17', '', '2023-03-28 23:41:52', 'admin', '2023-04-15 02:10:16', NULL);
+INSERT INTO `sys_user` (`user_id`, `dept_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (103, 200, 'ls', 'ls', '00', '34132@qq.com', '15012414212', '0', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2023-04-17 23:04:54', '', '2023-03-22 23:21:01', 'zs', '2023-04-17 23:04:54', 'eeee');
+INSERT INTO `sys_user` (`user_id`, `dept_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (104, 100, 'zs', 'zs', '00', 'ssss@qq.com', '13312312311', '1', '/profile/avatar/2023/04/15/blob_20230415003647A001.png', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2023-04-17 23:02:51', '', '2023-03-28 23:41:52', 'admin', '2023-04-17 23:02:50', NULL);
 INSERT INTO `sys_user` (`user_id`, `dept_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (105, 201, '哈哈哈', 'sss', '00', 'qqsss@qq.com', '13312312312', '1', '', '$2a$10$.ZZPHOTYQAmY1Gg8KlPKfeSAgOs/2ZseLu/i5UztGK5eTolZawlOm', '1', '2', '', NULL, 'zs', '2023-04-15 00:50:40', 'zs', '2023-04-15 00:51:05', 'sss');
+INSERT INTO `sys_user` (`user_id`, `dept_id`, `user_name`, `nick_name`, `user_type`, `email`, `phonenumber`, `sex`, `avatar`, `password`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (106, 201, 'Yoana', 'wyt', '00', '', '', '1', '', '$2a$10$9If3wOgio2KKTldvcIueXOV2.yEosO9742Eg4PquyIWC0WZ3RPY4C', '0', '0', '', NULL, 'admin', '2023-04-15 15:52:52', 'admin', '2023-04-15 15:53:59', NULL);
 COMMIT;
 
 -- ----------------------------
@@ -667,7 +678,9 @@ INSERT INTO `sys_user_role` (`user_id`, `role_id`) VALUES (1, 1);
 INSERT INTO `sys_user_role` (`user_id`, `role_id`) VALUES (2, 2);
 INSERT INTO `sys_user_role` (`user_id`, `role_id`) VALUES (100, 2);
 INSERT INTO `sys_user_role` (`user_id`, `role_id`) VALUES (101, 2);
-INSERT INTO `sys_user_role` (`user_id`, `role_id`) VALUES (104, 101);
+INSERT INTO `sys_user_role` (`user_id`, `role_id`) VALUES (103, 101);
+INSERT INTO `sys_user_role` (`user_id`, `role_id`) VALUES (104, 2);
+INSERT INTO `sys_user_role` (`user_id`, `role_id`) VALUES (106, 101);
 COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;

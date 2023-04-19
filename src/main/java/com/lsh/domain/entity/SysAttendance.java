@@ -26,7 +26,7 @@ public class SysAttendance  {
     private Long attendanceId;
 
     /**
-     * 考勤类型（1 打卡 2事假 3病假 ）
+     * 考勤类型（1 打卡 2请假 ）
      */
     private Integer attendanceType;
 
@@ -65,6 +65,16 @@ public class SysAttendance  {
      * 更新时间
      */
     private Date updateTime;
+
+    /**
+     *限制类型：年假、事假、病假
+     */
+    private Integer leaveType;
+
+    /**
+     * 请假原因
+     */
+    private String leaveReason;
 
     /**
      * 请求参数

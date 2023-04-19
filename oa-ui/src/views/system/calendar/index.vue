@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-calendar :first-day-of-week="7" ref="calendar" >
+    <el-calendar :first-day-of-week="7" ref="calendar">
       <template slot="dateCell" slot-scope="{ date, data }">
         <div>
           <p
@@ -11,7 +11,7 @@
           >
             {{ data.day.split("-").slice(1).join("-") }}
             <!-- {{ data.isSelected ? "✔️" : "" }} -->
-              <el-button
+            <el-button
               v-show="formatDate(date) === formatDate(new Date())"
               :type="isWork ? 'success' : 'primary'"
               icon="el-icon-check"
@@ -79,7 +79,6 @@
         />
       </el-form-item>
 
-     
       <el-form-item label="出勤类型" prop="attendanceType">
         <el-select
           v-model="queryParams.attendanceType"
@@ -210,22 +209,47 @@
       @pagination="getList"
     />
 
-    <el-dialog :title="title" :visible.sync="leaveFormOpen" width="500px" append-to-body>
-      <el-form ref="leaveForm" :model="leaveForm" :rules="rules" label-width="80px">
-       
-        <el-form-item label="请假时间">
-        <el-date-picker
-          v-model="leaveDateRange"
-          style="width: 240px"
-          value-format="yyyy-MM-dd"
-          type="daterange"
-          range-separator="-"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-        ></el-date-picker>
+    <el-dialog
+      :title="title"
+      :visible.sync="leaveFormOpen"
+      width="500px"
+      append-to-body
+    >
+      <el-form ref="leaveForm" :model="leaveForm" label-width="80px">
+        <el-form-item label="可用年假">{{ three }} 天</el-form-item>
+        <el-form-item label="可用事假">{{ one }} 天</el-form-item>
+        <el-form-item label="可用病假">{{ two }} 天</el-form-item>
+        <el-form-item label="请假类型" >
+        <el-select
+          v-model="leaveForm.leaveType"
+          placeholder="请假类型"
+          clearable
+        >
+          <el-option
+            v-for="dict in dict.type.sys_limit_type"
+            :key="dict.value"
+            :label="dict.label"
+            :value="dict.value"
+          />
+        </el-select>
       </el-form-item>
-        <el-form-item label="备注" prop="remark">
-          <el-input v-model="leaveForm.remark" type="textarea" placeholder="请输入内容" />
+        <el-form-item label="请假时间">
+          <el-date-picker
+            v-model="leaveDateRange"
+            style="width: 240px"
+            value-format="yyyy-MM-dd"
+            type="daterange"
+            range-separator="-"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+          ></el-date-picker>
+        </el-form-item>
+        <el-form-item label="请假理由" prop="leaveReason">
+          <el-input
+            v-model="leaveForm.leaveReason"
+            type="textarea"
+            placeholder="请输入内容"
+          />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -242,12 +266,15 @@ import {
   attendance,
   findUserCurrentMonthAttendanceStatus,
   findUserCurrentDayAttendanceRecord,
-  leave
+  leave,
 } from "@/api/system/attendance";
+
+import { holidayBalance } from "@/api/system/limit";
+
 export default {
   name: "Calendar",
-  dicts: ["sys_attendance_type", "sys_attendance_status"],
-  
+  dicts: ["sys_attendance_type", "sys_attendance_status", "sys_limit_type"],
+
   data() {
     return {
       // 遮罩层
@@ -274,6 +301,9 @@ export default {
       open: false,
       leaveFormOpen: false,
       refreshTable: true,
+      one:0,
+      two:0,
+      three:0,
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -288,35 +318,34 @@ export default {
       // 表单参数
       form: {},
       leaveForm: {},
+      holidayBalanceForm: {},
       calendarData: [],
-      queryDateStatus:{
-        currentDate:undefined,
-        isPre:undefined
-      }
+      queryDateStatus: {
+        currentDate: undefined,
+        isPre: undefined,
+      },
     };
   },
-
 
   mounted() {
     this.$nextTick(() => {
       const calendar = this.$refs.calendar;
-      const devElement = calendar.$el.querySelector('.el-calendar__title');
-      var text = 'title'
+      const devElement = calendar.$el.querySelector(".el-calendar__title");
+      var text = "title";
       if (devElement) {
         text = devElement.textContent.trim();
-        console.log('calendar__title',text); // 输出 "这是标题"
-       
+        console.log("calendar__title", text); // 输出 "这是标题"
       }
-      
-      const spanElement = calendar.$el.querySelector('span');
-      if (spanElement && spanElement.textContent.trim() === '上个月') {
-        spanElement.addEventListener('click', () => {
+
+      const spanElement = calendar.$el.querySelector("span");
+      if (spanElement && spanElement.textContent.trim() === "上个月") {
+        spanElement.addEventListener("click", () => {
           // 处理点击事件的逻辑
-          console.log('点击上个月,当前时间为：',text)
+          console.log("点击上个月,当前时间为：", text);
           this.queryDateStatus = {
-            currentDate:text,
-            isPre:true
-          }
+            currentDate: text,
+            isPre: true,
+          };
           this.getcalendarData(this.queryDateStatus);
         });
       }
@@ -325,9 +354,9 @@ export default {
   created() {
     this.getList();
     this.queryDateStatus = {
-        currentDate:this.formatDate(new Date()),
-        isPre:false
-    }
+      currentDate: this.formatDate(new Date()),
+      isPre: false,
+    };
     this.getcalendarData(this.queryDateStatus);
     this.form = {
       userName: undefined,
@@ -337,7 +366,6 @@ export default {
     this.hasRecord();
   },
   methods: {
-  
     /** 查询考勤列表 */
     getList() {
       this.loading = true;
@@ -357,10 +385,10 @@ export default {
       });
     },
     hasRecord() {
-      findUserCurrentDayAttendanceRecord().then((response) =>{
-        console.log('response.data:',response.data)
-        this.isWork =  response.data === 1;
-      })
+      findUserCurrentDayAttendanceRecord().then((response) => {
+        console.log("response.data:", response.data);
+        this.isWork = response.data === 1;
+      });
     },
     getAttendance() {
       attendance(this.form).then((response) => {
@@ -400,10 +428,9 @@ export default {
     },
     resetLeaveForm() {
       this.leaveForm = {
-        remark: undefined
+        leaveReason: undefined,
       };
-      this.leaveDateRange=[],
-      this.resetForm("leaveForm");
+      (this.leaveDateRange = []), this.resetForm("leaveForm");
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -412,14 +439,24 @@ export default {
     },
 
     handleLeave() {
-      this.leaveFormOpen = true;
-      this.title = "请假";
-      this.getList();
+      holidayBalance().then((response) => {
+        if (response.code === 200) {
+          this.title = "请假";
+          this.leaveFormOpen = true;
+          this.one = response.data.one === undefined ? 0 : response.data.one;
+          this.two = response.data.two === undefined ? 0 : response.data.two;
+          this.three = response.data.three === undefined ? 0 : response.data.three;
+          
+          this.getList();
+        } else {
+
+        }
+        this.resetLeaveForm();
+      });
     },
     /** 重置按钮操作 */
     resetQuery() {
-      this.dateRange=[],
-      this.resetForm("queryForm");
+      (this.dateRange = []), this.resetForm("queryForm");
       this.handleQuery();
     },
     // 多选框选中数据
@@ -467,22 +504,23 @@ export default {
     submitLeaveForm: function () {
       this.$refs["leaveForm"].validate((valid) => {
         if (valid) {
-        leave(this.addDateRange(this.queryParams, this.leaveDateRange)).then((response) => {
-        if (response.code === 200) {
-          this.$alert("<font color='red'>请假成功 </font>", "系统提示", {
-            dangerouslyUseHTMLString: true,
-            type: "success",
-          });
-          this.getList();
-        } else {
-          this.$alert("<font color='red'>网络错误 </font>", "系统提示", {
-            dangerouslyUseHTMLString: true,
-            type: "error",
-          });
-        }
-        });
-        this.leaveFormOpen = false;
-       
+          leave(this.addDateRange(this.leaveForm, this.leaveDateRange)).then(
+            (response) => {
+              if (response.code === 200) {
+                this.$alert("<font color='red'>请假成功 </font>", "系统提示", {
+                  dangerouslyUseHTMLString: true,
+                  type: "success",
+                });
+                this.getList();
+              } else {
+                this.$alert("<font color='red'>网络错误 </font>", "系统提示", {
+                  dangerouslyUseHTMLString: true,
+                  type: "error",
+                });
+              }
+            }
+          );
+          this.leaveFormOpen = false;
         }
       });
     },
@@ -500,7 +538,7 @@ export default {
         })
         .catch(() => {});
     },
-  
+
     getStatuses(date) {
       return this.calendarData.map((item) => {
         const itemCreateTime = this.formatDate(new Date(item.createTime));

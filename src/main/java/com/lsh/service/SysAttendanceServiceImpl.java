@@ -3,7 +3,9 @@ package com.lsh.service;
 import com.lsh.config.OaSystemConfig;
 import com.lsh.constant.Constants;
 import com.lsh.domain.entity.SysAttendance;
+import com.lsh.domain.entity.SysUserLimit;
 import com.lsh.repository.SysAttendanceRepository;
+import com.lsh.repository.SysLimitServiceRepository;
 import com.lsh.util.DateUtils;
 import com.lsh.util.ServletUtils;
 import com.lsh.util.StringUtils;
@@ -20,11 +22,14 @@ import org.springframework.stereotype.Service;
 import javax.persistence.criteria.Predicate;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Author: Joey
@@ -40,6 +45,9 @@ public class SysAttendanceServiceImpl implements ISysAttendanceService {
 
     @Autowired
     SysAttendanceRepository sysAttendanceRepository;
+
+    @Autowired
+    SysLimitServiceRepository sysLimitServiceRepository;
 
     @Override
     public Page<SysAttendance> selectAttendanceList(SysAttendance attendance)  {
@@ -123,6 +131,13 @@ public class SysAttendanceServiceImpl implements ISysAttendanceService {
                 //仅早退
                 sysAttendance.setStatus(3);
             }
+        }else {
+            //没有早退
+            if (sysAttendance.getStatus() == 5 ){
+                //仅迟到
+                sysAttendance.setStatus(2);
+            }
+
         }
         //如果该用户存在当天改类型考勤记录，则更新改记录下班打卡时间
         sysAttendance.setOffLine(new Date());
@@ -141,6 +156,11 @@ public class SysAttendanceServiceImpl implements ISysAttendanceService {
         sysAttendanceRepository.save(sysAttendance);
     }
 
+    public static long daysBetween(Date startDate, Date endDate) {
+        long diffInMillies = endDate.getTime() - startDate.getTime();
+        return TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS) +1;
+    }
+
 
     @Override
     public void leave(SysAttendance attendance) throws ParseException {
@@ -149,7 +169,21 @@ public class SysAttendanceServiceImpl implements ISysAttendanceService {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date beginDate = simpleDateFormat.parse(beginTime);
         Date endDate = simpleDateFormat.parse(endTime);
+        long numberOfDays = daysBetween(beginDate, endDate);
         String userName = attendance.getUserName();
+
+        SysUserLimit sysUserLimit = sysLimitServiceRepository.findSysUserLimitsByUserNameAndLimitType(userName, attendance.getLeaveType());
+        //总额度
+        Integer limitValue = StringUtils.isNull(sysUserLimit)? 0:sysUserLimit.getLimitValue();
+        //已用额度
+        int num = sysAttendanceRepository.findByUserNameAndLeaveTypeAndCreateTimeIsStartingWith(userName, attendance.getLeaveType(), LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy")));
+        long balance = limitValue - num - numberOfDays;
+        log.info("请假天数：{}，假期总额度：{}，已用额度：{}，可用天数：{}",numberOfDays,limitValue,num,balance);
+        if (balance <= 0 ){
+            throw new RuntimeException("假期余额不足！");
+        }
+        String leaveReason = attendance.getLeaveReason();
+        Integer leaveType = attendance.getLeaveType();
         while (!beginDate.after(endDate)){
             attendance.setCreateTime(beginDate);
             attendance.setAttendanceType(2);
@@ -157,6 +191,8 @@ public class SysAttendanceServiceImpl implements ISysAttendanceService {
             sysAttendanceRepository.save(attendance);
             attendance = new SysAttendance();
             attendance.setUserName(userName);
+            attendance.setLeaveType(leaveType);
+            attendance.setLeaveReason(leaveReason);
             beginDate = addDays(beginDate,1);
         }
     }

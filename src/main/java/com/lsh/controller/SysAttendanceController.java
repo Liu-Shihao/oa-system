@@ -62,6 +62,7 @@ public class SysAttendanceController extends BaseController {
     @GetMapping("/leave")
     @Anonymous
     public AjaxResult leave(SysAttendance attendance) throws ParseException {
+        log.info("请假申请：{}",attendance);
         LoginUser loginUser = getLoginUser();
         SysUser user = loginUser.getUser();
         attendance.setUserName(user.getUserName());
