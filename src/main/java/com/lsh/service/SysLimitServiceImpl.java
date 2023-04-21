@@ -73,7 +73,7 @@ public class SysLimitServiceImpl implements ISysLimitService{
                 Integer limitType = limit.getLimitType();
                 Integer limitValue = limit.getLimitValue();
                 String year = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy"));
-                int num = sysAttendanceRepository.findByUserNameAndLeaveTypeAndCreateTimeIsStartingWith(user.getUserName(), limitType, year);
+                int num = sysAttendanceRepository.findByUserNameAndLeaveTypeAndCreateTimeIsStartingWith(user.getUserName(), limitType, year+"%");
                 int balanceDay = limitValue - num;
                 String type = limitType == 1 ? "one" : limitType == 2 ? "two":"three";
                 data.put(type,balanceDay);

@@ -176,7 +176,8 @@ public class SysAttendanceServiceImpl implements ISysAttendanceService {
         //总额度
         Integer limitValue = StringUtils.isNull(sysUserLimit)? 0:sysUserLimit.getLimitValue();
         //已用额度
-        int num = sysAttendanceRepository.findByUserNameAndLeaveTypeAndCreateTimeIsStartingWith(userName, attendance.getLeaveType(), LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy")));
+        String year = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy"));
+        int num = sysAttendanceRepository.findByUserNameAndLeaveTypeAndCreateTimeIsStartingWith(userName, attendance.getLeaveType(), year+"%");
         long balance = limitValue - num - numberOfDays;
         log.info("请假天数：{}，假期总额度：{}，已用额度：{}，可用天数：{}",numberOfDays,limitValue,num,balance);
         if (balance <= 0 ){

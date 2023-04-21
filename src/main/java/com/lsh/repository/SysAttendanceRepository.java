@@ -17,6 +17,6 @@ public interface SysAttendanceRepository extends JpaRepository<SysAttendance,Lon
 
     SysAttendance findSysAttendanceByAttendanceId (Long id);
 
-    @Query(value = "SELECT count(*) FROM sys_attendance t WHERE t.user_name = :userName AND  t.leave_type =:leaveType AND  t.create_time LIKE :year%",nativeQuery = true)
+    @Query(value = "SELECT count(*) FROM sys_attendance t WHERE t.user_name = :userName AND  t.leave_type =:leaveType AND  DATE_FORMAT(t.create_time, '%Y-%m-%d') LIKE :year",nativeQuery = true)
     int findByUserNameAndLeaveTypeAndCreateTimeIsStartingWith (@Param("userName")String userName,@Param("leaveType")int leaveType,@Param("year")String year);
 }
